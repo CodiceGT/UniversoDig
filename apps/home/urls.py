@@ -21,5 +21,10 @@ from .views import *
 app_name='home'
 
 urlpatterns = [
-    #path('', LoginView.as_view(), name='login'),
+    #Inicio y cierre de sesión
+    path('login/', LoginView.as_view(), name='login'),
+    path('logout/', LogoutView, name='logout'),
+
+    #Dashboard
+    path('', HomeView, name='home'),
 ]

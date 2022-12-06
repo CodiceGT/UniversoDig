@@ -135,6 +135,11 @@ USE_I18N = True
 
 USE_TZ = True
 
+
+# Redireccionamiento del Login
+LOGIN_REDIRECT_URL = reverse_lazy('home:home')
+
+
 # Redireccionamiento del Login
 #LOGIN_REDIRECT_URL = reverse_lazy('home:login')
 

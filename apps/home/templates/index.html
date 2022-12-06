@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Bienvenido al sistema {{user.first_name}} {{ user.last_name }}</h1>
+    <h2>Cargo: {{ user.cuenta.tipo | upper }}</h2>
+    {% if user.cuenta.tipo|upper == 'GERENTE' %}
+    <p>Usted tiene acceso a todo ✅</p>
+    {% elif user.cuenta.tipo|upper == 'COBRADOR' %}
+    <p>Usted no tiene acceso a todo ❌</p>
+    {% else %}
+    <p>Tipo de usuario no reconocido❗⛔</p>
+    {% endif %}
+
+    <a href="{% url 'home:logout' %}">Cerrar sesión</a>
+</body>
+</html>
