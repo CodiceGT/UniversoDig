@@ -24,6 +24,14 @@
 
 <h2>Listado de clientes</h2>
 <table>
+    <tr>
+        <td>CUI</td>
+        <td>Nombre</td>
+        <td>Apellido</td>
+        <td>Dirección</td>
+        <td>Teléfono</td>
+        <td>Correo</td>
+    </tr>
     {% for cliente in object_list %}
     <tr>
         <td> {{ cliente.cui }} </td>
