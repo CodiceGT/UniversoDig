@@ -1,4 +1,4 @@
-<form action="" method="post">
+<!---<form action="" method="post">
     {% csrf_token %}
     <input type="text" name="cui" id="">
     {{form.cui}}
@@ -8,7 +8,19 @@
     {{form.telefono}}
     {{form.correo}}
     <button type="submit">Enviar</button>
-</form>
+</form>-->
+
+<h1> Registrar Cliente</h2>
+    <form action="{% url 'home:clientes' %}" method="post">
+        {% csrf_token %}
+        <input type="text" name='cui'>
+        <input type="text" name='nombre'>
+        <input type="text" name='apellido'>
+        <input type="text" name='direccion'>
+        <input type="text" name='telefono'>
+        <input type="text" name='correo'>
+        <button type="submit">Enviar datos</button>
+    </form>
 
 <h2>Listado de clientes</h2>
 <table>

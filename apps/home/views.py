@@ -27,7 +27,22 @@ def LogoutView(request):
 #Vista para Dashboard
 
 # Registrar Clientes
-class CrearClienteView(CreateView, ListView):
+def ClientesView(request):
+    return render(request, 'Clientes.html')
+
+def NuevoClienteView(request):
+    cui = request.POST['cui']
+    nombre = request.POST['nombre']
+    apellido = request.POST['apellido']
+    direccion = request.POST['direccion']
+    telefono = request.POST['telefono']
+    correo = request.POST['correo']
+    
+    cliente = Cliente(cui=cui, nombre=nombre, apellido=apellido, direccion=direccion, telefono=telefono, correo=correo)
+    cliente.save()
+    return redirect('home:clientes')
+
+'''class CrearClienteView(CreateView, ListView):
     template_name='Clientes.html'
     form_class = ClienteForm
     success_url = reverse_lazy('home:clientes')
@@ -35,9 +50,7 @@ class CrearClienteView(CreateView, ListView):
 
     def get_queryset(self):
         return Cliente.objects.all()
-    
-
-    
+    '''
 
 #Vistas personalizadas
 def ServiciosView(request):
