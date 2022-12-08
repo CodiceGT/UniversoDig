@@ -1,24 +1,24 @@
-
-from django.views.generic import ListView, CreateView
-from .forms import ClienteForm
-from .models import Cliente
-from django.urls import reverse_lazy
+from django.contrib.auth import logout
+from django.contrib.auth.views import LoginView
+from django.contrib.auth.decorators import login_required
+from django.views import generic
+from django.shortcuts import render, redirect
 
 # Create your views here.
 
-# Registrar Clientes
-class CrearClienteView(CreateView):
-    template_name='FormClientes.html'
-    form_class = ClienteForm
-    success_url = reverse_lazy('cliente')
+#Vistas para inicio y cierre de sesión
+class LoginView(LoginView):
+    template_name = 'registration/login.html'
 
 
-#Listar clientes 
-class ListarCliente(ListView):
-    template_name = 'Cliente.html'
-    model = Cliente
-
-    def get_queryset(self):
-        return Cliente.objects.all()
+@login_required
+def HomeView(request):
+    return render(request, 'index.html')
 
 
+def LogoutView(request):
+    logout(request)
+    return redirect('home:login')
+
+
+#Vista para Dashboard
