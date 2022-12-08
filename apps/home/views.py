@@ -27,17 +27,6 @@ def LogoutView(request):
 #Vista para Dashboard
 
 
-#Vista genérica para listar e insertar
-class RegistroServicioView(generic.CreateView, generic.ListView):
-    template_name = 'servicios.html'
-    form_class = RegistroServicioForm
-    success_url = reverse_lazy('home:home')
-    model = Servicio
-
-    def get_query(self):
-        return Servicio.objects.all()
-
-
 #Vistas personalizadas
 def ServiciosView(request):
     return render(request, 'servicios.html')
