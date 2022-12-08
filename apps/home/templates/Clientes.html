@@ -11,7 +11,7 @@
 </form>-->
 
 <h1> Registrar Cliente</h2>
-    <form action="{% url 'home:clientes' %}" method="post">
+    <form action="{% url 'home:nuevocliente' %}" method="post">
         {% csrf_token %}
         <input type="text" name='cui'>
         <input type="text" name='nombre'>
@@ -26,12 +26,12 @@
 <table>
     {% for cliente in object_list %}
     <tr>
-        <td> {{cliente.cui}} </td>
-        <td> {{cliente.nombre}} </td>
-        <td> {{cliente.apellido}} </td>
-        <td> {{cliente.direccion}} </td>
-        <td> {{cliente.telefono}} </td>
-        <td> {{cliente.correo}} </td>
+        <td> {{ cliente.cui }} </td>
+        <td> {{ cliente.nombre }} </td>
+        <td> {{ cliente.apellido }} </td>
+        <td> {{ cliente.direccion }} </td>
+        <td> {{ cliente.telefono }} </td>
+        <td> {{ cliente.correo }} </td>
     </tr>
     {% endfor %}
 </table>

@@ -65,5 +65,5 @@ def NuevoServicioView(request):
 
     servicio = Servicio(tipo=tipo, nombre=nombre, ancho_banda=ancho_banda, costo=costo)
     servicio.save()
-
+    
     return redirect('home:servicios')
