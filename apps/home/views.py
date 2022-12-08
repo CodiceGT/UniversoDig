@@ -31,6 +31,7 @@ def LogoutView(request):
     return render(request, 'Clientes.html')
 '''
 # Registrar Clientes
+@login_required
 def NuevoClienteView(request):
     cui = request.POST['cui']
     nombre = request.POST['nombre']
