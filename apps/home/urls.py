@@ -27,7 +27,7 @@ urlpatterns = [
 
     #Dashboard
     path('', HomeView, name='home'),
-    path('clientes/', CrearClienteView.as_view(), name='clientes'),
+    path('clientes/', CrearClienteView, name='clientes'),
     path('servicios/', ServiciosView, name='servicios'),
     path('servicios/nuevo/', NuevoServicioView, name='nuevoservicio'),
 ]
