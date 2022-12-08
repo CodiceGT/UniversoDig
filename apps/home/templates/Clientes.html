@@ -1,0 +1,24 @@
+<form action="" method="post">
+    {% csrf_token %}
+    {{form.cui}}
+    {{form.nombre}}
+    {{form.apellido}}
+    {{form.direccion}}
+    {{form.telefono}}
+    {{form.correo}}
+    <button type="submit">Enviar</button>
+</form>
+
+<h2>Listado de clientes</h2>
+<table>
+    {% for cliente in object_list %}
+    <tr>
+        <td> {{cliente.cui}} </td>
+        <td> {{cliente.nombre}} </td>
+        <td> {{cliente.apellido}} </td>
+        <td> {{cliente.direccion}} </td>
+        <td> {{cliente.telefono}} </td>
+        <td> {{cliente.correo}} </td>
+    </tr>
+    {% endfor %}
+</table>
