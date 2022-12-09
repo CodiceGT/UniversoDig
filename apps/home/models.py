@@ -34,11 +34,11 @@ class Servicio(models.Model):
 class Contratacion(models.Model):
     cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
     servicio = models.ForeignKey(Servicio, on_delete=models.CASCADE)
-    fecha = models.DateField()
+    direccion = models.CharField(max_length=128)
     creacion = models.DateTimeField(auto_now=True)
 
     def __str__(self) -> str:
-        return '%s %s %s %s' % (self.pk, self.fecha, self.cliente, self.servicio)
+        return '%s %s %s %s' % (self.pk, self.creacion, self.cliente, self.servicio)
 
 
 class Recibo(models.Model):

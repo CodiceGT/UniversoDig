@@ -1,14 +1,38 @@
+<form action="{% url 'home:nuevacontratacion' %}" method="post">
+    {% csrf_token %}
+    <input list="listaclientes" name="cliente">
+    <datalist id="listaclientes">
+        {% for cliente in clientes %}
+        <option value=" {{cliente.id}} ">{{cliente.nombre}} {{cliente.apellido}} </option>
+        {% endfor %}
+    </datalist>
+    <input list="listaservicios" name="servicio">
+    <datalist id="listaservicios">
+        {% for servicio in servicios %}
+        <option value=" {{servicio.id}} "> {{servicio.tipo}} {{servicio.nombre}} {{servicio.costo}} </option>
+        {% endfor %}
+    </datalist>
+    <input type="text" name="direccion" placeholder="Direccion">
+    <button type="submit">Guardar</button>
+</form>
+
 <table>
     <tr>
+        <td>Codigo</td>
         <td>Fecha</td>
         <td>Cliente</td>
         <td>Servicio</td>
+        <td>Direccion</td>
+        <td>Acciones</td>
     </tr>
     {% for contratacion in contrataciones %}
     <tr>
-        <td> {{contratacion.fecha}} </td>
+        <td> {{contratacion.id}} </td>
+        <td> {{contratacion.creacion}} </td>
         <td> {{contratacion.cliente}} </td>
         <td> {{contratacion.servicio}} </td>
+        <td> {{contratacion.direccion}} </td>
+        <td><a href="{% url 'home:borrarcontratacion' contratacion.id %}">❌</a></td>
     </tr>
     {% endfor %}
 </table>

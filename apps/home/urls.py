@@ -37,4 +37,9 @@ urlpatterns = [
 
     #Contrataciones
     path('contrataciones/', ContratacionesView, name='contrataciones'),
+    path('contrataciones/nuevo/', NuevaContratacionView, name='nuevacontratacion'),
+    path('contrataciones/borrar/<int:pk>', BorrarContratacionView, name='borrarcontratacion'),
+
+    #Pagos
+    path('pagos/', PagosView, name='pagos'),
 ]

@@ -73,23 +73,42 @@ def NuevoServicioView(request):
     nombre = request.POST['nombre']
     ancho_banda = request.POST['ancho_banda']
     costo = request.POST['costo']
-
     servicio = Servicio(tipo=tipo, nombre=nombre, ancho_banda=ancho_banda, costo=costo)
     servicio.save()
-    
     return redirect('home:servicios')
 
 
-#Vista para eliminar servicios
+#Vista para borrar servicios
 def BorrarServicioView(request, pk):
     servicio = Servicio.objects.get(pk=pk)
     servicio.delete()
     return redirect('home:servicios')
 
+
 #Vista para listar contrataciones
 def ContratacionesView(request):
-    return render(request, 'contrataciones.html', {'contrataciones':Contratacion.objects.all()})
+    return render(request, 'contrataciones.html', {
+        'contrataciones':Contratacion.objects.all(),
+        'clientes':Cliente.objects.all(),
+        'servicios':Servicio.objects.all()
+        })
 
+
+#Vista para crear una contratacion
+def NuevaContratacionView(request):
+    cliente = Cliente.objects.get(pk=(request.POST['cliente']))
+    servicio = Servicio.objects.get(pk=(request.POST['servicio']))
+    direccion = request.POST['direccion']
+    contratacion = Contratacion(cliente=cliente, servicio=servicio, direccion=direccion)
+    contratacion.save()
+    return redirect('home:contrataciones')
+
+
+#Vista para borrar contratacion
+def BorrarContratacionView(request, pk):
+    contratacion = Contratacion.objects.get(pk=pk)
+    contratacion.delete()
+    return redirect('home:contrataciones')
 
 #Vista para listar pagos
 def PagosView(request):
