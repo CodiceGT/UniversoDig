@@ -1,0 +1,194 @@
+:root{
+    --width: 300px;
+    --padding: 10px;
+    --bgcolor: linear-gradient(
+        rgb(0, 72, 131),
+        rgb(2, 26, 68)
+    );
+    --hovecolor: rgb(23, 23, 23);
+    --widht-collapsed: 50px;
+}
+
+body{
+    
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 18px;
+    padding: 0;
+    margin: 0;
+    margin-left: var(--widht-collapsed);5
+}
+
+.body-expanded{
+    margin-left: var(--width);
+}
+
+#main-container{
+    color: rgb(173, 5, 5);
+    padding-left: 15px;
+}
+
+#menu{
+    background: var(--bgcolor);
+    color: white;
+    position: fixed;
+    height: 100%;
+    left: 0;
+    top: 0;
+}
+
+#menu a{
+    color: white;
+    text-decoration: none;
+}
+
+#menu #header{
+    box-sizing: border-box;
+    border-bottom: solid 1px var(--hovecolor);
+}
+
+#menu #header #title{
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+#menu #header #title, #menu #header #menu-btn{
+    vertical-align: middle;
+}
+
+#menu #header #menu-btn{
+    display: inline-block;
+}
+
+#menu #header #menu-btn{
+    cursor: pointer;
+    padding: 10px;
+    width: var(--widht-collapsed);
+    box-sizing: border-box;
+}
+
+#menu #header #menubtn:hover{
+    background-color: var(--hovecolor);
+}
+
+#menu #header #menu-btn .btn-universo{
+    background-color: #fff;
+    width: 100%;
+    height: 2px;
+    margin: 5px 0;
+}
+
+#menu #profile{
+    border-bottom: solid 1px var(--hovecolor);
+    padding: var(--padding);
+    text-align: center;
+}
+
+#menu #profile #photo{
+    box-sizing: border-box;
+    padding: var(--padding);
+    margin: 0 auto;
+}
+
+#menu #profile #photo img{
+    border-radius: 10%;
+    width: 90%;
+}
+
+#menu #profile #photo, #menu #profile #name{
+    font-size: 24px;
+    padding: var(--padding);
+    overflow: hidden;
+}
+
+#menu #menu-items{
+    overflow: hidden;
+}
+
+#menu #menu-items .item{
+    width: var(--width);
+}
+
+#menu #menu-items .item .icon{
+    display: inline-block;
+}
+
+#menu #menu-items .item .icon,
+#menu #menu-items .item .icon{
+    font-size: 14px;
+    vertical-align: middle;
+    overflow: hidden;
+    display: inline-block;
+}
+
+#menu #menu-items .item a{
+    display: block;
+}
+
+#menu #menu-items .item a:hover{
+    background-color: var(--hovecolor);
+}
+
+#menu #menu-items .item .icon{
+    box-sizing: border-box;
+    padding: var(--padding);
+    width: var(--widht-collapsed);
+}
+
+#menu #menu-items .item .icon img{
+    width: 100%;
+}
+
+#menu #menu-items .item .title{
+    padding: var(--padding);
+}
+
+#menu #menu-items .item.separator{
+    height: 1px;
+    border-bottom: solid 1px var(--hovecolor);
+    margin: 15px 0;
+}
+
+.menu-expanded{
+    width: var(--width);
+    box-shadow: 0 0 10px rgba(0,0,0,0,5);
+}
+
+.menu-expanded #header #title{
+    display: inline-block;
+    width: calc(100% - 50px);
+    margin-right: -5px;
+    padding: var(--padding);
+}
+
+.menu-expanded #header #title span{
+    width: calc(var(--width) -var(--width-collapsed) - 5px);
+    overflow: hidden;
+    display: inline-block;
+}
+
+.menu-expanded #profile #photo{
+    width: 200px;
+}
+
+.menu-expanded #profile #name{
+    width: 100%;
+}
+
+.menu-collapsed{
+    width: var(--widht-collapsed);
+}
+
+.menu-collapsed #header #title{
+    width: 0;
+    height: 0;
+    padding: 0;
+    margin: 0;
+}
+
+.menu-collapsed #profile #name{
+    display: none;
+}
+
+.menu-collapsed .item{
+    width: 50px;
+}
