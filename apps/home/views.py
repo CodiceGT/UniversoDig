@@ -63,11 +63,11 @@ class ListarCliente(ListView):
         return Cliente.objects.all()
     '''
 
-#Vistas personalizadas
+#Vistas para listar servicios
 def ServiciosView(request):
-    return render(request, 'servicios.html')
+    return render(request, 'servicios.html', {'servicios':Servicio.objects.all()})
 
-
+#Vista para insertar servicios
 def NuevoServicioView(request):
     tipo = request.POST['tipo']
     nombre = request.POST['nombre']
@@ -78,3 +78,19 @@ def NuevoServicioView(request):
     servicio.save()
     
     return redirect('home:servicios')
+
+
+#Vista para eliminar servicios
+def BorrarServicioView(request, pk):
+    servicio = Servicio.objects.get(pk=pk)
+    servicio.delete()
+    return redirect('home:servicios')
+
+#Vista para listar contrataciones
+def ContratacionesView(request):
+    return render(request, 'contrataciones.html', {'contrataciones':Contratacion.objects.all()})
+
+
+#Vista para listar pagos
+def PagosView(request):
+    return render(request, 'pagos.html', {'pagos':DetallePago.objects.all()})

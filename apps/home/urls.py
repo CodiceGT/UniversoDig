@@ -29,6 +29,12 @@ urlpatterns = [
     path('', HomeView, name='home'),
     path('clientes/', ListarCliente.as_view(), name='clientes'),
     path('clientes/nuevo/', NuevoClienteView, name='nuevocliente'),
+
+    #Servicios
     path('servicios/', ServiciosView, name='servicios'),
     path('servicios/nuevo/', NuevoServicioView, name='nuevoservicio'),
+    path('servicios/borrar/<int:pk>', BorrarServicioView, name='borrarservicio'),
+
+    #Contrataciones
+    path('contrataciones/', ContratacionesView, name='contrataciones'),
 ]

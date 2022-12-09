@@ -1,0 +1,14 @@
+<table>
+    <tr>
+        <td>Fecha</td>
+        <td>Cliente</td>
+        <td>Servicio</td>
+    </tr>
+    {% for contratacion in contrataciones %}
+    <tr>
+        <td> {{contratacion.fecha}} </td>
+        <td> {{contratacion.cliente}} </td>
+        <td> {{contratacion.servicio}} </td>
+    </tr>
+    {% endfor %}
+</table>
