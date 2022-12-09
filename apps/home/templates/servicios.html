@@ -1,0 +1,8 @@
+<form action="{% url 'home:nuevoservicio' %}" method="post">
+    {% csrf_token %}
+    <input type="text" name='tipo'>
+    <input type="text" name='nombre'>
+    <input type="text" name='ancho_banda'>
+    <input type="number" step="0.10" name='costo'>
+    <button type="submit">Enviar datos</button>
+</form>

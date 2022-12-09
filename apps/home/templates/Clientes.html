@@ -1,0 +1,45 @@
+<!---<form action="" method="post">
+    {% csrf_token %}
+    <input type="text" name="cui" id="">
+    {{form.cui}}
+    {{form.nombre}}
+    {{form.apellido}}
+    {{form.direccion}}
+    {{form.telefono}}
+    {{form.correo}}
+    <button type="submit">Enviar</button>
+</form>-->
+
+<h1> Registrar Cliente</h2>
+    <form action="{% url 'home:nuevocliente' %}" method="post">
+        {% csrf_token %}
+        <input type="text" name='cui'>
+        <input type="text" name='nombre'>
+        <input type="text" name='apellido'>
+        <input type="text" name='direccion'>
+        <input type="text" name='telefono'>
+        <input type="text" name='correo'>
+        <button type="submit">Enviar datos</button>
+    </form>
+
+<h1>Listado de clientes</h2>
+<table>
+    <tr>
+        <td>CUI</td>
+        <td>Nombre</td>
+        <td>Apellido</td>
+        <td>Dirección</td>
+        <td>Teléfono</td>
+        <td>Correo</td>
+    </tr>
+    {% for cliente in object_list %}
+    <tr>
+        <td> {{ cliente.cui }} </td>
+        <td> {{ cliente.nombre }} </td>
+        <td> {{ cliente.apellido }} </td>
+        <td> {{ cliente.direccion }} </td>
+        <td> {{ cliente.telefono }} </td>
+        <td> {{ cliente.correo }} </td>
+    </tr>
+    {% endfor %}
+</table>
