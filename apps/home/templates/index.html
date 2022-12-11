@@ -1,17 +1,28 @@
 {% extends 'menu.html' %}
-{% block contenido %}
-    <h1>Bienvenido al sistema {{user.first_name}} {{ user.last_name }}</h1>
-    <h2>Cargo: {{ user.cuenta.tipo | upper }}</h2>
-    {% if user.cuenta.tipo|upper == 'GERENTE' %}
+
+    {% block usuario %}
+    <a href="#"> <h1>{{user.first_name}} {{ user.last_name }}</h1> </a></li>
+    {% endblock usuario %}
+
+    {% block Tipocuenta %}
+    <h2>{{ user.cuenta.tipo | upper }}</h2>
+    <!--
+        {% if user.cuenta.tipo|upper == 'GERENTE' %}
     <p>Usted tiene acceso a todo ✅</p>
     {% elif user.cuenta.tipo|upper == 'COBRADOR' %}
     <p>Usted no tiene acceso a todo ❌</p>
     {% else %}
     <p>Tipo de usuario no reconocido❗⛔</p>
     {% endif %}
+    -->
+    {% endblock Tipocuenta %}
 
+    {% block logout %}
     <a href="{% url 'home:logout' %}">Cerrar sesión</a>
+    {% endblock logout %}
 
+    {% block contenido %}
+   
     <a href="{% url 'home:clientes' %}">Ir a formulario clientes</a>
     <a href=" {% url 'home:servicios' %} ">Ir a servicios</a>
     {% endblock contenido %}
