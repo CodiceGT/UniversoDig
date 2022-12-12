@@ -1,0 +1,396 @@
+/************************** barra lateral */
+:root{
+    --width: 230px;
+    --padding: 10px;
+    --bgcolor: linear-gradient(
+        rgb(0, 72, 131),
+        rgb(2, 26, 68)
+    );
+    --bgheader: linear-gradient(
+        rgb(0, 72, 131),
+        rgb(0, 54, 105)
+    );
+    --hovecolor: rgb(23, 23, 23);
+    --widht-collapsed: 50px;
+    --resaltado: rgb(181,255,254);
+}
+
+body{    
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 18px;
+    padding: 0;
+    margin: 0;
+    margin-left: var(--widht-collapsed);
+}
+
+.body-expanded{
+    margin-left: var(--width);
+}
+
+#main-container{
+    color: rgb(173, 5, 5);
+    padding-left: 15px;
+}
+
+#menu{
+    background: var(--bgcolor);
+    color: #B5FFFE;
+    position: fixed;
+    height: 100%;
+    left: 0;
+    top: 0;
+}
+
+#menu a{
+    color: #B5FFFE;
+    text-decoration: none;
+}
+
+/*header*/
+
+#menu #header{
+    box-sizing: border-box;
+    border-bottom: solid 1px var(--hovecolor);
+}
+
+#menu #header #title{
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+#menu #header #title, #menu #header #menu-btn{
+    vertical-align: middle;    
+}
+
+#menu #header #menu-btn{
+    display: inline-block;
+}
+
+#menu #header #menu-btn{
+    cursor: pointer;
+    padding: 10px;
+    width: var(--widht-collapsed);
+    box-sizing: border-box;
+}
+
+#menu #header #menu-btn:hover{
+    background-color: var(--hovecolor);
+}
+
+#menu #header #menu-btn .btn-universo{
+    background-color: #fff;
+    width: 100%;
+    height: 2px;
+    margin: 5px 0;
+}
+
+/*profile*/
+
+#menu #profile{
+    border-bottom: solid 1px var(--hovecolor);
+    padding: var(--padding) 0;
+    text-align: center;
+}
+
+#menu #profile #photo{
+    box-sizing: border-box;
+    padding: var(--padding);
+    margin: 0 auto;
+}
+
+/*revisar**********************************/
+#menu #profile #photo img{
+    border-radius: 10%;
+    width: 90%;
+}
+/*revisar**********************************/
+
+#menu #profile #photo, #menu #profile #name{
+    font-size: 24px;
+    padding: var(--padding) 0;
+    overflow: hidden;
+}
+
+/*ITEM*/
+
+#menu #menu-items{
+    overflow: hidden;
+}
+
+#menu #menu-items .item{
+    width: var(--width);
+}
+
+#menu #menu-items .item .icon{     
+    display: inline-block;
+}
+
+#menu #menu-items .item .icon,
+#menu #menu-items .item .title{
+    font-size: 14px;
+    vertical-align: middle;
+    overflow: hidden;
+    display: inline-block;
+}
+
+#menu #menu-items .item a{
+    display: block;
+}
+
+#menu #menu-items .item a:hover{
+    background-color: var(--resaltado);
+    color: rgb(10, 19, 104);
+    font-weight: bolder;
+}
+
+#menu #menu-items .item .icon{
+    box-sizing: border-box;
+    padding: var(--padding);
+    width: var(--widht-collapsed);
+}
+
+#menu #menu-items .item .icon img{
+    width: 100%;
+}
+
+#menu #menu-items .item .title{
+    padding: var(--padding) 0;
+}
+
+#menu #menu-items .item.separator{
+    height: 1px;
+    border-bottom: solid 1px var(--hovecolor);
+    margin: 15px 0;
+}
+
+/*menu expanded*/
+
+.menu-expanded{
+    width: var(--width);
+    box-shadow: 0 0 10px rgba(0,0,0,0,5);
+}
+
+.menu-expanded #header #title{
+    display: inline-block;
+    width: calc(100% - 50px);
+    margin-right: -10px;
+    padding: var(--padding);
+}
+
+.menu-expanded #header #title span{
+    width: calc(var(--width) - var(--width-collapsed) - 5px);
+    overflow: hidden;
+}
+
+.menu-expanded #profile #photo{
+    width: 200px;
+}
+
+.menu-expanded #profile #name{
+    width: 100%;
+}
+
+/*collapsed*/
+
+.menu-collapsed{
+    width: var(--widht-collapsed);
+}
+
+.menu-collapsed #header #title{
+    width: 0;
+    height: 0;
+    padding: 0;
+    margin: 0;
+}
+
+.menu-collapsed #profile #name{
+    display: none;
+}
+
+.menu-collapsed .item{
+    width: 100px;
+}
+
+/************************** barra superior*/
+
+/*
+funcion scroll
+
+header.abajo{
+    background: var(--bgheader);
+    padding: 15px 20px;
+}
+
+*{
+    margin: 0;
+    padding: 0;
+}
+
+header{
+    position: fixed;
+    top: 0;
+    left: 0 auto;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    transition: 0.7s;
+    padding: 30px 20px;
+    z-index: 10;
+}
+*/
+
+.fondoheader{
+    position: sticky;
+    top: 0px;
+    margin: 0;
+    width: 100%;
+    overflow: hidden;
+    background: var(--bgheader);
+}
+
+.lista-derecha{
+    color: rgb(226, 19, 19);
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    font-size: 10px;
+    text-align: center;
+    overflow: hidden;
+}
+
+.fondouser{
+    overflow: hidden;
+    background-color: skyblue;
+    padding-right: 20px;
+}
+
+/*lineas horizontales*/
+.barras-h{    
+    width: 0;
+    max-width: 0;
+    height: 10;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: left;
+    margin: auto;
+}
+.barras-h .lateral{
+    background: var(--bgheader);
+    width: 220px;
+    height: 230px;
+    border-radius: 30px;
+    box-shadow: 0 2px 2px rgb(0, 0, 0, 0.2);
+    overflow: hidden;
+    margin: 20px;
+    text-align: center;
+    transition: all 0.25s;
+}
+
+/************************** cards */
+
+.title-container{
+    margin: auto;
+    text-align: center;
+    font-size: 40px;
+    color: black;
+    margin-top: 1px;
+}
+
+.contenido{    
+    width: auto;
+    max-width: auto;
+    height: auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: auto;
+}
+
+.contenido .card{
+    background: rgb(235, 97, 5);
+    width: 200px;
+    height: 150px;
+    border-radius: 30px;
+    box-shadow: 0 2px 2px rgb(0, 0, 0, 0.2);
+    overflow: hidden;
+    margin: 50px;
+    text-align: center;
+    transition: all 0.25s;
+}
+
+.contenido .card:hover{
+    transform: translateY(-15px);
+    box-shadow: 0 12px 16px rgb(1, 54, 134);
+}
+
+.title-card{
+    margin: 0;
+    text-align: center;
+    font-size: 50px;
+    margin-top: 20px;
+}
+
+.contenido .card h3{
+    font-weight: 500;
+    margin: 0;
+}
+
+.contenido .card a {
+    font-weight: 500;
+    text-decoration: none;
+    color: rgb(3, 76, 145);
+}
+
+/******************** tabla de contenido */
+.contenido-tabla{
+    border: solid 1px rgba(255, 0, 0, 0.568);
+    margin-top: 20px;
+    max-height: 300px;
+    overflow-y: scroll;
+    margin: 20px;
+
+}
+
+table{
+    color: black;
+    font-size: 14px;
+    table-layout: fixed;
+    border-collapse: collapse;
+    min-width: max-content;
+    border-spacing: 0px;
+}
+
+thead{
+    background: rgb(3, 58, 131);
+    color: #fff;
+    position: sticky;
+    top: 0px;
+}
+
+th{
+    padding: 20px 55px;
+    font-weight: 700;
+    text-transform: uppercase;    
+}
+
+td{
+    padding: 15px;
+    border-bottom: solid 1px;
+    text-align: center;
+}
+
+tbody tr{
+    cursor: pointer;
+}
+
+tbody tr:hover{
+    background: var(--resaltado);
+}
+
+.outer-wrapper{
+    border: 1px solid rgb(3, 58, 131);
+    box-shadow: 0px 0px 3px rgb(3, 58, 131);
+    margin: 20px;
+    border-radius: 10px;
+    max-width: fit-content;
+}

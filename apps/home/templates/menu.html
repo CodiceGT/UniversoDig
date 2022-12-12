@@ -1,0 +1,141 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css"
+    />
+    <link rel="stylesheet" href="{% static 'css/menu.css' %}" />
+    <title>Home</title>
+  </head>
+  <body >
+    <div class="fondoheader">
+        <header>
+            <div class="lista-derecha ">
+                <nav class="fondouser">                    
+                    <ul>
+                        <a href="#"> <h1>{{user.first_name}} {{ user.last_name }}</h1> </a></li>
+                    </ul>
+                    <ul>                        
+                        <h2>{{ user.cuenta.tipo | upper }}</h2>
+                            <!--
+                            {% if user.cuenta.tipo|upper == 'GERENTE' %}
+                            <p>Usted tiene acceso a todo ✅</p>
+                            {% elif user.cuenta.tipo|upper == 'COBRADOR' %}
+                            <p>Usted no tiene acceso a todo ❌</p>
+                            {% else %}
+                            <p>Tipo de usuario no reconocido❗⛔</p>
+                            {% endif %}
+                            -->
+                    </ul>
+                    <ul>
+                        <a href="{% url 'home:logout' %}">Cerrar sesión</a>                        
+                    </ul>
+                  </nav>
+            </div>
+          </header>
+    </div>   
+
+    <!-- header -->
+    <div id="menu" class="menu-collapsed">
+      <div id="header">
+        <div id="title"><span>Universo Digital</span></div>
+        <div id="menu-btn">
+          <div class="btn-universo"></div>
+          <div class="btn-universo"></div>
+          <div class="btn-universo"></div>
+        </div>
+      </div>
+
+      <!-- profile -->
+      <div id="profile">
+        <div id="photo">
+          <img src="{% static 'img/logo-terminado.png' %}" />
+        </div>
+        <div id="name"><span>Bienvenido</span></div>
+      </div>
+      <!--menu-->
+      <div id="menu-items">
+        <div class="item">
+          <a href="#">
+            <div class="icon"><i class="bi bi-house-door"></i></div>
+            <div class="title"><span> Inicio </span></div>
+          </a>
+        </div>
+        <div class="item separator"></div>
+        <div class="item">
+          <a href="#">
+            <div class="icon"><i class="bi bi-credit-card-2-back"></i></div>
+            <div class="title">Pagos</div>
+          </a>
+        </div>
+        <div class="item separator"></div>
+        <div class="item">
+          <a href="#">
+            <div class="icon"><i class="bi bi-file-text"></i></div>
+            <div class="title">Contrataciones</div>
+          </a>
+        </div>
+        <div class="item separator"></div>
+        <div class="item">
+          <a href="{% url 'home:servicios' %}">
+            <div class="icon"><i class="bi bi-card-checklist"></i></div>
+            <div class="title">Servicios</div>
+          </a>
+        </div>
+        <div class="item separator"></div>
+        <div class="item">
+          <a href="{% url 'home:clientes' %}">
+            <div class="icon"><i class="bi bi-person-lines-fill"></i></div>
+            <div class="title">Clientes</div>
+          </a>
+        </div>
+        <div class="item separator"></div>
+        <div class="item">
+          <a href="#">
+            <div class="icon"><i class="bi bi-clipboard-data"></i></div>
+            <div class="title">Reportes</div>
+          </a>
+        </div>
+        <div class="item separator"></div>
+        <div class="item">
+          <a href="#">
+            <div class="icon"><i class="bi bi-building-check"></i></div>
+            <div class="title">Empresa</div>
+          </a>
+        </div>
+        <div class="item separator"></div>
+      </div>
+    </div>
+    
+    <section id="main-container">  
+      {% block contenido %}
+      {% endblock contenido %}
+    </section>
+
+
+
+
+    <!-- JS -->
+    <script type="text/javascript">
+      const btn = document.querySelector("#menu-btn");
+      const menu = document.querySelector("#menu");
+      btn.addEventListener("click", (e) => {
+        menu.classList.toggle("menu-expanded");
+        menu.classList.toggle("menu-collapsed");
+
+        document.querySelector("body").classList.toggle("body-expanded");
+      });
+
+      window.addEventListener("scroll", function () {
+        var header = document.querySelector("header");
+        header.classList.toggle("abajo", window.scrollY > 0);
+      });
+    </script>
+
+  </body>
+</html>
