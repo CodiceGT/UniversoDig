@@ -1,0 +1,17 @@
+<h1>Listado de cuentas</h2>
+    <table>
+        <tr>
+            <td>Nombre Usuario</td>
+            <td>Nombre</td>
+            <td>Tipo</td>
+            
+        </tr>
+        {% for usuario in usuarios %}
+        <tr>
+            <td> {{ usuario.username }} </td>
+            <td> {{ usuario.first_name }} </td>
+            <td> {{ usuario.cuenta.tipo }} </td>
+            
+        </tr>
+        {% endfor %}
+    </table>

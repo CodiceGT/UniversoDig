@@ -63,6 +63,11 @@ class ListarCliente(ListView):
         return Cliente.objects.all()
     '''
 
+#Listar usuarios
+def UsuarioView(request):
+    model = User
+    return render(request, 'cuentas.html', {'usuarios':User.objects.all()})
+
 #Vistas para listar servicios
 def ServiciosView(request):
     return render(request, 'servicios.html', {'servicios':Servicio.objects.all()})

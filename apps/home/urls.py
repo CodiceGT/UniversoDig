@@ -24,7 +24,10 @@ urlpatterns = [
     #Inicio y cierre de sesión
     path('login/', LoginView.as_view(), name='login'),
     path('logout/', LogoutView, name='logout'),
-
+    
+    #cuentas
+    path('usuarios/', UsuarioView, name='usuarios'),
+        
     #Dashboard
     path('', HomeView, name='home'),
     path('clientes/', ListarCliente.as_view(), name='clientes'),
@@ -42,4 +45,8 @@ urlpatterns = [
 
     #Pagos
     path('pagos/', PagosView, name='pagos'),
+    
+    
+    
+    
 ]
