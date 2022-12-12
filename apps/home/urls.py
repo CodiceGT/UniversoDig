@@ -30,7 +30,7 @@ urlpatterns = [
         
     #Dashboard
     path('', HomeView, name='home'),
-    path('clientes/', ListarCliente.as_view(), name='clientes'),
+    path('clientes/', ListarCliente, name='clientes'),
     path('clientes/nuevo/', NuevoClienteView, name='nuevocliente'),
 
     #Servicios
