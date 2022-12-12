@@ -30,7 +30,7 @@ def LogoutView(request):
 '''def ClientesView(request):
     return render(request, 'Clientes.html')
 '''
-# Registrar Clientes
+# Vista Para Registrar Clientes
 @login_required
 def NuevoClienteView(request):
     cui = request.POST['cui']
@@ -45,13 +45,11 @@ def NuevoClienteView(request):
     
     return redirect('home:clientes')
 
-#Listar Clientes
-class ListarCliente(ListView):
-    template_name = 'Clientes.html'
-    model = Cliente
-
-    def get_queryset(self):
-        return Cliente.objects.all()
+#Vista Para Listar Clientes
+def ListarCliente(request):
+    return render(request, 'Clientes.html', {'clientes':Cliente.objects.all()})
+    
+    
     
 '''class CrearClienteView(CreateView, ListView):
     template_name='Clientes.html'
@@ -63,7 +61,7 @@ class ListarCliente(ListView):
         return Cliente.objects.all()
     '''
 
-#Listar usuarios
+#Vista Para Listar usuarios
 def UsuarioView(request):
     model = User
     return render(request, 'cuentas.html', {'usuarios':User.objects.all()})
