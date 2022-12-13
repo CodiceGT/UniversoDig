@@ -240,6 +240,8 @@ header{
 */
 
 .fondoheader{
+    position: sticky;
+    top: 0px;
     margin: 0;
     width: 100%;
     overflow: hidden;
@@ -295,9 +297,9 @@ header{
 }
 
 .contenido{    
-    width: 100%;
-    max-width: 1200px;
-    height: 240px;
+    width: auto;
+    max-width: auto;
+    height: auto;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
