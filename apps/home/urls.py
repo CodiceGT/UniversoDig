@@ -33,6 +33,7 @@ urlpatterns = [
     path('clientes/', ListarCliente, name='clientes'),
     path('clientes/nuevo/', NuevoClienteView, name='nuevocliente'),
     path('clientes/borrar/<int:pk>', BorrarClienteView, name='borrarcliente'),
+    path('clientes/editar/<int:pk>', ModificarClienteView.as_view(), name='modificarcliente'),
 
     #Servicios
     path('servicios/', ServiciosView, name='servicios'),

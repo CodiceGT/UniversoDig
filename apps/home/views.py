@@ -1,7 +1,7 @@
 from django.contrib.auth import logout
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.decorators import login_required
-from django.views.generic import ListView, CreateView
+from django.views.generic import ListView, CreateView, UpdateView
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from .models import *
@@ -54,6 +54,18 @@ def BorrarClienteView(request, pk):
     cliente = Cliente.objects.get(pk=pk)
     cliente.delete()
     return redirect('home:clientes')
+
+#Vista Para Modificar Clientes
+class ModificarClienteView(UpdateView):
+	model = Cliente
+	fields=[
+        'cui',
+        'nombre', 
+        'apellido',
+        'direccion', 
+        'telefono', 
+        'correo'
+        ]
 
 #Vista Para Listar usuarios
 def UsuarioView(request):
