@@ -32,6 +32,7 @@ urlpatterns = [
     path('', HomeView, name='home'),
     path('clientes/', ListarCliente, name='clientes'),
     path('clientes/nuevo/', NuevoClienteView, name='nuevocliente'),
+    path('clientes/borrar/<int:pk>', BorrarClienteView, name='borrarcliente'),
 
     #Servicios
     path('servicios/', ServiciosView, name='servicios'),
