@@ -24,9 +24,6 @@ def LogoutView(request):
     return redirect('home:login')
 
 
-#Vista para Dashboard
-
-
 '''def ClientesView(request):
     return render(request, 'Clientes.html')
 '''

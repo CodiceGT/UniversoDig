@@ -3,7 +3,6 @@ from django.db.models.signals import post_save
 from django.contrib.auth.models import User
 from django.dispatch import receiver
 
-
 # Create your models here.
 class Cliente(models.Model):
     cui = models.CharField(max_length=13, null=True, blank=True)
