@@ -22,7 +22,99 @@
     {% endblock logout %}
 
     {% block contenido %}
-   
-    <a href="{% url 'home:clientes' %}">Ir a formulario clientes</a>
-    <a href=" {% url 'home:servicios' %} ">Ir a servicios</a>
+
+    <h1 class="title-container"> Resumen </h1>
+        <div class="contenido">            
+            <div class="card">
+                <a href="#">
+                    <h1 class="title-card">152</h1>
+                    <h3>Contrataciones </h3>
+                    <h3>totales</h3>
+                </a>                
+            </div>                      
+            <div class="card">
+                <a href="#">
+                    <h1 class="title-card">8</h1>
+                    <h3> Pagos de la  </h3>
+                    <h3>semana</h3>
+                </a>                
+            </div>            
+            <div class="card">
+                <a href="#">
+                    <h1 class="title-card">Q 2570</h1>
+                    <h3>Ingresos de la </h3>
+                    <H3>semana</H3>
+                </a>
+            </div>
+            <div class="card">
+                <a href="#">
+                    <h1 class="title-card">54</h1>
+                    <h3>Contrataciones deudoras</h3>
+                </a>
+            </div>
+        </div>
+    </section>    
+    <section id="main-container">  
+        <h1 class="title-container"> LISTA DE COBROS PENDIENTES </h1>
+        <div class="outer-wrapper">  
+            <div class="contenido-tabla table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Codigo contratación</th>
+                            <th>Cliente</th>
+                            <th>Tipo Servicio</th>
+                            <th>Meses Pendientes</th>
+                            <th>Monto</th>
+                        </tr>
+                    </thead>
+                    <tbody class="fontfamily">
+                        <tr>
+                            <td>02121212</td>
+                            <td>Manolo Fuentes</td>
+                            <td>Internet Básico</td>
+                            <td>4</td>
+                            <td>Q150</td>
+                        </tr>
+                        <tr>
+                            <td>02121212</td>
+                            <td>Manolo Fuentes</td>
+                            <td>Internet Básico</td>
+                            <td>4</td>
+                            <td>Q150</td>
+                        </tr>
+                        <tr>
+                            <td>02121212</td>
+                            <td>Manolo Fuentes</td>
+                            <td>Internet Básico</td>
+                            <td>4</td>
+                            <td>Q150</td>
+                        </tr>
+                        <tr>
+                          <td>02121212</td>
+                          <td>Manolo Fuentes</td>
+                          <td>Internet Básico</td>
+                          <td>4</td>
+                          <td>Q150</td>
+                      </tr>
+                      <tr>
+                          <td>02121212</td>
+                          <td>Manolo Fuentes</td>
+                          <td>Internet Básico</td>
+                          <td>4</td>
+                          <td>Q150</td>
+                      </tr>
+                      <tr>
+                          <td>02121212</td>
+                          <td>Manolo Fuentes</td>
+                          <td>Internet Básico</td>
+                          <td>4</td>
+                          <td>Q150</td>
+                      </tr>
+                    </tbody>   
+                </table> 
+            </div>          
+                  
+        </div>
+
     {% endblock contenido %}
