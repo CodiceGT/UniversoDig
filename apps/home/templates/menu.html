@@ -17,14 +17,23 @@
         <header>
             <div class="lista-derecha ">
                 <nav class="fondouser">                    
+                    <ul>
+                        <a href="#"> <h1>{{user.first_name}} {{ user.last_name }}</h1> </a></li>
+                    </ul>
                     <ul>                        
-                        {% block usuario %} {% endblock usuario %}
+                        <h2>{{ user.cuenta.tipo | upper }}</h2>
+                            <!--
+                            {% if user.cuenta.tipo|upper == 'GERENTE' %}
+                            <p>Usted tiene acceso a todo ✅</p>
+                            {% elif user.cuenta.tipo|upper == 'COBRADOR' %}
+                            <p>Usted no tiene acceso a todo ❌</p>
+                            {% else %}
+                            <p>Tipo de usuario no reconocido❗⛔</p>
+                            {% endif %}
+                            -->
                     </ul>
                     <ul>
-                        {% block Tipocuenta %} {% endblock Tipocuenta %}
-                    </ul>
-                    <ul>
-                        {% block logout %} {% endblock logout %}
+                        <a href="{% url 'home:logout' %}">Cerrar sesión</a>                        
                     </ul>
                   </nav>
             </div>
