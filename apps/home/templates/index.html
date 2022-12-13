@@ -1,24 +1,5 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1>Bienvenido al sistema {{user.first_name}} {{ user.last_name }}</h1>
-    <h2>Cargo: {{ user.cuenta.tipo | upper }}</h2>
-    {% if user.cuenta.tipo|upper == 'GERENTE' %}
-    <p>Usted tiene acceso a todo ✅</p>
-    {% elif user.cuenta.tipo|upper == 'COBRADOR' %}
-    <p>Usted no tiene acceso a todo ❌</p>
-    {% else %}
-    <p>Tipo de usuario no reconocido❗⛔</p>
-    {% endif %}
-
-    <a href="{% url 'home:logout' %}">Cerrar sesión</a>
-
+{% extends 'menu.html' %}
+    
     {% block contenido %}
 
     <h1 class="title-container"> Resumen </h1>
@@ -54,65 +35,66 @@
     </section>    
     <section id="main-container">  
         <h1 class="title-container"> LISTA DE COBROS PENDIENTES </h1>
-        <div class="container outer-wrapper">  
-            <div class="contenido-tabla table-wrapper">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Codigo contratación</th>
-                            <th>Cliente</th>
-                            <th>Tipo Servicio</th>
-                            <th>Meses Pendientes</th>
-                            <th>Monto</th>
-                        </tr>
-                    </thead>
-                    <tbody class="fontfamily">
-                        <tr>
-                            <td>02121212</td>
-                            <td>Manolo Fuentes</td>
-                            <td>Internet Básico</td>
-                            <td>4</td>
-                            <td>Q150</td>
-                        </tr>
-                        <tr>
-                            <td>02121212</td>
-                            <td>Manolo Fuentes</td>
-                            <td>Internet Básico</td>
-                            <td>4</td>
-                            <td>Q150</td>
-                        </tr>
-                        <tr>
-                            <td>02121212</td>
-                            <td>Manolo Fuentes</td>
-                            <td>Internet Básico</td>
-                            <td>4</td>
-                            <td>Q150</td>
-                        </tr>
-                        <tr>
-                          <td>02121212</td>
-                          <td>Manolo Fuentes</td>
-                          <td>Internet Básico</td>
-                          <td>4</td>
-                          <td>Q150</td>
-                      </tr>
-                      <tr>
-                          <td>02121212</td>
-                          <td>Manolo Fuentes</td>
-                          <td>Internet Básico</td>
-                          <td>4</td>
-                          <td>Q150</td>
-                      </tr>
-                      <tr>
-                          <td>02121212</td>
-                          <td>Manolo Fuentes</td>
-                          <td>Internet Básico</td>
-                          <td>4</td>
-                          <td>Q150</td>
-                      </tr>
-                    </tbody>   
-                </table> 
-            </div>          
-                  
-        </div>
-
+        <div id="center">
+            <div class="outer-wrapper">  
+                <div class="contenido-tabla table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Codigo contratación</th>
+                                <th>Cliente</th>
+                                <th>Tipo Servicio</th>
+                                <th>Meses Pendientes</th>
+                                <th>Monto</th>
+                            </tr>
+                        </thead>
+                        <tbody class="fontfamily">
+                            <tr>
+                                <td>02121212</td>
+                                <td>Manolo Fuentes</td>
+                                <td>Internet Básico</td>
+                                <td>4</td>
+                                <td>Q150</td>
+                            </tr>
+                            <tr>
+                                <td>02121212</td>
+                                <td>Manolo Fuentes</td>
+                                <td>Internet Básico</td>
+                                <td>4</td>
+                                <td>Q150</td>
+                            </tr>
+                            <tr>
+                                <td>02121212</td>
+                                <td>Manolo Fuentes</td>
+                                <td>Internet Básico</td>
+                                <td>4</td>
+                                <td>Q150</td>
+                            </tr>
+                            <tr>
+                              <td>02121212</td>
+                              <td>Manolo Fuentes</td>
+                              <td>Internet Básico</td>
+                              <td>4</td>
+                              <td>Q150</td>
+                          </tr>
+                          <tr>
+                              <td>02121212</td>
+                              <td>Manolo Fuentes</td>
+                              <td>Internet Básico</td>
+                              <td>4</td>
+                              <td>Q150</td>
+                          </tr>
+                          <tr>
+                              <td>02121212</td>
+                              <td>Manolo Fuentes</td>
+                              <td>Internet Básico</td>
+                              <td>4</td>
+                              <td>Q150</td>
+                          </tr>
+                        </tbody>   
+                    </table> 
+                </div>          
+                      
+            </div>
+        </div>    
     {% endblock contenido %}

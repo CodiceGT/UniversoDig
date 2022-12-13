@@ -29,7 +29,7 @@ body{
 
 #main-container{
     color: rgb(173, 5, 5);
-    padding-left: 15px;
+    padding-left: 15px;    
 }
 
 #menu{
@@ -98,12 +98,10 @@ body{
     margin: 0 auto;
 }
 
-/*revisar**********************************/
 #menu #profile #photo img{
     border-radius: 10%;
     width: 90%;
 }
-/*revisar**********************************/
 
 #menu #profile #photo, #menu #profile #name{
     font-size: 24px;
@@ -211,34 +209,6 @@ body{
     width: 100px;
 }
 
-/************************** barra superior*/
-
-/*
-funcion scroll
-
-header.abajo{
-    background: var(--bgheader);
-    padding: 15px 20px;
-}
-
-*{
-    margin: 0;
-    padding: 0;
-}
-
-header{
-    position: fixed;
-    top: 0;
-    left: 0 auto;
-    width: 100%;
-    display: flex;
-    justify-content: space-around;
-    transition: 0.7s;
-    padding: 30px 20px;
-    z-index: 10;
-}
-*/
-
 .fondoheader{
     position: sticky;
     top: 0px;
@@ -265,6 +235,7 @@ header{
 }
 
 /*lineas horizontales*/
+
 .barras-h{    
     width: 0;
     max-width: 0;
@@ -348,7 +319,6 @@ header{
     max-height: 300px;
     overflow-y: scroll;
     margin: 20px;
-
 }
 
 table{
@@ -393,4 +363,8 @@ tbody tr:hover{
     margin: 20px;
     border-radius: 10px;
     max-width: fit-content;
+}
+
+#center{
+    margin: 0 auto
 }
