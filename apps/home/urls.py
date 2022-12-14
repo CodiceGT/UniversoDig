@@ -48,8 +48,12 @@ urlpatterns = [
     path('contratacion/editar/<int:pk>', ModificarContratacionView.as_view(), name='modificarcontratacion'),
     #Pagos
     path('pagos/', PagosView, name='pagos'),
-    
-    
+
+    #Información de empresa
+    path('informacion/', ListarInformaciónView, name='informacion'),
+    path('informacion/nueva/', InformacionView, name='nuevainformacion'),
+    path('informacion/borrar/<int:pk>', BorrarInformacionView, name='borrarinformacion'),
+    path('informacion/editar/<int:pk>', ModificarInformacionView.as_view(), name='modificarinformacion'),
     
     
 ]

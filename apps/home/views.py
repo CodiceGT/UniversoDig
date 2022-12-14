@@ -131,3 +131,30 @@ class ModificarContratacionView(UpdateView):
 #Vista para listar pagos
 def PagosView(request):
     return render(request, 'pagos.html', {'pagos':DetallePago.objects.all()})
+
+#Vista para listar informacion de empresa
+def ListarInformaciónView(request):
+     return render(request, 'informacion.html', {'informacion':Informacion.objects.all()})
+
+#Vista para registrar informacion de empresa
+def InformacionView(request):
+    nombre = request.POST['nombre']
+    direccion = request.POST['direccion']
+    telefono = request.POST['telefono']
+
+    informacion = Informacion(nombre=nombre, direccion=direccion, telefono=telefono)
+    informacion.save()
+    return redirect('home:informacion')
+
+#Vista para borrar informacion de empresa
+def BorrarInformacionView(request, pk):
+    informacion = Informacion.objects.get(pk=pk)
+    informacion.delete()
+    return redirect('home:informacion')
+
+#Vista para modificar informacion de empresa
+class ModificarInformacionView(UpdateView):
+    template_name = 'modificarInformacion.html'
+    model = Informacion
+    fields = ['nombre', 'direccion', 'telefono']
+    success_url = reverse_lazy('home:informacion')
