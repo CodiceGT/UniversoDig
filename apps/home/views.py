@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, CreateView
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
+from django.db.models import Sum
 from .models import *
 from .forms import *
 
@@ -115,4 +116,46 @@ def BorrarContratacionView(request, pk):
 
 #Vista para listar pagos
 def PagosView(request):
-    return render(request, 'pagos.html', {'pagos':DetallePago.objects.all()})
+    return render(request, 'pagos.html', {'pagos':DetallePago.objects.all(), 'contrataciones':Contratacion.objects.all()})
+
+def NuevoRecibo(request):
+    pk = request.POST['contratacion']
+    contratacion = Contratacion.objects.get(pk=pk)
+    recibo = Recibo(contratacion=contratacion, total=0)
+    recibo.save()
+    return render(request, 'recibo.html', {'contratacion':contratacion, 'recibo':Recibo.objects.last(), 'meses':Mes.objects.all(), 'anios':Anio.objects.all()})
+
+def NuevoDetalle(request, pk):
+    recibo = pk
+    mes = request.POST.get('mes', '')
+    anio = request.POST.get('anio', '')
+    subtotal = request.POST.get('subtotal','')
+
+    recibo = Recibo.objects.get(pk=recibo)
+
+    if mes != '' and anio != '' and subtotal != '':
+        if Mes.objects.filter(nombre=mes).count() == 0:
+            mes = Mes(nombre=mes)
+            mes.save()
+            mes = Mes.objects.last()
+        else:
+            mes = Mes.objects.get(nombre=mes)
+        
+        if Anio.objects.filter(numero=anio).count() == 0:
+            anio = Anio(numero=anio)
+            anio.save()
+            anio = Anio.objects.last()
+        else:
+            anio = Anio.objects.get(numero=anio)
+
+        if DetallePago.objects.filter(recibo=recibo, mes=mes, anio=anio).count() == 0:
+            detallepago = DetallePago(mes=mes, anio=anio, subtotal=subtotal, recibo=recibo)
+            detallepago.save()
+        
+        recibo.total = DetallePago.objects.filter(recibo=recibo).aggregate(Sum('subtotal'))['subtotal__sum']
+        recibo.save()
+        
+
+    contratacion = Contratacion.objects.get(pk=recibo.contratacion.id)
+
+    return render(request, 'recibo.html', {'contratacion':contratacion, 'recibo':recibo, 'meses':Mes.objects.all(), 'anios':Anio.objects.all()})

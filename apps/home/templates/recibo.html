@@ -1,0 +1,48 @@
+{% extends 'menu.html' %}
+
+{% block contenido %}
+
+<p >No de recibo: {{recibo.id}}</p>
+<p> Código de contratacion: {{contratacion.id}} </p>
+<p> Contratado el: {{contratacion.creacion}} </p>
+<p> Cliente: {{contratacion.cliente.nombre }} </p>
+<p> Servicio: {{contratacion.servicio.tipo}} {{contratacion.servicio.nombre}}</p>
+<p> Costo del servicio: {{contratacion.servicio.costo}} </p>
+<p> Total a pagar: {{recibo.total}} </p>
+
+<form action="{% url 'home:nuevoetalle' recibo.id %}" method="POST">
+    
+    {% csrf_token %}
+    <label for="mes"></label>
+    <select name="mes" id="" required>
+        {% for mes in meses %}
+        <option value="{{mes.nombre}}">{{mes.nombre}}</option>
+        {% endfor %}
+    </select>
+    <label for="anio">Año</label>
+    <select name="anio" id="" required>
+        {% for anio in anios %}
+        <option value="{{anio.numero}}">{{anio.numero}}</option>
+        {% endfor %}
+        
+    </select>
+    <label for="subtotal">Monto</label>
+    <input type="number" name="subtotal" value="{{contratacion.servicio.costo}}" id="" required>
+    <button type="submit">Agregar al recibo</button>
+    <a class="btn btn-danger" href="{% url 'home:pagos' %}">Finalizar</a>
+</form>
+
+
+<table>
+    <tr>
+        <td>Mes/Año</td>
+        <td>Subtotal</td>
+    </tr>
+    {% for detalles in recibo.detallepago_set.all %}
+    <tr>
+        <td> {{detalles.mes}} / {{detalles.anio}}  </td>
+        <td> {{detalles.subtotal}} </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock contenido %}

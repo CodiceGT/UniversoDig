@@ -45,6 +45,8 @@ urlpatterns = [
 
     #Pagos
     path('pagos/', PagosView, name='pagos'),
+    path('recibo/', NuevoRecibo, name='nuevorecibo'),
+    path('detallepago/<int:pk>', NuevoDetalle, name='nuevoetalle'),
     
     
     

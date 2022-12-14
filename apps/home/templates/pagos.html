@@ -1,5 +1,17 @@
 {% extends 'menu.html' %}
 {% block contenido %}
+
+<form action="{% url 'home:nuevorecibo' %}" method="post">
+    {% csrf_token %}
+    <label for="contratacion">¿Qué servicio desea pagar?</label>
+    <input list="listacontrataciones" name="contratacion">
+    <datalist id="listacontrataciones">
+        {% for contratacion in contrataciones %}
+        <option value="{{contratacion.id}}">{{contratacion.cliente.nombre}} {{contratacion.servicio.tipo}} {{contratacion.servicio.nombre}} </option>
+        {% endfor %}
+    </datalist>
+    <button type="submit">Nuevo pago</button>
+</form>
 <table>
     <tr>
         <td>No Recibo</td>
