@@ -29,7 +29,8 @@ body{
 
 #main-container{
     color: rgb(173, 5, 5);
-    padding-left: 15px;    
+    padding-left: 15px; 
+    padding: 3px;
 }
 
 #menu{
