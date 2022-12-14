@@ -1,3 +1,5 @@
+{% extends 'menu.html' %}
+{% block contenido %}
 <form action="{% url 'home:nuevacontratacion' %}" method="post">
     {% csrf_token %}
     <input list="listaclientes" name="cliente">
@@ -36,3 +38,4 @@
     </tr>
     {% endfor %}
 </table>
+{% endblock contenido %}
