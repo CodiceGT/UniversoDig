@@ -48,18 +48,12 @@ def NuevoClienteView(request):
 #Vista Para Listar Clientes
 def ListarCliente(request):
     return render(request, 'Clientes.html', {'clientes':Cliente.objects.all()})
-    
-    
-    
-'''class CrearClienteView(CreateView, ListView):
-    template_name='Clientes.html'
-    form_class = ClienteForm
-    success_url = reverse_lazy('home:clientes')
-    model = Cliente
 
-    def get_queryset(self):
-        return Cliente.objects.all()
-    '''
+#Vista Para Borrar Clientes
+def BorrarClienteView(request, pk):
+    cliente = Cliente.objects.get(pk=pk)
+    cliente.delete()
+    return redirect('home:clientes')
 
 #Vista Para Listar usuarios
 def UsuarioView(request):

@@ -1,3 +1,5 @@
+{% extends 'menu.html' %}
+{% block contenido %}
 <form action="{% url 'home:nuevoservicio' %}" method="post">
     {% csrf_token %}
     <select name="tipo" id="">
@@ -28,3 +30,4 @@
     </tr>
     {% endfor %}
 </table>
+{% endblock contenido %}
