@@ -1,3 +1,4 @@
+{% extends 'menu.html' %}
 <!---<form action="" method="post">
     {% csrf_token %}
     <input type="text" name="cui" id="">
@@ -12,97 +13,119 @@
 {{form.correo}}
 <button type="submit">Enviar</button>
 </form>-->
-{% load static %}
-<head>
-<!--<link rel="stylesheet" href="http://127.0.0.1:8000/static/css/clientes.css">-->
-<title>Clientes</title>
-<link rel="stylesheet" href="{% static './css/clientes.css' %}">
-</head>
-    <div class="container">
-        <div class="title">Registrar Cliente</div>
+<!--<section id="main-container">  
+    {% block menu %}
+    {% endblock menu %}
+  </section>-->
+{% block contenido %}
+<br>
+<br>
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Agregar nuevo cliente</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
         <form action="{% url 'home:nuevocliente' %}" method="post">
             {% csrf_token %}
-            <div class="user-details">
-                <div class="input-box">
-                    <span class="details">CUI</span>
-                    <input type="text" placeholder="Ingrese CUI" name='cui'>
-                </div>
-                <div class="input-box">
-                    <span class="details">Nombre</span>
-                    <input type="text" placeholder="Ingrese Nombre" name='nombre'>
-                </div>
-                <div class="input-box">
-                    <span class="details">Apellido</span>
-                    <input type="text" placeholder="Ingrese Apellido" name='apellido'>
-                </div>
-                <div class="input-box">
-                    <span class="details">Direccion</span>
-                    <input type="text" placeholder="Ingrese Direccion" name='direccion'>
-                </div>
-                <div class="input-box">
-                    <span class="details">Telefono</span>
-                    <input type="text" placeholder="Ingrese Telefono" name='telefono'>
-                </div>
-                <div class="input-box">
-                    <span class="details">Correo</span>
-                    <input type="text" placeholder="Ingrese Correo" name='correo'>
-                </div>
+        <div class="modal-body">
+            <div class="mb-3">
+              <label for="recipient-name" class="col-form-label">CUI</label>
+              <input type="text" class="form-control" id="recipient-name" name='cui'>
             </div>
-            <div class="button">
-                <button type="submit">Enviar datos</button>
+            <div class="mb-3">
+                <label for="recipient-name" class="col-form-label">Nombre</label>
+                <input type="text" class="form-control" id="recipient-name" name='nombre'>
             </div>
-        </form>
-        <br>
-        <br>
-        <br>
-        <br>
-        <div class="table-title">
-            <h3>Listado de Clientes</h3>
+            <div class="mb-3">
+                <label for="recipient-name" class="col-form-label">Apellido</label>
+                <input type="text" class="form-control" id="recipient-name" name='apellido'>
+            </div>
+            <div class="mb-3">
+                <label for="recipient-name" class="col-form-label">Direccion</label>
+                <input type="text" class="form-control" id="recipient-name" name='direccion'>
+            </div>
+            <div class="mb-3">
+                <label for="recipient-name" class="col-form-label">Telefono</label>
+                <input type="text" class="form-control" id="recipient-name" name='telefono'>
+            </div>
+            <div class="mb-3">
+                <label for="recipient-name" class="col-form-label">Correo</label>
+                <input type="text" class="form-control" id="recipient-name" name='correo'>
+            </div>
         </div>
-        <table class="table-fill">
-            <thead>
-                <tr>
-                    <th class="table-left">
-                        CUI
-                    </th>
-                    <th class="table-left">
-                        Nombre
-                    </th>
-                    <th class="table-left">
-                        Apellido
-                    </th>
-                    <th class="table-left">
-                        Direccion
-                    </th>
-                    <th class="table-left">
-                        Telefono
-                    </th>
-                    <th class="table-left">
-                        Correo
-                    </th>
-                </tr>
-                {% for cliente in clientes %}
-                <tr>
-                    <td class="text-left">
-                        {{ cliente.cui }}
-                    </td>
-                    <td class="text-left">
-                        {{ cliente.nombre }}
-                    </td>
-                    <td class="text-left">
-                        {{ cliente.apellido }}
-                    </td>
-                    <td class="text-left">
-                        {{ cliente.direccion }}
-                    </td>
-                    <td class="text-left">
-                        {{ cliente.telefono }}
-                    </td>
-                    <td class="text-left">
-                        {{ cliente.correo }}
-                    </td>
-                </tr>
-                {% endfor %}
-            </thead>
-        </table>
-  
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Añadir</button>
+        </div>
+    </form>
+      </div>
+    </div>
+  </div>
+
+    <div class="container">
+        <div class="table-responsive-lg">
+            <p align="right">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Agregar Clientes</button>
+                </p>
+            <h1 class="title-container">
+                Listado de Clientes
+            </h1>
+                <div id="center">
+                    <div class="outer-wrapper">
+                        <div class="contenido-tabla table-wrapper">
+                            <table class="table-fill">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            CUI
+                                        </th>
+                                        <th>
+                                            Nombre
+                                        </th>
+                                        <th>
+                                            Apellido
+                                        </th>
+                                        <th>
+                                            Direccion
+                                        </th>
+                                        <th>
+                                            Telefono
+                                        </th>
+                                        <th>
+                                            Correo
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody class="fontfamily">
+                                    {% for cliente in clientes %}
+                                    <tr>
+                                        <td class="text-left">
+                                            {{ cliente.cui }}
+                                        </td>
+                                        <td class="text-left">
+                                            {{ cliente.nombre }}
+                                        </td>
+                                        <td class="text-left">
+                                            {{ cliente.apellido }}
+                                        </td>
+                                        <td class="text-left">
+                                            {{ cliente.direccion }}
+                                        </td>
+                                        <td class="text-left">
+                                            {{ cliente.telefono }}
+                                        </td>
+                                        <td class="text-left">
+                                            {{ cliente.correo }}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>        
+                </div>
+        </div>          
+    </div>            
+{% endblock contenido %}
