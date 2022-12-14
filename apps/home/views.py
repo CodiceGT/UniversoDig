@@ -57,15 +57,10 @@ def BorrarClienteView(request, pk):
 
 #Vista Para Modificar Clientes
 class ModificarClienteView(UpdateView):
-	model = Cliente
-	fields=[
-        'cui',
-        'nombre', 
-        'apellido',
-        'direccion', 
-        'telefono', 
-        'correo'
-        ]
+    template_name = 'modificarCliente.html'
+    model = Cliente
+    fields = ['cui', 'nombre', 'apellido', 'direccion', 'telefono', 'correo']
+    success_url = reverse_lazy('home:clientes')
 
 #Vista Para Listar usuarios
 def UsuarioView(request):
@@ -93,6 +88,13 @@ def BorrarServicioView(request, pk):
     servicio.delete()
     return redirect('home:servicios')
 
+#Vista para modificar servicios
+class ModificarServicioView(UpdateView):
+    template_name = 'modificarServicio.html'
+    model = Servicio
+    fields = ['tipo', 'nombre', 'ancho_banda', 'costo']
+    success_url = reverse_lazy('home:servicios')
+
 
 #Vista para listar contrataciones
 def ContratacionesView(request):
@@ -118,6 +120,13 @@ def BorrarContratacionView(request, pk):
     contratacion = Contratacion.objects.get(pk=pk)
     contratacion.delete()
     return redirect('home:contrataciones')
+
+#Vista para modificar contratacion
+class ModificarContratacionView(UpdateView):
+    template_name = 'modificarContratacion.html'
+    model = Contratacion
+    fields = ['cliente', 'servicio', 'direccion']
+    success_url = reverse_lazy('home:contrataciones')
 
 #Vista para listar pagos
 def PagosView(request):

@@ -39,12 +39,13 @@ urlpatterns = [
     path('servicios/', ServiciosView, name='servicios'),
     path('servicios/nuevo/', NuevoServicioView, name='nuevoservicio'),
     path('servicios/borrar/<int:pk>', BorrarServicioView, name='borrarservicio'),
+    path('servicios/editar/<int:pk>', ModificarServicioView.as_view(),  name="modificarservicio"),
 
     #Contrataciones
     path('contrataciones/', ContratacionesView, name='contrataciones'),
     path('contrataciones/nuevo/', NuevaContratacionView, name='nuevacontratacion'),
     path('contrataciones/borrar/<int:pk>', BorrarContratacionView, name='borrarcontratacion'),
-
+    path('contratacion/editar/<int:pk>', ModificarContratacionView.as_view(), name='modificarcontratacion'),
     #Pagos
     path('pagos/', PagosView, name='pagos'),
     
