@@ -337,8 +337,9 @@ lineas horizontales superior
     border: solid 1px rgba(255, 0, 0, 0.568);
     margin-top: 20px;
     max-height: 300px;
+    width: 1300;
     overflow-y: scroll;
-    margin: 20px;
+    margin: 20px;    
 }
 
 table{
@@ -350,6 +351,7 @@ table{
     border-spacing: 0px;
 }
 
+
 thead{
     background: rgb(3, 58, 131);
     color: #fff;
@@ -358,7 +360,7 @@ thead{
 }
 
 th{
-    padding: 20px 55px;
+    padding: 20px 45px;
     font-weight: 700;
     text-transform: uppercase;    
 }
