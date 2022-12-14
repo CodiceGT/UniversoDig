@@ -30,29 +30,19 @@
         <form action="{% url 'home:nuevocliente' %}" method="post">
             {% csrf_token %}
         <div class="modal-body">
-            <div class="mb-3">
+            <div class="mb-3" class="form-gruop">
               <label for="recipient-name" class="col-form-label">CUI</label>
               <input type="text" class="form-control" id="recipient-name" name='cui'>
-            </div>
-            <div class="mb-3">
-                <label for="recipient-name" class="col-form-label">Nombre</label>
-                <input type="text" class="form-control" id="recipient-name" name='nombre'>
-            </div>
-            <div class="mb-3">
-                <label for="recipient-name" class="col-form-label">Apellido</label>
-                <input type="text" class="form-control" id="recipient-name" name='apellido'>
-            </div>
-            <div class="mb-3">
-                <label for="recipient-name" class="col-form-label">Direccion</label>
-                <input type="text" class="form-control" id="recipient-name" name='direccion'>
-            </div>
-            <div class="mb-3">
-                <label for="recipient-name" class="col-form-label">Telefono</label>
-                <input type="text" class="form-control" id="recipient-name" name='telefono'>
-            </div>
-            <div class="mb-3">
-                <label for="recipient-name" class="col-form-label">Correo</label>
-                <input type="text" class="form-control" id="recipient-name" name='correo'>
+              <label for="recipient-name" class="col-form-label">Nombre</label>
+              <input type="text" class="form-control" id="recipient-name" name='nombre'>
+              <label for="recipient-name" class="col-form-label">Apellido</label>
+              <input type="text" class="form-control" id="recipient-name" name='apellido'>
+              <label for="recipient-name" class="col-form-label">Direccion</label>
+              <input type="text" class="form-control" id="recipient-name" name='direccion'>
+              <label for="recipient-name" class="col-form-label">Telefono</label>
+              <input type="text" class="form-control" id="recipient-name" name='telefono'>
+              <label for="recipient-name" class="col-form-label">Correo</label>
+              <input type="text" class="form-control" id="recipient-name" name='correo'>
             </div>
         </div>
         <div class="modal-footer">
@@ -96,6 +86,9 @@
                                         <th>
                                             Correo
                                         </th>
+                                        <th>
+                                            Acciones
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody class="fontfamily">
@@ -118,6 +111,9 @@
                                         </td>
                                         <td class="text-left">
                                             {{ cliente.correo }}
+                                        </td>
+                                        <td class="text-left">
+                                            <a href="{% url 'home:borrarcliente' cliente.id %}">❌</a>
                                         </td>
                                     </tr>
                                     {% endfor %}
