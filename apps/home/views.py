@@ -116,7 +116,7 @@ def BorrarContratacionView(request, pk):
 
 #Vista para listar pagos
 def PagosView(request):
-    return render(request, 'pagos.html', {'pagos':DetallePago.objects.all(), 'contrataciones':Contratacion.objects.all()})
+    return render(request, 'pagos.html', {'pagos':Recibo.objects.all().order_by('-pk'), 'contrataciones':Contratacion.objects.all()})
 
 def NuevoRecibo(request):
     pk = request.POST['contratacion']
