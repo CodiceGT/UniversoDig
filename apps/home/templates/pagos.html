@@ -59,4 +59,40 @@
             </div>
     </div>          
 </div>   
+
+<form action="{% url 'home:nuevorecibo' %}" method="post">
+    {% csrf_token %}
+    <label for="contratacion">¿Qué servicio desea pagar?</label>
+    <input list="listacontrataciones" name="contratacion" required>
+    <datalist id="listacontrataciones">
+        {% for contratacion in contrataciones %}
+        <option value="{{contratacion.id}}">{{contratacion.cliente.nombre}} {{contratacion.servicio.tipo}} {{contratacion.servicio.nombre}} </option>
+        {% endfor %}
+    </datalist>
+    <button type="submit">Nuevo pago</button>
+</form>
+<table>
+    <tr>
+        <td>No Recibo</td>
+        <td>Fecha</td>
+        <td>Código</td>
+        <td>Cliente</td>
+        <td>Mes Pagado</td>
+        <td>Total</td>
+    </tr>
+    {% for pago in pagos %}
+    <tr>
+        <td> {{pago.id}} </td>
+        <td> {{pago.fecha.date}} </td>
+        <td> {{pago.contratacion.id}}</td>
+        <td> {{pago.contratacion.cliente }}, {{pago.contratacion.direccion }} </td>
+        <td>
+            {% for mesanio in pago.detallepago_set.all %}
+            {{mesanio.mes}},
+            {% endfor %}
+        </td>
+        <td> {{pago.total}} </td>
+    </tr>
+    {% endfor %}
+</table>
 {% endblock contenido %}

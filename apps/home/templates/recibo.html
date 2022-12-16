@@ -1,0 +1,118 @@
+{% extends 'menu.html' %}
+
+{% block contenido %}
+
+<div class="row flex-lg-row align-items-center g-4 py-5 text-dark justify-content-center">
+       
+    <div class="col-sm-11 col-lg-7">
+        <div class="row g-3 mb-5" novalidate>
+            <h1 class="display-5 fw-bold lh-1 mb-3 text-success">Recibo No. {{recibo.id}}</h1>
+            <div class="col-md-2">
+              <label for="validationCustom01" class="form-label">Código</label>
+              <input type="text" class="form-control" id="validationCustom01" value="{{contratacion.id}}" disabled>
+              <div class="valid-feedback">
+                Looks good!
+              </div>
+            </div>
+            <div class="col-md-5">
+              <label for="validationCustom02" class="form-label">Fecha</label>
+              <input type="text" class="form-control" id="validationCustom02" value="{{contratacion.creacion}}" disabled>
+              <div class="valid-feedback">
+                Looks good!
+              </div>
+            </div>
+            <div class="col-md-2">
+              <label for="validationCustomUsername" class="form-label">Tipo</label>
+              <div class="input-group has-validation">
+                  <input type="text" class="form-control small" value="{{contratacion.servicio.tipo}}" id="validationCustomUsername" aria-describedby="inputGroupPrepend" disabled>
+                  <div class="invalid-feedback">
+                      Please choose a username.
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+              <label for="validationCustom03" class="form-label">Plan</label>
+              <input type="text" class="form-control small" id="validationCustom03" value="{{contratacion.servicio.nombre}}" disabled>
+              <div class="invalid-feedback">
+                  Please provide a valid city.
+                </div>
+            </div>
+            <div class="col-md-8">
+              <label for="validationCustom04" class="form-label">Cliente</label>
+              <input type="text" class="form-control small" id="validationCustom04" value="{{contratacion.cliente.nombre }}" disabled>
+              <div class="invalid-feedback">
+                  Please select a valid state.
+                </div>
+            </div>
+            <div class="col-md-3">
+                <label for="validationCustom05" class="form-label">Costo</label>
+                <div class="input-group">
+                    <span class="input-group-text" id="validationCustom05">Q</span>
+                <input type="text" class="form-control" id="validationCustom05" value="{{contratacion.servicio.costo}}" disabled>
+                </div>
+                <div class="invalid-feedback">
+                    Please provide a valid zip.
+                </div>
+            </div>
+        </div>
+        <div class="row g-3 mb-5">
+            <h3 class="text-success"><b>Recibo a pagar</b></h3>
+            <form class="row needs-validation" action="{% url 'home:nuevoetalle' recibo.id %}" method="POST">
+                {% csrf_token %}
+                <div class="input-group outline-success mb-3">
+                    <span class="input-group-text">Año</span>
+                    <select class="form-select" name="anio" id="" required>
+                        {% for anio in anios %}
+                        <option value="{{anio.numero}}">{{anio.numero}}</option>
+                        {% endfor %}
+                    </select>
+                    <span class="input-group-text">Mes</span>
+                    <select class="form-select" name="mes" id="" required>
+                        {% for mes in meses %}
+                        <option value="{{mes.nombre}}">{{mes.nombre}}</option>
+                        {% endfor %}
+                    </select>
+                    <span class="input-group-text">Q</span>
+                    <input class="form-control" type="number" name="subtotal" value="{{contratacion.servicio.costo}}" id="" required>
+                </div>
+                <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                    <button class="btn btn-primary btn-lg px-4 me-md-2" type="submit">Agregar al recibo</button>
+                    
+                </div>
+            </form>
+        </div>
+
+      
+    </div>
+
+    <div class="col-10 col-sm-10 col-lg-5">
+        <div class="d-block mx-lg-auto container justify-content-center">
+            <h3 class="text-success"><b>Detalles del pago</b></h3>
+            <table class="table">
+                <thead>
+                    <td>Año</td>
+                    <td>Mes</td>
+                    <td>Subtotal</td>
+                </thead>
+                {% for detalles in recibo.detallepago_set.all %}
+                <tr>
+                    <td>{{detalles.anio}}</td>
+                    <td>{{detalles.mes}}</td>
+                    <td> Q {{detalles.subtotal}} </td>
+                </tr>
+                {% endfor %}
+                <thead>
+                    <td colspan="2">Total</td>
+                    <td>Q {{recibo.total}}</td>
+                </thead>
+            </table>
+            <div class="row">
+                <a href="#" class="btn btn-success">Imprimir</a>
+                <a class="btn btn-danger px-4 mt-2" href="{% url 'home:pagos' %}">Finalizar</a>
+            </div>
+        </div>
+    </div>
+  </div>
+
+
+{% endblock contenido %}
