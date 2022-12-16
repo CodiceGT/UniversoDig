@@ -1,10 +1,10 @@
 {% extends 'menu.html' %}
 {% block contenido %}
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Agregar nuevo Servicio</h5>
+          <h5 class="modal-title" id="exampleModalLongTitle">Agregar nuevo Servicio</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <form action="{% url 'home:nuevoservicio' %}" method="post">
@@ -31,7 +31,7 @@
             </div>            
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
           <button type="submit" class="btn btn-primary">Añadir</button>
         </div>
     </form>
@@ -42,7 +42,7 @@
 <div class="container">
     <div class="table-responsive-lg">
         <p align="right">
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Nuevo Servicio</button>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalCenter" data-bs-whatever="@mdo">Nuevo Servicio</button>
         </p>
         <h1 class="title-container">
             Listado de Servicios
@@ -73,21 +73,21 @@
                             <tbody class="fontfamily">
                                 {% for servicio in servicios %}
                                 <tr>
-                                    <td class="text-left">
+                                    <td class="text-center">
                                         {{servicio.tipo}}
                                     </td>
-                                    <td class="text-left">
+                                    <td class="text-center">
                                         {{servicio.nombre}}
                                     </td>
-                                    <td class="text-left">
+                                    <td class="text-center">
                                         {% if servicio.ancho_banda != None %}{{servicio.ancho_banda}}{% endif %}
                                     </td>
-                                    <td class="text-left">
+                                    <td class="text-center">
                                         {{servicio.costo}}
                                     </td>
-                                    <td class="text-left">
-                                        <a href="{% url 'home:borrarservicio' servicio.id %}">❌</a>
-                                        <a href="{% url 'home:modificarservicio' servicio.id %}">🔳</a>
+                                    <td class="text-center">
+                                        <a href="{% url 'home:borrarservicio' servicio.id %}"><i class="bi bi-trash"></i></a>
+                                        <a href="{% url 'home:modificarservicio' servicio.id %}"><i class="bi bi-journal-text"></i></a>
                                     </td>
                                 </tr>
                                 {% endfor %}
@@ -98,6 +98,4 @@
             </div>
     </div>          
 </div>
-
-
 {% endblock contenido %}

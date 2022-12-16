@@ -92,27 +92,27 @@
                                 <tbody class="fontfamily">
                                     {% for cliente in clientes %}
                                     <tr>
-                                        <td class="text-left">
+                                        <td class="text-center">
                                             {{ cliente.cui }}
                                         </td>
-                                        <td class="text-left">
+                                        <td class="text-center">
                                             {{ cliente.nombre }}
                                         </td>
-                                        <td class="text-left">
+                                        <td class="text-center">
                                             {{ cliente.apellido }}
                                         </td>
-                                        <td class="text-left">
+                                        <td class="text-center">
                                             {{ cliente.direccion }}
                                         </td>
-                                        <td class="text-left">
+                                        <td class="text-center">
                                             {{ cliente.telefono }}
                                         </td>
-                                        <td class="text-left">
+                                        <td class="text-center">
                                             {{ cliente.correo }}
                                         </td>
-                                        <td class="text-left">
-                                            <a href="{% url 'home:borrarcliente' cliente.id %}">❌</a>
-                                            <a href="{% url 'home:modificarcliente' cliente.id %}">🔳</a>
+                                        <td class="text-center">
+                                            <a href="{% url 'home:borrarcliente' cliente.id %}"><i class="bi bi-trash"></i></a>
+                                            <a href="{% url 'home:modificarcliente' cliente.id %}"><i class="bi bi-journal-text"></i></a>
                                         </td>
                                     </tr>
                                     {% endfor %}

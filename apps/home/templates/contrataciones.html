@@ -34,7 +34,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                     <button type="submit" class="btn btn-primary">Añadir</button>
                 </div>
     </div>
@@ -82,22 +82,22 @@
                             <tbody class="fontfamily">
                                 {% for contratacion in contrataciones %}
                                 <tr>
-                                    <td class="text-left">
+                                    <td class="text-center">
                                         {{ contratacion.cui }}
                                     </td>
-                                    <td class="text-left">
+                                    <td class="text-center">
                                         {{ contratacion.creacion }}
                                     </td>
-                                    <td class="text-left">
+                                    <td class="text-center">
                                         {{ contratacion.cliente }}
                                     </td>
-                                    <td class="text-left">
+                                    <td class="text-center">
                                         {{ contratacion.servicio }}
                                     </td>
-                                    <td class="text-left">
+                                    <td class="text-center">
                                         {{ contratacion.direccion }}
                                     </td>
-                                    <td class="text-left">
+                                    <td class="text-center">
                                         <a href="{% url 'home:borrarcontratacion' contratacion.id %}"><i class="bi bi-trash3-fill"></i></a>
                                         <a href="{% url 'home:modificarcontratacion' contratacion.id %}"><i class="bi bi-pencil-square"></i></a>
                                     </td>
