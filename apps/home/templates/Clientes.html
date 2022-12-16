@@ -114,8 +114,8 @@
                                             {{ cliente.correo }}
                                         </td>
                                         <td class="text-left">
-                                            <a href="{% url 'home:borrarcliente' cliente.id %}">❌</a>
-                                            <a href="{% url 'home:modificarcliente' cliente.id %}">🔳</a>
+                                            <a href="{% url 'home:borrarcliente' cliente.id %}"><i class="bi bi-trash3-fill"></i></a>
+                                            <a href="{% url 'home:modificarcliente' cliente.id %}"><i class="bi bi-pencil-square"></i></a>
                                         </td>
                                     </tr>
                                     {% endfor %}
