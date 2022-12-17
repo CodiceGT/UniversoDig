@@ -11,8 +11,12 @@
         rgb(0, 54, 105)
     );
     --hovecolor: rgb(23, 23, 23);
-    --widht-collapsed: 50px;
+    --widht-collapsed: 40px;
     --resaltado: rgb(181,255,254);
+}
+
+.espacio{
+    padding-top: 50px;
 }
 
 body{    
@@ -27,11 +31,6 @@ body{
     margin-left: var(--width);
 }
 
-#main-container{
-    color: rgb(173, 5, 5);
-    padding-left: 15px; 
-    padding: 3px;
-}
 
 #menu{
     background: var(--bgcolor);
@@ -159,7 +158,7 @@ body{
 #menu #menu-items .item.separator{
     height: 1px;
     border-bottom: solid 1px var(--hovecolor);
-    margin: 15px 0;
+    margin: 10px 0;
 }
 
 /*menu expanded*/
@@ -292,8 +291,10 @@ lineas horizontales superior
     height: auto;
     display: flex;
     flex-wrap: wrap;
+    text-align: center;
     justify-content: center;
     margin: auto;
+    align-items: center;
 }
 
 .contenido .card{

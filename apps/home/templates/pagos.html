@@ -1,62 +1,60 @@
 {% extends 'menu.html' %}
 {% block contenido %}
 <div class="container">
-    <div class="table-responsive-lg">
+    <div class="contenido table-responsive-lg espacio">
         <h1 class="title-container">
             Listado de Pagos
         </h1>
-            <div id="center">
-                <div class="outer-wrapper">
-                    <div class="contenido-tabla table-wrapper">
-                        <table class="table-fill">
-                            <thead>
-                                <tr>
-                                    <th>
-                                        No Recibo
-                                    </th>
-                                    <th>
-                                        Fecha
-                                    </th>
-                                    <th>
-                                        Mes Pagado
-                                    </th>
-                                    <th>
-                                        Código contratacion
-                                    </th>
-                                    <th>
-                                        Total
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody class="fontfamily">
-                                {% for pago in pagos %}
-                                <tr>
-                                    <td class="text-center">
-                                        {{pago.recibo.id}}
-                                    </td>
-                                    <td class="text-center">
-                                        {{pago.creacion}}
-                                    </td>
-                                    <td class="text-center">
-                                        {{pago.mes}}/{{pago.anio}}
-                                    </td>
-                                    <td class="text-center">
-                                        {{pago.recibo.contratacion.id}}
-                                    </td>
-                                    <td class="text-center">
-                                        {{pago.subtotal}}
-                                    </td>
-                                    <td class="text-center">
-                                        <a href="#"><i class="bi bi-trash"></i></a>
-                                        <a href="#"><i class="bi bi-journal-text"></i></a>
-                                    </td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>        
+        <div class="outer-wrapper">
+            <div class="contenido-tabla table-wrapper">
+                <table class="table-fill">
+                    <thead>
+                        <tr>
+                            <th>
+                                No Recibo
+                            </th>
+                            <th>
+                                Fecha
+                            </th>
+                            <th>
+                                Mes Pagado
+                            </th>
+                            <th>
+                                Código contratacion
+                            </th>
+                            <th>
+                                Total
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="fontfamily">
+                        {% for pago in pagos %}
+                        <tr>
+                            <td class="text-center">
+                                {{pago.recibo.id}}
+                            </td>
+                            <td class="text-center">
+                                {{pago.creacion}}
+                            </td>
+                            <td class="text-center">
+                                {{pago.mes}}/{{pago.anio}}
+                            </td>
+                            <td class="text-center">
+                                {{pago.recibo.contratacion.id}}
+                            </td>
+                            <td class="text-center">
+                                {{pago.subtotal}}
+                            </td>
+                            <td class="text-center">
+                                <a href="#"><i class="bi bi-trash"></i></a>
+                                <a href="#"><i class="bi bi-journal-text"></i></a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
+        </div>
     </div>          
 </div>   
 
