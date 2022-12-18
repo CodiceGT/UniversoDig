@@ -1,41 +1,112 @@
 {% extends 'menu.html' %}
 {% block contenido %}
-<form action="{% url 'home:nuevacontratacion' %}" method="post">
-    {% csrf_token %}
-    <input list="listaclientes" name="cliente">
-    <datalist id="listaclientes">
-        {% for cliente in clientes %}
-        <option value=" {{cliente.id}} ">{{cliente.nombre}} {{cliente.apellido}} </option>
-        {% endfor %}
-    </datalist>
-    <input list="listaservicios" name="servicio">
-    <datalist id="listaservicios">
-        {% for servicio in servicios %}
-        <option value=" {{servicio.id}} "> {{servicio.tipo}} {{servicio.nombre}} {{servicio.costo}} </option>
-        {% endfor %}
-    </datalist>
-    <input type="text" name="direccion" placeholder="Direccion">
-    <button type="submit">Guardar</button>
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Nueva Contratacion</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>  
+            <form action="{% url 'home:nuevacontratacion' %}" method="post">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="mb-3">
+                    <label for="recipient-name" class="col-form-label">Cliente</label>
+                    <input type="text" class="form-control" list="listaclientes" name="cliente">
+                        <datalist id="listaclientes">
+                            {% for cliente in clientes %}
+                            <option value=" {{cliente.id}} ">{{cliente.nombre}} {{cliente.apellido}} </option>
+                            {% endfor %}
+                        </datalist>
+                    </div>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">Servicio</label>
+                        <input type="text" class="form-control" list="listaservicios" name="servicio">
+                        <datalist id="listaservicios">
+                            {% for servicio in servicios %}
+                            <option value=" {{servicio.id}} "> {{servicio.tipo}} {{servicio.nombre}} {{servicio.costo}} </option>
+                            {% endfor %}
+                        </datalist>
+                    </div>
+                    <div class="mb-3"> 
+                        <label for="recipient-name" class="col-form-label">Direccion</label>   
+                        <input type="text" class="form-control" name="direccion" placeholder="Direccion">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Añadir</button>
+                </div>
+    </div>
+    </div>        
 </form>
+</div>
 
-<table>
-    <tr>
-        <td>Codigo</td>
-        <td>Fecha</td>
-        <td>Cliente</td>
-        <td>Servicio</td>
-        <td>Direccion</td>
-        <td>Acciones</td>
-    </tr>
-    {% for contratacion in contrataciones %}
-    <tr>
-        <td> {{contratacion.id}} </td>
-        <td> {{contratacion.creacion}} </td>
-        <td> {{contratacion.cliente}} </td>
-        <td> {{contratacion.servicio}} </td>
-        <td> {{contratacion.direccion}} </td>
-        <td><a href="{% url 'home:borrarcontratacion' contratacion.id %}">❌</a></td>
-    </tr>
-    {% endfor %}
-</table>
+<div class="container">
+    <div class="espacio">
+        <p align="right">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Nueva Contratacion</button>
+        </p>
+    </div>
+    <div class="contenido table-responsive-lg">        
+        <h1 class="title-container">
+            Listado de Contrataciones
+        </h1>
+            <div id="center">
+                <div class="outer-wrapper">
+                    <div class="contenido-tabla table-wrapper">
+                        <table class="table-fill">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Codigo
+                                    </th>
+                                    <th>
+                                        Fecha
+                                    </th>
+                                    <th>
+                                        Cliente
+                                    </th>
+                                    <th>
+                                        Servicio
+                                    </th>
+                                    <th>
+                                        Direccion
+                                    </th>
+                                    <th>
+                                        Acciones
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class="fontfamily">
+                                {% for contratacion in contrataciones %}
+                                <tr>
+                                    <td class="text-center">
+                                        {{ contratacion.cui }}
+                                    </td>
+                                    <td class="text-center">
+                                        {{ contratacion.creacion }}
+                                    </td>
+                                    <td class="text-center">
+                                        {{ contratacion.cliente }}
+                                    </td>
+                                    <td class="text-center">
+                                        {{ contratacion.servicio }}
+                                    </td>
+                                    <td class="text-center">
+                                        {{ contratacion.direccion }}
+                                    </td>
+                                    <td class="text-center">
+                                        <a href="{% url 'home:borrarcontratacion' contratacion.id %}"><i class="bi bi-trash3-fill"></i></a>
+                                        <a href="{% url 'home:modificarcontratacion' contratacion.id %}"><i class="bi bi-pencil-square"></i></a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>        
+            </div>
+    </div>          
+</div>            
 {% endblock contenido %}

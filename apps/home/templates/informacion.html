@@ -1,0 +1,92 @@
+{% extends 'menu.html' %}
+{% block contenido %}
+
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Registrar Información</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form action="{% url 'home:nuevainformacion' %}" method="post">
+         {% csrf_token %}
+        <div class="modal-body">
+            <div class="mb-3">
+                <label for="recipient-name" class="col-form-label">Nombre</label>
+                <input type="text" class="form-control" id="recipient-name" name='nombre'>
+            </div>
+            <div class="mb-3">
+                <label for="recipient-name" class="col-form-label">Dirección</label>
+                <input type="text" class="form-control" id="recipient-name" name='direccion'>
+            </div>
+            <div class="mb-3">
+                <label for="recipient-name" class="col-form-label">Teléfono</label>
+                <input type="number" step="0.10" class="form-control" id="recipient-name" name='telefono'>
+            </div>            
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Guardar</button>
+        </div>
+    </form>
+      </div>
+    </div>
+  </div>
+
+<div class="container">
+    <div class="espacio">
+        <p align="right">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalCenter" data-bs-whatever="@mdo">Agragar datos</button>
+        </p>
+    </div>
+    <div class="contenido table-responsive-lg">        
+        <h1 class="title-container">
+            Informacion de la empresa
+        </h1>
+            <div id="center">
+                <div class="outer-wrapper">
+                    <div class="contenido-tabla table-wrapper">
+                        <table class="table-fill">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Nombre
+                                    </th>
+                                    <th>
+                                        Direccion
+                                    </th>
+                                    <th>
+                                        Teléfono
+                                    </th>
+                                    <th>
+                                        Acciones
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class="fontfamily">
+                                {% for info in informacion  %}
+                                <tr>
+                                    <td class="text-center">
+                                        {{info.nombre}}
+                                    </td>
+                                    <td class="text-center">
+                                        {{info.direccion}}
+                                    </td>
+                                    <td class="text-center">
+                                        {{info.telefono}}
+                                    </td>
+                                    <td class="text-center">
+                                        <a href="{% url 'home:borrarinformacion' info.id %} "><i class="bi bi-trash"></i></a>
+                                        <a href="{% url 'home:modificarinformacion' info.id %} "><i class="bi bi-journal-text"></i></a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>        
+            </div>
+    </div>          
+</div>
+
+{% endblock contenido %}

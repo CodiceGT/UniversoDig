@@ -1,33 +1,88 @@
 {% extends 'menu.html' %}
 {% block contenido %}
-<form action="{% url 'home:nuevoservicio' %}" method="post">
-    {% csrf_token %}
-    <select name="tipo" id="">
-        <option value="Internet">Internet</option>
-        <option value="TV">TV</option>
-    </select>
-    <input type="text" name='nombre' placeholder="Nombre del servicio">
-    <input type="text" name='ancho_banda' placeholder="Ancho de banda">
-    <input type="number" step="0.10" name='costo' placeholder="Costo">
-    <button type="submit">Enviar datos</button>
-</form>
 
-<table>
-    <tr>
-        <td>Tipo</td>
-        <td>Nombre</td>
-        <td>Ancho de banda</td>
-        <td>Costo</td>
-        <td>Acciones</td>
-    </tr>
-    {% for servicio in servicios %}
-    <tr>
-        <td>{{servicio.tipo}}</td>
-        <td>{{servicio.nombre}}</td>
-        <td>{% if servicio.ancho_banda != None %}{{servicio.ancho_banda}}{% endif %}</td>
-        <td>{{servicio.costo}}</td>
-        <td><a href="{% url 'home:borrarservicio' servicio.id %}">❌</a></td>
-    </tr>
-    {% endfor %}
-</table>
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Agregar nuevo Servicio</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form action="{% url 'home:nuevoservicio' %}" method="post">
+            {% csrf_token %}
+        <div class="modal-body">
+            <div class="mb-3 form-group">
+              <label for="recipient-name" class="col-form-label">Tipo</label>
+                <select class="form-control" name="tipo" id="">
+                    <option value="Internet">Internet</option>
+                    <option value="TV">TV</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="recipient-name" class="col-form-label">Nombre</label>
+                <input type="text" class="form-control" id="recipient-name" name='nombre'>
+            </div>
+            <div class="mb-3">
+                <label for="recipient-name" class="col-form-label">Ancho de banda</label>
+                <input type="text" class="form-control" id="recipient-name" name='ancho_banda'>
+            </div>
+            <div class="mb-3">
+                <label for="recipient-name" class="col-form-label">Costo</label>
+                <input type="number" step="0.10" class="form-control" id="recipient-name" name='costo'>
+            </div>            
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Añadir</button>
+        </div>
+    </form>
+      </div>
+    </div>
+  </div>
+
+<div class="container p-0">
+    <div class="row justify-content-end">
+        <button type="button" class="btn btn-primary col-12 col-sm-4 col-lg-2" data-bs-toggle="modal" data-bs-target="#exampleModalCenter" data-bs-whatever="@mdo">Nuevo Servicio</button>
+    </div>
+    <h1 class="title-container">
+        Listado de Servicios
+    </h1>
+    <div class="row justify-content-center mt-3">
+        <div class="col-sm-12 col-md-11 col-xl-12 border border-primary rounded p-4">
+            <table class="table border border-danger rounded text-center">
+                <thead class="">
+                    <tr>
+                            <th> Tipo </th>
+                            <th> Nombre </th>
+                            <th> Ancho de banda </th>
+                            <th> Costo </th>
+                            <th> Acciones </th>
+                    </tr>
+                </thead>
+                <tbody class="">
+                        {% for servicio in servicios %}
+                        <tr>
+                            <td class="text-center">
+                                {{servicio.tipo}}
+                            </td>
+                            <td class="text-center">
+                                {{servicio.nombre}}
+                            </td>
+                            <td class="text-center">
+                                {% if servicio.ancho_banda != None %}{{servicio.ancho_banda}}{% endif %}
+                            </td>
+                            <td class="text-center">
+                                {{servicio.costo}}
+                            </td>
+                            <td class="text-center">
+                                <a href="{% url 'home:borrarservicio' servicio.id %}"><i class="bi bi-trash" style="color:red;"></i></a>
+                                <a href="{% url 'home:modificarservicio' servicio.id %}"><i class="bi bi-journal-text"></i></a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                </tbody>
+            </table>        
+        </div>
+    </div>
+</div>
 {% endblock contenido %}

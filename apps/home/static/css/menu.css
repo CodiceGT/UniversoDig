@@ -11,8 +11,65 @@
         rgb(0, 54, 105)
     );
     --hovecolor: rgb(23, 23, 23);
-    --widht-collapsed: 50px;
+    --widht-collapsed: 40px;
     --resaltado: rgb(181,255,254);
+}
+
+/*sliderbar*/
+
+#side_nav{
+    background: var(--bgcolor);
+    min-width: 230px;
+    max-width: 230px;
+    transition: all 0.2s;
+}
+
+.botonColor{
+    color: #d89d65;
+}
+
+.Lcolor{
+    color: #65d8d6;
+}
+
+.content{
+    min-height: 100vh;
+    width: 100%;
+}
+
+hr .h-color{
+    background: var(--resaltado);
+}
+
+.sidebar li.active{
+    background: #bbe9e8;
+    border-radius: 10px;
+}
+
+.sidebar li.active a, .sidebar li.active a:hover {
+    color: #000000;
+}
+
+.sidebar li a{
+    color: #65d8d6;
+}
+
+@media(max-width: 767px){
+    #side_nav{
+        margin-left: -250px;
+        position: fixed;
+        min-height: 100vh;
+        z-index: 1;
+    }
+    #side_nav.active{
+        margin-left: 0;
+    }
+}
+
+/*body*/
+
+.espacio{
+    padding-top: 50px;
 }
 
 body{    
@@ -20,17 +77,14 @@ body{
     font-size: 18px;
     padding: 0;
     margin: 0;
-    margin-left: var(--widht-collapsed);
+    /*margin-left: var(--widht-collapsed);*/
+    height: 100vh;
 }
 
 .body-expanded{
     margin-left: var(--width);
 }
 
-#main-container{
-    color: rgb(173, 5, 5);
-    padding-left: 15px;    
-}
 
 #menu{
     background: var(--bgcolor);
@@ -158,7 +212,7 @@ body{
 #menu #menu-items .item.separator{
     height: 1px;
     border-bottom: solid 1px var(--hovecolor);
-    margin: 15px 0;
+    margin: 10px 0;
 }
 
 /*menu expanded*/
@@ -214,48 +268,7 @@ body{
 .fondoheader{
       background: var(--bgheader);
 }
-/*
-.lista-derecha{
-    color: rgb(226, 19, 19);
-    display: flex;
-    justify-content: right;
-    align-items: center;
-    font-size: 10px;
-    text-align: center;
-    overflow: hidden;
-}
 
-.fondouser{
-    overflow: hidden;
-    background-color: skyblue;
-    padding-right: 20px;
-}
-
-lineas horizontales superior
-
-.barras-h{    
-    width: 0;
-    max-width: 0;
-    height: 10;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: left;
-    margin: auto;
-}
-
-.barras-h .lateral{
-    background: var(--bgheader);
-    width: 20px;
-    height: 230px;
-    border-radius: 30px;
-    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
-    overflow: hidden;
-    margin: 20px;
-    text-align: center;
-    transition: all 0.25s;
-}
-
-*/
 
 /************************** cards */
 
@@ -286,13 +299,16 @@ lineas horizontales superior
 }
 
 .contenido{    
-    width: auto;
+    width: 100%;
     max-width: auto;
     height: auto;
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    flex-direction: row;    
+    flex-flow: wrap;
+    text-align: center;
+    justify-content: space-around;
     margin: auto;
+    align-items: center;
 }
 
 .contenido .card{
@@ -333,16 +349,27 @@ lineas horizontales superior
 
 
 /******************** tabla de contenido */
-.contenido-tabla{
-    border: solid 1px rgba(255, 0, 0, 0.568);
-    margin-top: 20px;
-    max-height: 300px;
-    width: 1300;
-    overflow-y: scroll;
-    margin: 20px;    
+thead{
+    background: rgb(3, 58, 131);
+    color: #fff;
+    position: sticky;
+    top: 0px;
 }
 
-table{
+tbody tr{
+    cursor: pointer;
+}
+
+tbody tr:hover{
+    background: var(--resaltado);
+}
+/*
+.contenido-tabla{
+    border: solid 1px rgba(255, 0, 0, 0.568);
+    overflow-y: scroll;
+}
+
+ table{
     color: black;
     font-size: 14px;
     table-layout: fixed;
@@ -352,15 +379,10 @@ table{
 }
 
 
-thead{
-    background: rgb(3, 58, 131);
-    color: #fff;
-    position: sticky;
-    top: 0px;
-}
+
 
 th{
-    padding: 20px 45px;
+    padding: 10px 10px;
     font-weight: 700;
     text-transform: uppercase;    
 }
@@ -371,13 +393,7 @@ td{
     text-align: center;
 }
 
-tbody tr{
-    cursor: pointer;
-}
 
-tbody tr:hover{
-    background: var(--resaltado);
-}
 
 .outer-wrapper{
     border: 1px solid rgb(3, 58, 131);
@@ -386,3 +402,4 @@ tbody tr:hover{
     border-radius: 10px;
     max-width: fit-content;
 }
+*/

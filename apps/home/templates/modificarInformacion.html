@@ -1,0 +1,14 @@
+{% extends 'menu.html' %}
+{% block contenido %}
+<div class="contenido text-justify">
+    <div class="form-group row">
+        <form method="post">{% csrf_token %}
+            {{ form.as_p }}
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary" value="Actualizar">Actualizar</button>
+            </div>
+            
+        </form>
+    </div>    
+</div>    
+{% endblock contenido %}

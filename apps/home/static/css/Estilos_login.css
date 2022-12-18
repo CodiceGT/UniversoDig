@@ -1,5 +1,8 @@
 body {
-  height: 749px;
+  margin:0px;
+  padding: 0px;
+  
+  height: 100vh;
   background: -webkit-linear-gradient(  
     rgb(0, 72, 131),
     rgb(0, 34, 92)

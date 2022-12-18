@@ -14,3 +14,8 @@ class RegistroServicioForm(forms.ModelForm):
     class Meta:
         model = Servicio
         fields = '__all__'
+
+class InformacionForm(forms.ModelForm):
+    class Meta:
+        model = Informacion
+        fields = '__all__'

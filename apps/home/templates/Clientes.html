@@ -18,8 +18,6 @@
     {% endblock menu %}
   </section>-->
 {% block contenido %}
-<br>
-<br>
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -30,29 +28,19 @@
         <form action="{% url 'home:nuevocliente' %}" method="post">
             {% csrf_token %}
         <div class="modal-body">
-            <div class="mb-3">
+            <div class="mb-3" class="form-gruop">
               <label for="recipient-name" class="col-form-label">CUI</label>
               <input type="text" class="form-control" id="recipient-name" name='cui'>
-            </div>
-            <div class="mb-3">
-                <label for="recipient-name" class="col-form-label">Nombre</label>
-                <input type="text" class="form-control" id="recipient-name" name='nombre'>
-            </div>
-            <div class="mb-3">
-                <label for="recipient-name" class="col-form-label">Apellido</label>
-                <input type="text" class="form-control" id="recipient-name" name='apellido'>
-            </div>
-            <div class="mb-3">
-                <label for="recipient-name" class="col-form-label">Direccion</label>
-                <input type="text" class="form-control" id="recipient-name" name='direccion'>
-            </div>
-            <div class="mb-3">
-                <label for="recipient-name" class="col-form-label">Telefono</label>
-                <input type="text" class="form-control" id="recipient-name" name='telefono'>
-            </div>
-            <div class="mb-3">
-                <label for="recipient-name" class="col-form-label">Correo</label>
-                <input type="text" class="form-control" id="recipient-name" name='correo'>
+              <label for="recipient-name" class="col-form-label">Nombre</label>
+              <input type="text" class="form-control" id="recipient-name" name='nombre'>
+              <label for="recipient-name" class="col-form-label">Apellido</label>
+              <input type="text" class="form-control" id="recipient-name" name='apellido'>
+              <label for="recipient-name" class="col-form-label">Direccion</label>
+              <input type="text" class="form-control" id="recipient-name" name='direccion'>
+              <label for="recipient-name" class="col-form-label">Telefono</label>
+              <input type="text" class="form-control" id="recipient-name" name='telefono'>
+              <label for="recipient-name" class="col-form-label">Correo</label>
+              <input type="text" class="form-control" id="recipient-name" name='correo'>
             </div>
         </div>
         <div class="modal-footer">
@@ -65,67 +53,74 @@
   </div>
 
     <div class="container">
-        <div class="table-responsive-lg">
+        <div class="espacio">
             <p align="right">
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Agregar Clientes</button>
-                </p>
+            </p>
+        </div>
+        <div class="contenido table-responsive-lg">            
             <h1 class="title-container">
                 Listado de Clientes
             </h1>
-                <div id="center">
-                    <div class="outer-wrapper">
-                        <div class="contenido-tabla table-wrapper">
-                            <table class="table-fill">
-                                <thead>
-                                    <tr>
-                                        <th>
-                                            CUI
-                                        </th>
-                                        <th>
-                                            Nombre
-                                        </th>
-                                        <th>
-                                            Apellido
-                                        </th>
-                                        <th>
-                                            Direccion
-                                        </th>
-                                        <th>
-                                            Telefono
-                                        </th>
-                                        <th>
-                                            Correo
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody class="fontfamily">
-                                    {% for cliente in clientes %}
-                                    <tr>
-                                        <td class="text-left">
-                                            {{ cliente.cui }}
-                                        </td>
-                                        <td class="text-left">
-                                            {{ cliente.nombre }}
-                                        </td>
-                                        <td class="text-left">
-                                            {{ cliente.apellido }}
-                                        </td>
-                                        <td class="text-left">
-                                            {{ cliente.direccion }}
-                                        </td>
-                                        <td class="text-left">
-                                            {{ cliente.telefono }}
-                                        </td>
-                                        <td class="text-left">
-                                            {{ cliente.correo }}
-                                        </td>
-                                    </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>        
+            <div class="outer-wrapper">
+                <div class="contenido-tabla table-wrapper">
+                    <table class="table-fill">
+                        <thead>
+                            <tr>
+                                <th>
+                                    CUI
+                                </th>
+                                <th>
+                                    Nombre
+                                </th>
+                                <th>
+                                    Apellido
+                                </th>
+                                <th>
+                                    Direccion
+                                </th>
+                                <th>
+                                    Telefono
+                                </th>
+                                <th>
+                                    Correo
+                                </th>
+                                <th>
+                                    Acciones
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="fontfamily">
+                            {% for cliente in clientes %}
+                            <tr>
+                                <td class="text-center">
+                                    {{ cliente.cui }}
+                                </td>
+                                <td class="text-center">
+                                    {{ cliente.nombre }}
+                                </td>
+                                <td class="text-center">
+                                    {{ cliente.apellido }}
+                                </td>
+                                <td class="text-center">
+                                    {{ cliente.direccion }}
+                                </td>
+                                <td class="text-center">
+                                    {{ cliente.telefono }}
+                                </td>
+                                <td class="text-center">
+                                    {{ cliente.correo }}
+                                </td>
+                                <td class="text-center">
+                                    <a href="{% url 'home:borrarcliente' cliente.id %}"><i class="bi bi-trash"></i></a>
+                                    <a href="{% url 'home:modificarcliente' cliente.id %}"><i class="bi bi-journal-text"></i></a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
+            </div> 
         </div>          
     </div>            
 {% endblock contenido %}
