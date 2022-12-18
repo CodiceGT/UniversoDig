@@ -11,12 +11,12 @@
         <form action="{% url 'home:nuevoservicio' %}" method="post">
             {% csrf_token %}
         <div class="modal-body">
-            <div class="mb-3">
+            <div class="mb-3 form-group">
               <label for="recipient-name" class="col-form-label">Tipo</label>
-              <select name="tipo" id="">
-                <option value="Internet">Internet</option>
-                <option value="TV">TV</option>
-            </select>
+                <select class="form-control" name="tipo" id="">
+                    <option value="Internet">Internet</option>
+                    <option value="TV">TV</option>
+                </select>
             </div>
             <div class="mb-3">
                 <label for="recipient-name" class="col-form-label">Nombre</label>
@@ -40,37 +40,26 @@
     </div>
   </div>
 
-<div class="container d-flex justify-content-center">
-    <div class="row">
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalCenter" data-bs-whatever="@mdo">Nuevo Servicio</button>
+<div class="container p-0">
+    <div class="row justify-content-end">
+        <button type="button" class="btn btn-primary col-12 col-sm-4 col-lg-2" data-bs-toggle="modal" data-bs-target="#exampleModalCenter" data-bs-whatever="@mdo">Nuevo Servicio</button>
     </div>
     <h1 class="title-container">
         Listado de Servicios
     </h1>
-    <div class="container row">        
-        <div class="outer-wrapper">
-            <div class="contenido-tabla table-wrapper">
-                <table class="table-fill">
-                    <thead>
-                        <tr>
-                            <th>
-                                tipo
-                            </th>
-                            <th>
-                                Nombre
-                            </th>
-                            <th>
-                                Ancho de banda
-                            </th>
-                            <th>
-                                Costo
-                            </th>
-                            <th>
-                                Acciones
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody class="fontfamily">
+    <div class="row justify-content-center mt-3">
+        <div class="col-sm-12 col-md-11 col-xl-12 border border-primary rounded p-4">
+            <table class="table border border-danger rounded text-center">
+                <thead class="">
+                    <tr>
+                            <th> Tipo </th>
+                            <th> Nombre </th>
+                            <th> Ancho de banda </th>
+                            <th> Costo </th>
+                            <th> Acciones </th>
+                    </tr>
+                </thead>
+                <tbody class="">
                         {% for servicio in servicios %}
                         <tr>
                             <td class="text-center">
@@ -86,15 +75,14 @@
                                 {{servicio.costo}}
                             </td>
                             <td class="text-center">
-                                <a href="{% url 'home:borrarservicio' servicio.id %}"><i class="bi bi-trash"></i></a>
+                                <a href="{% url 'home:borrarservicio' servicio.id %}"><i class="bi bi-trash" style="color:red;"></i></a>
                                 <a href="{% url 'home:modificarservicio' servicio.id %}"><i class="bi bi-journal-text"></i></a>
                             </td>
                         </tr>
                         {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div> 
-    </div>          
+                </tbody>
+            </table>        
+        </div>
+    </div>
 </div>
 {% endblock contenido %}
