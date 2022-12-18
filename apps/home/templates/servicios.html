@@ -1,5 +1,6 @@
 {% extends 'menu.html' %}
 {% block contenido %}
+
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
@@ -39,16 +40,14 @@
     </div>
   </div>
 
-<div class="container">
-    <div class="espacio">
-        <p align="right">
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalCenter" data-bs-whatever="@mdo">Nuevo Servicio</button>
-        </p>
+<div class="container d-flex justify-content-center">
+    <div class="row">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalCenter" data-bs-whatever="@mdo">Nuevo Servicio</button>
     </div>
     <h1 class="title-container">
         Listado de Servicios
     </h1>
-    <div class="contenido table-responsive-lg">        
+    <div class="container row">        
         <div class="outer-wrapper">
             <div class="contenido-tabla table-wrapper">
                 <table class="table-fill">
