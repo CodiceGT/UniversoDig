@@ -1,5 +1,29 @@
 {% extends 'menu.html' %}
 {% block contenido %}
+ <div class="container">
+    <div class="contenido espacio">
+        <div class="outer-wrapper form-row align-items-center">
+            <div class="col-auto my-1">
+                <form action="{% url 'home:nuevorecibo' %}" method="post">
+                    {% csrf_token %}
+                    <div class="">
+                        <label class="title-container mr-sm-2" for="contratacion">¿Qué servicio desea pagar?</label>                        
+                    </div>
+                    <input class="custom-select mr-sm-2 col-sm-8 w-75 table-responsive-lg" list="listacontrataciones" name="contratacion" required>
+                    <datalist id="listacontrataciones">
+                        {% for contratacion in contrataciones %}
+                        <option value="{{contratacion.id}}">{{contratacion.cliente.nombre}} {{contratacion.servicio.tipo}} {{contratacion.servicio.nombre}} </option>
+                        {% endfor %}
+                    </datalist>
+                    <div class="espacio">
+                        <button type="submit" class="btn btn-primary">Nuevo pago</button>
+                    </div>
+                </form>
+            </div>
+        </div>        
+    </div>
+</div>
+
 <div class="container">
     <div class="contenido table-responsive-lg espacio">
         <h1 class="title-container">
@@ -17,10 +41,13 @@
                                 Fecha
                             </th>
                             <th>
-                                Mes Pagado
+                                Código
                             </th>
                             <th>
-                                Código contratacion
+                                Cliente
+                            </th>
+                            <th>
+                                Mes Pagado
                             </th>
                             <th>
                                 Total
@@ -31,19 +58,24 @@
                         {% for pago in pagos %}
                         <tr>
                             <td class="text-center">
-                                {{pago.recibo.id}}
+                                {{pago.id}}
                             </td>
                             <td class="text-center">
-                                {{pago.creacion}}
+                                {{pago.fecha.date}}
                             </td>
                             <td class="text-center">
-                                {{pago.mes}}/{{pago.anio}}
+                                {{pago.contratacion.id}}
                             </td>
                             <td class="text-center">
-                                {{pago.recibo.contratacion.id}}
+                                {{pago.contratacion.cliente }}, {{pago.contratacion.direccion }}
                             </td>
                             <td class="text-center">
-                                {{pago.subtotal}}
+                                {% for mesanio in pago.detallepago_set.all %}
+                                {{mesanio.mes}},
+                                {% endfor %}
+                            </td>
+                            <td class="text-center">
+                                {{pago.total}}
                             </td>
                             <td class="text-center">
                                 <a href="#"><i class="bi bi-trash"></i></a>
@@ -58,39 +90,4 @@
     </div>          
 </div>   
 
-<form action="{% url 'home:nuevorecibo' %}" method="post">
-    {% csrf_token %}
-    <label for="contratacion">¿Qué servicio desea pagar?</label>
-    <input list="listacontrataciones" name="contratacion" required>
-    <datalist id="listacontrataciones">
-        {% for contratacion in contrataciones %}
-        <option value="{{contratacion.id}}">{{contratacion.cliente.nombre}} {{contratacion.servicio.tipo}} {{contratacion.servicio.nombre}} </option>
-        {% endfor %}
-    </datalist>
-    <button type="submit">Nuevo pago</button>
-</form>
-<table>
-    <tr>
-        <td>No Recibo</td>
-        <td>Fecha</td>
-        <td>Código</td>
-        <td>Cliente</td>
-        <td>Mes Pagado</td>
-        <td>Total</td>
-    </tr>
-    {% for pago in pagos %}
-    <tr>
-        <td> {{pago.id}} </td>
-        <td> {{pago.fecha.date}} </td>
-        <td> {{pago.contratacion.id}}</td>
-        <td> {{pago.contratacion.cliente }}, {{pago.contratacion.direccion }} </td>
-        <td>
-            {% for mesanio in pago.detallepago_set.all %}
-            {{mesanio.mes}},
-            {% endfor %}
-        </td>
-        <td> {{pago.total}} </td>
-    </tr>
-    {% endfor %}
-</table>
 {% endblock contenido %}
