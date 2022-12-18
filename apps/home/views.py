@@ -131,7 +131,10 @@ def NuevoDetalle(request, pk):
     anio = request.POST.get('anio', '')
     subtotal = request.POST.get('subtotal','')
 
+    valido = False #Variable que sirve para verificar si ese mes ya está pagado.
+
     recibo = Recibo.objects.get(pk=recibo)
+    contratacion = Contratacion.objects.get(pk=recibo.contratacion.id)
 
     if mes != '' and anio != '' and subtotal != '':
         if Mes.objects.filter(nombre=mes).count() == 0:
@@ -148,14 +151,19 @@ def NuevoDetalle(request, pk):
         else:
             anio = Anio.objects.get(numero=anio)
 
-        if DetallePago.objects.filter(recibo=recibo, mes=mes, anio=anio).count() == 0:
+        for recibito in Recibo.objects.filter(contratacion=contratacion).iterator():
+            if DetallePago.objects.filter(recibo=recibito, mes=mes, anio=anio).count() != 0:
+                valido = True
+                
+        if valido != True:
             detallepago = DetallePago(mes=mes, anio=anio, subtotal=subtotal, recibo=recibo)
             detallepago.save()
-        
+
         recibo.total = DetallePago.objects.filter(recibo=recibo).aggregate(Sum('subtotal'))['subtotal__sum']
+        if recibo.total is None:
+            recibo.total = 0
         recibo.save()
         
 
-    contratacion = Contratacion.objects.get(pk=recibo.contratacion.id)
 
     return render(request, 'recibo.html', {'contratacion':contratacion, 'recibo':recibo, 'meses':Mes.objects.all(), 'anios':Anio.objects.all()})
