@@ -49,18 +49,18 @@
         Listado de Servicios
     </h1>
     <div class="row justify-content-center mt-3">
-        <div class="col-sm-12 col-md-11 col-xl-12 border border-primary rounded p-4">
+        <div class="table-responsive col-sm-12 col-md-11 col-xl-12 border border-primary rounded p-4">
             <table class="table border border-danger rounded text-center">
-                <thead class="">
+                <thead>
                     <tr>
-                            <th> Tipo </th>
-                            <th> Nombre </th>
-                            <th> Ancho de banda </th>
-                            <th> Costo </th>
-                            <th> Acciones </th>
+                        <th> Tipo </th>
+                        <th> Nombre </th>
+                        <th> Ancho de banda </th>
+                        <th> Costo </th>
+                        <th> Acciones </th>
                     </tr>
                 </thead>
-                <tbody class="">
+                <tbody>
                         {% for servicio in servicios %}
                         <tr>
                             <td class="text-center">

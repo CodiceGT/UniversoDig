@@ -1,9 +1,9 @@
 {% extends 'menu.html' %}
 {% block contenido %}
- <div class="container">
-    <div class="contenido espacio">
+ <div class="container p-0">
+    <div class="contenido">
         <div class="outer-wrapper form-row align-items-center">
-            <div class="col-auto my-1">
+            <div class="col-auto my-0">
                 <form action="{% url 'home:nuevorecibo' %}" method="post">
                     {% csrf_token %}
                     <div class="">
@@ -15,78 +15,63 @@
                         <option value="{{contratacion.id}}">{{contratacion.cliente.nombre}} {{contratacion.servicio.tipo}} {{contratacion.servicio.nombre}} </option>
                         {% endfor %}
                     </datalist>
-                    <button type="submit" class="btn btn-primary mt-2">Nuevo pago</button>
-                    
+                    <button type="submit" class="btn btn-primary mt-2">Nuevo pago</button>                    
                 </form>
             </div>
         </div>        
     </div>
 </div>
 
-<div class="container mt-5">
+<div class="container p-3">
     <h1 class="title-container">
         Listado de Pagos
     </h1>
-    <div class="contenido table-responsive-lg mt-2">        
-        <div class="outer-wrapper">
-            <div class="contenido-tabla table-wrapper">
-                <table class="table-fill">
-                    <thead>
-                        <tr>
-                            <th>
-                                No Recibo
-                            </th>
-                            <th>
-                                Fecha
-                            </th>
-                            <th>
-                                Código
-                            </th>
-                            <th>
-                                Cliente
-                            </th>
-                            <th>
-                                Mes Pagado
-                            </th>
-                            <th>
-                                Total
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody class="fontfamily">
-                        {% for pago in pagos %}
-                        <tr>
-                            <td class="text-center">
-                                {{pago.id}}
-                            </td>
-                            <td class="text-center">
-                                {{pago.fecha.date}}
-                            </td>
-                            <td class="text-center">
-                                {{pago.contratacion.id}}
-                            </td>
-                            <td class="text-center">
-                                {{pago.contratacion.cliente }}, {{pago.contratacion.direccion }}
-                            </td>
-                            <td class="text-center">
-                                {% for mesanio in pago.detallepago_set.all %}
-                                {{mesanio.mes}},
-                                {% endfor %}
-                            </td>
-                            <td class="text-center">
-                                {{pago.total}}
-                            </td>
-                            <td class="text-center">
-                                <a href="#"><i class="bi bi-trash"></i></a>
-                                <a href="#"><i class="bi bi-journal-text"></i></a>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
+    <div class="row justify-content-center mt-3">        
+        <div class="table-responsive col-sm-12 col-md-11 col-xl-12 border border-primary rounded p-4">
+            <table class="table border border-danger rounded text-center">
+                <thead>
+                    <tr>
+                        <th> No Recibo </th>
+                        <th> Fecha </th>
+                        <th> Código </th>
+                        <th> Cliente </th>
+                        <th> Mes Pagado </th>
+                        <th> Total </th>
+                        <th> Acciones </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for pago in pagos %}
+                    <tr>
+                        <td class="text-center">
+                            {{pago.id}}
+                        </td>
+                        <td class="text-center">
+                            {{pago.fecha.date}}
+                        </td>
+                        <td class="text-center">
+                            {{pago.contratacion.id}}
+                        </td>
+                        <td class="text-center">
+                            {{pago.contratacion.cliente }}, {{pago.contratacion.direccion }}
+                        </td>
+                        <td class="text-center">
+                            {% for mesanio in pago.detallepago_set.all %}
+                            {{mesanio.mes}},
+                            {% endfor %}
+                        </td>
+                        <td class="text-center">
+                            {{pago.total}}
+                        </td>
+                        <td class="text-center">
+                            <a href="#"><i class="bi bi-trash"></i></a>
+                            <a href="#"><i class="bi bi-journal-text"></i></a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>          
-</div>   
-
+</div>
 {% endblock contenido %}
