@@ -17,14 +17,12 @@
       <div class="">
         <!-- Sliderbar -->
         <div class="sidebar h-100" id="side_nav">
-          <p align="right">
-            <button class="btn d-md-none d-block close-btn px-1 py-0 text-white"><i class="bi bi-list" style="font-size:40px;"></i></button>
-          </p>
+          <button class="btn d-md-none d-block close-btn px-1 py-0 text-white"><i class="bi bi-list" style="font-size:40px;"></i></button>
           <div class="header-box px-2 pt-3 pb-4 d-flex justify-content-between">
             <img class="img-fluid img-thumbnail" src="{% static './img/logo-terminado.png' %}"  alt="">
           </div>
           <ul class="list-unstyled px-2">
-            <li class=""> <a href="{% url 'home:home' %}" class="text-decoration-none px-3 py-2 d-block"><i class="bi bi-house-door"></i> Inicio</a></li>
+            <li class=""> <a href="{% url 'home:home' %}" class="text-decoration-none px-3 py-2 d-block"><i class="bi bi-house-door"></i> Dashboard</a></li>
             <div class="item separator"></div>
             <li class=""> <a href="{% url 'home:pagos' %}" class="text-decoration-none px-3 py-2 d-block"><i class="bi bi-credit-card-2-back"></i> Pagos</a></li>
             <div class="item separator"></div>
@@ -36,11 +34,13 @@
             <div class="item separator"></div>
             <li class=""> <a href="#" class="text-decoration-none px-3 py-2 d-block"><i class="bi bi-clipboard-data"></i> Reportes</a></li>
             <div class="item separator"></div>
+            <li class=""> <a href="{% url 'home:informacion' %}" class="text-decoration-none px-3 py-2 d-block"><i class="bi bi-building-check"></i> Empresa</a></li>
+            <div class="item separator"></div>
           </ul>
           <hr class="h-color mx-2">
           <ul class="list-unstyled px-2">
             <div class="item separator"></div>
-            <li class=""> <a href="{% url 'home:informacion' %}" class="text-decoration-none px-3 py-2 d-block"><i class="bi bi-gear-fill"></i> Configuracion</a></li>
+            <li class=""> <a href="#" class="text-decoration-none px-3 py-2 d-block"><i class="bi bi-gear-fill"></i> Configuracion</a></li>
             <div class="item separator"></div>
           </ul>
         </div>
