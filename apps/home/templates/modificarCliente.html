@@ -14,7 +14,10 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          ...
+          <form method="post">{% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Actualizar">
+        </form>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -23,9 +26,13 @@
       </div>
     </div>
   </div>
-    <form method="post">{% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Actualizar">
-    </form>
-
+    
+    <div class="contenido text-justify">
+      <div class="form-group row">
+        <form method="post">{% csrf_token %}
+          {{ form.as_p }}
+          <input type="submit" value="Actualizar">
+      </form>
+      </div>    
+  </div>    
 {% endblock contenido %}
