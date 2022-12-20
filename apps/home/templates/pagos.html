@@ -3,7 +3,7 @@
 <title>{% block titulo %}Pagos{% endblock titulo %}</title>
  <div class="container p-0">
     <div class="contenido">
-        <div class="outer-wrapper form-row align-items-center">
+        <div class="form-row align-items-center border border-primary rounded p-4">
             <div class="col-auto my-0">
                 <form action="{% url 'home:nuevorecibo' %}" method="post">
                     {% csrf_token %}
