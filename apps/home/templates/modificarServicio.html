@@ -1,5 +1,6 @@
 {% extends 'menu.html' %}
 {% block contenido %}
+<title>{% block titulo %}Actualizar servicio{% endblock titulo %}</title>
 <div class="contenido text-justify">
     <div class="form-group row">
         <form method="post"> {% csrf_token %}
