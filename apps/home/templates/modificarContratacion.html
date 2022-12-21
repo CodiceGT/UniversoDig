@@ -1,11 +1,25 @@
 {% extends 'menu.html' %}
 {% block contenido %}
 <title>{% block titulo %}Actualizar contratación{% endblock titulo %}</title>
-<div class="contenido text-justify">
+<div class="contenido text-justify justify-content-center">
     <div class="form-group row">
         <form method="post">{% csrf_token %}
-            {{ form.as_p }}
+            <!--{{ form.as_p }}-->
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    {% for field in form %}
+                    <div class="field_container border border-primary rounded p-4">
+                            <div class="mb-3 form-gruop">
+                                {{ field.errors }}
+                                <label for="recipient-name" class="col-form-label p-0">{{ field.label_tag }}</label>
+                                <!--<input type="{{ field }}" class="form-control" id="recipient-name" name="{{ field }}">-->
+                                <div class="form-control border border-primary rounded p-0" id="recipient-name">{{ field }}</div>
+                            </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
             <button type="submit" class="btn btn-primary" value="Actualizar">Actualizar</button>
     </div>    
-</div>          
+  </div>       
 {% endblock contenido %}

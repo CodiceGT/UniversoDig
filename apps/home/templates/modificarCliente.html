@@ -1,38 +1,24 @@
 {% extends 'menu.html' %}
 {% block contenido %}
 <title>{% block titulo %}Actualizar cliente{% endblock titulo %}</title>
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-    Modificar Cliente
-  </button>
-  
-  <!-- Modal -->
-  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <form method="post">{% csrf_token %}
-            {{ form.as_p }}
-            <input type="submit" value="Actualizar">
-        </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Understood</button>
-        </div>
-      </div>
-    </div>
-  </div>
-    
-    <div class="contenido text-justify">
-      <div class="form-group row">
-        <form method="post">{% csrf_token %}
-          {{ form.as_p }}
-          <input type="submit" value="Actualizar">
-      </form>
-      </div>    
+<div class="contenido text-justify p-0">
+  <div class="form-group row">
+      <form method="post">{% csrf_token %}
+          <!--{{ form.as_p }}-->
+              <div class="modal-content">
+                  {% for field in form %}
+                  <div class="field_container border border-primary rounded p-2">
+                          <div class="mb-3 form-gruop">
+                              {{ field.errors }}
+                              <label for="recipient-name" class="col-form-label p-0">{{ field.label_tag }}</label>
+                              <!--<input type="{{ field }}" class="form-control" id="recipient-name" name="{{ field }}">-->
+                              <div class="form-control border border-primary rounded p-0" id="recipient-name">{{ field }}</div>
+                          </div>
+                  </div>
+                  {% endfor %}
+              </div>
+          
+          <button type="submit" class="btn btn-primary" value="Actualizar">Actualizar</button>
   </div>    
+</div>       
 {% endblock contenido %}
