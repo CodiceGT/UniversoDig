@@ -54,6 +54,10 @@ hr .h-color{
     color: #65d8d6;
 }
 
+#menu #header #menu-btn:hover{
+    background-color: var(--hovecolor);
+}
+
 @media(max-width: 767px){
     #side_nav{
         margin-left: -250px;
