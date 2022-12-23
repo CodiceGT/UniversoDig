@@ -1,14 +1,20 @@
 from django.contrib.auth import logout
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.decorators import login_required
-from django.views.generic import ListView, CreateView, UpdateView
+from django.views.generic import ListView, CreateView, UpdateView, TemplateView
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.db.models import Sum
 from .models import *
 from .forms import *
 
-# Create your views here.
+#Generar pdf
+from openpyxl import Workbook
+from django.http.response import HttpResponse
+
+
+
+# Create your views here.p
 
 #Vistas para inicio y cierre de sesión
 class LoginView(LoginView):
@@ -209,3 +215,61 @@ def NuevoDetalle(request, pk):
 
 
     return render(request, 'recibo.html', {'contratacion':contratacion, 'recibo':recibo, 'meses':Mes.objects.all(), 'anios':Anio.objects.all()})
+
+
+#Reporte
+'''def Report(request):
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename=reporte-de-pagos.pdf'
+
+    buffer = BytesIO()
+    c = canvas.Canvas(buffer, pagesize=A4)
+
+
+    #header
+    c.setLineWidth(.3)
+    c.setFont('Helvetica', 22)
+    c.drawString(30, 750, 'Universo Digital')
+    c.setFont('Helvetica', 12)
+    c.drawString(30, 735, 'Reporte')
+
+    c.setFont('Helvetica-Bold', 12)
+    c.drawString(480,750, '23/12/2022')
+    #Start X, eigth and Y eigth
+    c.line(460, 747, 560, 747)
+'''
+
+class ReporteExcel(TemplateView):
+    def get(self,request,*args,**kwargs):
+        cliente = Cliente.objects.all()
+        wb = Workbook()
+        ws = wb.active
+        ws['B1'] = 'REPORTE DE CLIENTES'
+
+
+        ws.merge_cells('B1:G1')
+
+        ws['B3'] = 'CUI'
+        ws['C3'] = 'NOMBRE'
+        ws['D3'] = 'APELLIDO'
+        ws['E3'] = 'DIRECCION'
+        ws['F3'] = 'TELEFONO'
+        ws['G3'] = 'CORREO'
+
+        cont = 4
+        for cli in cliente:
+            ws.cell(row = cont, column = 2).value = cli.cui
+            ws.cell(row = cont, column = 3).value = cli.nombre
+            ws.cell(row = cont, column = 4).value = cli.apellido
+            ws.cell(row = cont, column = 5).value = cli.direccion
+            ws.cell(row = cont, column = 6).value = cli.telefono
+            ws.cell(row = cont, column = 7).value = cli.correo
+            cont+=1
+        
+        nombre_archivo = "ReporteClientes.xlsx"
+        response = HttpResponse(content_type="application/ms-excel")
+        content = "attachment; filename = {0}".format(nombre_archivo)
+        response['Content-Disposition'] = content
+        wb.save(response)
+        return response
+
