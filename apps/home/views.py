@@ -217,27 +217,6 @@ def NuevoDetalle(request, pk):
     return render(request, 'recibo.html', {'contratacion':contratacion, 'recibo':recibo, 'meses':Mes.objects.all(), 'anios':Anio.objects.all()})
 
 
-#Reporte
-'''def Report(request):
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename=reporte-de-pagos.pdf'
-
-    buffer = BytesIO()
-    c = canvas.Canvas(buffer, pagesize=A4)
-
-
-    #header
-    c.setLineWidth(.3)
-    c.setFont('Helvetica', 22)
-    c.drawString(30, 750, 'Universo Digital')
-    c.setFont('Helvetica', 12)
-    c.drawString(30, 735, 'Reporte')
-
-    c.setFont('Helvetica-Bold', 12)
-    c.drawString(480,750, '23/12/2022')
-    #Start X, eigth and Y eigth
-    c.line(460, 747, 560, 747)
-'''
 
 class ReporteExcel(TemplateView):
     def get(self,request,*args,**kwargs):
@@ -272,4 +251,38 @@ class ReporteExcel(TemplateView):
         response['Content-Disposition'] = content
         wb.save(response)
         return response
+
+
+class ReporteContrataciones(TemplateView):
+    def get(self,request,*args,**kwargs):
+        contrato = Contratacion.objects.all()
+        wb = Workbook()
+        ws = wb.active
+        ws['B1'] = 'REPORTE DE CONTRATACIONES'
+
+
+        ws.merge_cells('B1:E1')
+
+        ws['B3'] = 'CLIENTE'
+        ws['C3'] = 'SERVICIO'
+        ws['D3'] = 'DIRECCION'
+        ws['E3'] = 'CREACION'
+    
+
+        cont = 4
+        for puesto in contrato:
+            ws.cell(row = cont, column = 2).value = puesto.cliente
+            ws.cell(row = cont, column = 3).value = puesto.servicio
+            ws.cell(row = cont, column = 4).value = puesto.direccion
+            ws.cell(row = cont, column = 5).value = puesto.creacion
+            
+            cont+=1
+        
+        nombre_archivo = "ReporteContratacion.xlsx"
+        response = HttpResponse(content_type="application/ms-excel")
+        content = "attachment; filename = {0}".format(nombre_archivo)
+        response['Content-Disposition'] = content
+        wb.save(response)
+        return response
+
 
