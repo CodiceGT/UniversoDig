@@ -1,0 +1,98 @@
+<table>
+    <tr>
+        <td> Codigo </td>
+        <td> Cliente </td>
+        <td> Servicio </td>
+        <td> Enero </td>
+        <td> Febrero </td>
+        <td> Marzo </td>
+        <td> Abril </td>
+        <td> Mayo </td>
+        <td> Junio </td>
+        <td> Julio </td>
+        <td> Agosto </td>
+        <td> Septiembre </td>
+        <td> Octubre </td>
+        <td> Noviembre </td>
+        <td> Diciembre </td>
+    </tr>
+{% for contratacion in contrataciones %}
+<tr>
+    <td>
+        {{contratacion.id}}
+    </td>
+    <td>
+        {{contratacion.cliente}}
+    </td>
+    <td>
+        {{contratacion.servicio}}
+    </td>
+    {% for recibo in contratacion.recibo_set.all %}
+        {% for detallepago in recibo.detallepago_set.all %}
+        <td>
+            {% if detallepago.mes == 'Enero' %}
+                {{detallepago.subtotal}}
+            {% endif %}
+        </td>
+        <td>
+            {% if detallepago.mes == 'Febrero' %}
+                {{detallepago.subtotal}}
+            {% endif %}
+        </td>
+        <td>
+            {% if detallepago.mes == 'Marzo' %}
+                {{detallepago.subtotal}}
+            {% endif %}
+        </td>
+        <td>
+            {% if detallepago.mes == 'Abril' %}
+                {{detallepago.subtotal}}
+            {% endif %}
+        </td>
+        <td>
+            {% if detallepago.mes == 'Mayo' %}
+                {{detallepago.subtotal}}
+            {% endif %}
+        </td>
+        <td>
+            {% if detallepago.mes == 'Junio' %}
+                {{detallepago.subtotal}}
+            {% endif %}
+        </td>
+        <td>
+            {% if detallepago.mes == 'Julio' %}
+                {{detallepago.subtotal}}
+            {% endif %}
+        </td>
+        <td>
+            {% if detallepago.mes == 'Agosto' %}
+                {{detallepago.subtotal}}
+            {% endif %}
+        </td>
+        <td>
+            {% if detallepago.mes == 'Septiembre' %}
+                {{detallepago.subtotal}}
+            {% endif %}
+        </td>
+        <td>
+            {% if detallepago.mes == 'Octubre' %}
+                {{detallepago.subtotal}}
+            {% endif %}
+        </td>
+        <td>
+            {% if detallepago.mes == 'Noviembre' %}
+                {{detallepago.subtotal}}
+            {% endif %}
+        </td>
+        <td>
+            {% if detallepago.mes == 'Diciembre' %}
+                {{detallepago.subtotal}}
+            {% endif %}
+        </td>
+        {% endfor %}
+    {% endfor %}
+    <br>
+   
+{% endfor %}
+</tr>
+    </table>

@@ -286,3 +286,7 @@ class ReporteContrataciones(TemplateView):
         return response
 
 
+def repoView(request):
+    return render(request, 'reportes.html', {'contrataciones':Contratacion.objects.all()})
+
+

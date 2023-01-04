@@ -63,5 +63,8 @@ urlpatterns = [
     path('reporte/contratacion', ReporteContrataciones.as_view(), name='reporteContratacion'),
 
 
+    #Reportes
+    path('repo/', repoView, name='repo'),
+
     
 ]
