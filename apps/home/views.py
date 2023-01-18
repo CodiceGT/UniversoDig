@@ -1,7 +1,7 @@
 from django.contrib.auth import logout
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.decorators import login_required
-from django.views.generic import ListView, CreateView, UpdateView, TemplateView
+from django.views.generic import ListView, CreateView, UpdateView, TemplateView, View
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.db.models import Sum
@@ -12,6 +12,12 @@ from .forms import *
 from openpyxl import Workbook
 from django.http.response import HttpResponse
 
+import os
+from django.conf import settings
+from django.http import HttpResponse, HttpResponseRedirect
+from django.template.loader import get_template
+from xhtml2pdf import pisa
+from django.contrib.staticfiles import finders
 
 
 # Create your views here.p
@@ -165,6 +171,28 @@ class ModificarInformacionView(UpdateView):
     model = Informacion
     fields = ['nombre', 'direccion', 'telefono']
     success_url = reverse_lazy('home:informacion')
+
+#Vista para imprimir PDF de factura
+class ReciboPDFView(View):
+    def get(self, request, *args, **kwargs):
+        try:
+            template = get_template('recibopdf.html')
+            context = {'title': 'Prueba PDF'}
+            html = template.render(context)
+            response = HttpResponse(content_type='application/pdf')
+            response['Content-Disposition'] = 'attachment; filename="report.pdf"'
+            # create a pdf
+            pisa_status = pisa.CreatePDF(
+                html, dest=response)
+            # if error then show some funny view
+            if pisa_status.err:
+                return HttpResponse('We had some errors <pre>' + html + '</pre>')
+            return response
+        except:
+            pass
+        return HttpResponseRedirect(reverse_lazy('home:nuevoetalle'))
+
+
 
 def NuevoRecibo(request):
     pk = request.POST['contratacion']
