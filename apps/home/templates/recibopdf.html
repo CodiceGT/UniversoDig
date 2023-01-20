@@ -1,12 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
+{% load static %}
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
-<body>
-    <p>{{ title }}</p>
+<body>    
+    <img src="#" alt="">
+    <p class="head">
+            {{info.nombre}} <br>
+            {{info.direccion}} <br>
+            {{info.telefono}}
+    </p>
+    <p>
+        <b>Factura No. </b> {{recibo.id}} <br>
+        <b>Fecha: </b> {{contratacion.creacion}} <br>
+        <b>Cliente: </b> {{contratacion.cliente.nombre }} <br>
+        <b>Plan: </b>{{contratacion.servicio.nombre}} <br>
+    </p>
+    <table class="table">
+        <thead>
+            <td>Año</td>
+            <td>Mes</td>
+            <td>Subtotal</td>
+        </thead>
+        {% for detalles in recibo.detallepago_set.all %}
+        <tr>
+            <td>{{detalles.anio}}</td>
+            <td>{{detalles.mes}}</td>
+            <td> Q {{detalles.subtotal}} </td>
+        </tr>
+        {% endfor %}
+        <thead>
+            <td colspan="2">Total</td>
+            <td>Q {{recibo.total}}</td>
+        </thead>
+    </table>
 </body>
-</html>

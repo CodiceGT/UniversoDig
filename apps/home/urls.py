@@ -63,6 +63,6 @@ urlpatterns = [
     path('reporte/contratacion', ReporteContrataciones.as_view(), name='reporteContratacion'),
 
     #Facturas PDF
-    path('recibopdf/pdf/<int:pk>', ReciboPDFView.as_view(), name='recibo_pdf'),
+    path('recibopdf/<int:pk>', ReciboPDFView.as_view(), name='recibopdf'),
 
 ]

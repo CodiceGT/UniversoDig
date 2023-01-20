@@ -177,7 +177,9 @@ class ReciboPDFView(View):
     def get(self, request, *args, **kwargs):
         try:
             template = get_template('recibopdf.html')
-            context = {'title': 'Prueba PDF'}
+            context = {
+                'recibo': recibo.objects.get(pk=self.kwargs['pk'])
+            }
             html = template.render(context)
             response = HttpResponse(content_type='application/pdf')
             response['Content-Disposition'] = 'attachment; filename="report.pdf"'
@@ -190,7 +192,7 @@ class ReciboPDFView(View):
             return response
         except:
             pass
-        return HttpResponseRedirect(reverse_lazy('home:nuevoetalle'))
+        return HttpResponseRedirect(reverse_lazy('home:pagos'))
 
 
 
