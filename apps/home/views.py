@@ -178,17 +178,14 @@ class ReciboPDFView(View):
         try:
             template = get_template('recibopdf.html')
             context = {
-                'recibo': recibo.objects.get(pk=self.kwargs['pk'])
+                'recibo': Recibo.objects.get(pk=self.kwargs['pk'])
             }
             html = template.render(context)
             response = HttpResponse(content_type='application/pdf')
             response['Content-Disposition'] = 'attachment; filename="report.pdf"'
             # create a pdf
             pisa_status = pisa.CreatePDF(
-                html, dest=response)
-            # if error then show some funny view
-            if pisa_status.err:
-                return HttpResponse('We had some errors <pre>' + html + '</pre>')
+                html, dest=response)            
             return response
         except:
             pass
