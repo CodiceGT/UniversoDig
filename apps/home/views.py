@@ -5,7 +5,7 @@ from django.views.generic import ListView, CreateView, UpdateView
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.db.models import Sum
-from datetime import datetime
+from datetime import datetime, timedelta
 from .models import *
 from .forms import *
 
@@ -18,8 +18,9 @@ class LoginView(LoginView):
 
 @login_required
 def HomeView(request):
-    hoy = datetime.now().date()
-    recibos = Recibo.objects.filter(fecha__range=['2022-12-12', '2022-12-19'])
+    startdate = datetime.today()
+    enddate = startdate + timedelta(days=6)
+    recibos = Recibo.objects.filter(fecha__range=[startdate, enddate])
     ingresoSemana = recibos.aggregate(Sum('total'))['total__sum']
     if ingresoSemana is None:
         ingresoSemana = 0
