@@ -5,6 +5,7 @@ from django.views.generic import ListView, CreateView, UpdateView, TemplateView,
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.db.models import Sum
+from datetime import datetime, timedelta
 from .models import *
 from .forms import *
 
@@ -29,7 +30,13 @@ class LoginView(LoginView):
 
 @login_required
 def HomeView(request):
-    return render(request, 'index.html')
+    startdate = datetime.today()
+    enddate = startdate + timedelta(days=6)
+    recibos = Recibo.objects.filter(fecha__range=[startdate, enddate])
+    ingresoSemana = recibos.aggregate(Sum('total'))['total__sum']
+    if ingresoSemana is None:
+        ingresoSemana = 0
+    return render(request, 'index.html', {'contrataciones':Contratacion.objects.all(), 'recibos':recibos, 'ingresototal':ingresoSemana})
 
 
 def LogoutView(request):
@@ -147,7 +154,7 @@ def PagosView(request):
 
 #Vista para listar informacion de empresa
 def ListarInformaciónView(request):
-     return render(request, 'informacion.html', {'informacion':Informacion.objects.all()})
+     return render(request, 'informacion.html', {'informacion':Informacion.objects.get(pk=1), 'usuarios':User.objects.all()})
 
 #Vista para registrar informacion de empresa
 def InformacionView(request):
@@ -155,8 +162,12 @@ def InformacionView(request):
     direccion = request.POST['direccion']
     telefono = request.POST['telefono']
 
-    informacion = Informacion(nombre=nombre, direccion=direccion, telefono=telefono)
+    informacion = Informacion.objects.get(pk=1)
+    informacion.nombre = nombre
+    informacion.direccion = direccion
+    informacion.telefono = telefono
     informacion.save()
+
     return redirect('home:informacion')
 
 #Vista para borrar informacion de empresa
