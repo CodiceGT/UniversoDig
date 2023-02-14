@@ -46,6 +46,7 @@ urlpatterns = [
     path('contrataciones/nuevo/', NuevaContratacionView, name='nuevacontratacion'),
     path('contrataciones/borrar/<int:pk>', BorrarContratacionView, name='borrarcontratacion'),
     path('contratacion/editar/<int:pk>', ModificarContratacionView.as_view(), name='modificarcontratacion'),
+    
     #Pagos
     path('pagos/', PagosView, name='pagos'),
     path('recibo/', NuevoRecibo, name='nuevorecibo'),
@@ -58,6 +59,10 @@ urlpatterns = [
     path('informacion/editar/<int:pk>', ModificarInformacionView.as_view(), name='modificarinformacion'),
     
     
-    
-    
+    path('reporte', ReporteExcel.as_view(), name='reporteClientes'),
+    path('reporte/contratacion', ReporteContrataciones.as_view(), name='reporteContratacion'),
+
+    #Facturas PDF
+    path('recibopdf/<int:pk>', ReciboPDFView.as_view(), name='recibopdf'),
+
 ]
