@@ -30,13 +30,14 @@ class LoginView(LoginView):
 
 @login_required
 def HomeView(request):
-    startdate = datetime.today()
-    enddate = startdate + timedelta(days=6)
+    enddate = datetime.today() + timedelta(days=1)
+    startdate = enddate - timedelta(days=7)
     recibos = Recibo.objects.filter(fecha__range=[startdate, enddate])
+    deudores = Contratacion.objects.filter(estado='p')
     ingresoSemana = recibos.aggregate(Sum('total'))['total__sum']
     if ingresoSemana is None:
         ingresoSemana = 0
-    return render(request, 'index.html', {'contrataciones':Contratacion.objects.all(), 'recibos':recibos, 'ingresototal':ingresoSemana})
+    return render(request, 'index.html', {'contrataciones':Contratacion.objects.all(), 'recibos':recibos, 'ingresototal':ingresoSemana, 'deudores':deudores})
 
 
 def LogoutView(request):
