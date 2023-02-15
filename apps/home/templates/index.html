@@ -42,53 +42,18 @@
                             <th>Codigo contratación</th>
                             <th>Cliente</th>
                             <th>Tipo Servicio</th>
-                            <th>Meses Pendientes</th>
-                            <th>Monto</th>
+                            <th>Saldo pendiente</th>
                         </tr>
                     </thead>
                     <tbody>
+                        {% for deudor in deudores %}
                         <tr>
-                            <td>02121212</td>
-                            <td>Manolo Fuentes</td>
-                            <td>Internet Básico</td>
-                            <td>4</td>
-                            <td>Q150</td>
+                            <td> {{deudor.pk}} </td>
+                            <td> {{deudor.cliente.nombre}} {{deudor.cliente.apellido}}</td>
+                            <td> {{deudor.servicio.tipo}} {{deudor.servicio.nombre}} </td>
+                            <td> {{deudor.saldo}} </td>
                         </tr>
-                        <tr>
-                            <td>02121212</td>
-                            <td>Manolo Fuentes</td>
-                            <td>Internet Básico</td>
-                            <td>4</td>
-                            <td>Q150</td>
-                        </tr>
-                        <tr>
-                            <td>02121212</td>
-                            <td>Manolo Fuentes</td>
-                            <td>Internet Básico</td>
-                            <td>4</td>
-                            <td>Q150</td>
-                        </tr>
-                        <tr>
-                        <td>02121212</td>
-                        <td>Manolo Fuentes</td>
-                        <td>Internet Básico</td>
-                        <td>4</td>
-                        <td>Q150</td>
-                    </tr>
-                    <tr>
-                        <td>02121212</td>
-                        <td>Manolo Fuentes</td>
-                        <td>Internet Básico</td>
-                        <td>4</td>
-                        <td>Q150</td>
-                    </tr>
-                    <tr>
-                        <td>02121212</td>
-                        <td>Manolo Fuentes</td>
-                        <td>Internet Básico</td>
-                        <td>4</td>
-                        <td>Q150</td>
-                    </tr>
+                        {% endfor %}
                     </tbody>   
                 </table> 
             </div>          
