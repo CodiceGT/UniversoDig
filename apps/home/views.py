@@ -1,10 +1,11 @@
 from django.contrib.auth import logout
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.decorators import login_required
-from django.views.generic import ListView, CreateView, UpdateView, TemplateView
+from django.views.generic import ListView, CreateView, UpdateView, TemplateView, View
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.db.models import Sum
+from datetime import datetime, timedelta
 from .models import *
 from .forms import *
 
@@ -12,6 +13,12 @@ from .forms import *
 from openpyxl import Workbook
 from django.http.response import HttpResponse
 
+import os
+from django.conf import settings
+from django.http import HttpResponse, HttpResponseRedirect
+from django.template.loader import get_template
+from xhtml2pdf import pisa
+from django.contrib.staticfiles import finders
 
 
 # Create your views here.p
@@ -23,7 +30,13 @@ class LoginView(LoginView):
 
 @login_required
 def HomeView(request):
-    return render(request, 'index.html')
+    startdate = datetime.today()
+    enddate = startdate + timedelta(days=6)
+    recibos = Recibo.objects.filter(fecha__range=[startdate, enddate])
+    ingresoSemana = recibos.aggregate(Sum('total'))['total__sum']
+    if ingresoSemana is None:
+        ingresoSemana = 0
+    return render(request, 'index.html', {'contrataciones':Contratacion.objects.all(), 'recibos':recibos, 'ingresototal':ingresoSemana})
 
 
 def LogoutView(request):
@@ -141,7 +154,7 @@ def PagosView(request):
 
 #Vista para listar informacion de empresa
 def ListarInformaciónView(request):
-     return render(request, 'informacion.html', {'informacion':Informacion.objects.all()})
+     return render(request, 'informacion.html', {'informacion':Informacion.objects.get(pk=1), 'usuarios':User.objects.all()})
 
 #Vista para registrar informacion de empresa
 def InformacionView(request):
@@ -149,8 +162,12 @@ def InformacionView(request):
     direccion = request.POST['direccion']
     telefono = request.POST['telefono']
 
-    informacion = Informacion(nombre=nombre, direccion=direccion, telefono=telefono)
+    informacion = Informacion.objects.get(pk=1)
+    informacion.nombre = nombre
+    informacion.direccion = direccion
+    informacion.telefono = telefono
     informacion.save()
+
     return redirect('home:informacion')
 
 #Vista para borrar informacion de empresa
@@ -165,6 +182,27 @@ class ModificarInformacionView(UpdateView):
     model = Informacion
     fields = ['nombre', 'direccion', 'telefono']
     success_url = reverse_lazy('home:informacion')
+
+#Vista para imprimir PDF de factura
+class ReciboPDFView(View):
+    def get(self, request, *args, **kwargs):
+        try:
+            template = get_template('recibopdf.html')
+            context = {
+                'recibo': Recibo.objects.get(pk=self.kwargs['pk'])
+            }
+            html = template.render(context)
+            response = HttpResponse(content_type='application/pdf')
+            response['Content-Disposition'] = 'attachment; filename="report.pdf"'
+            # create a pdf
+            pisa_status = pisa.CreatePDF(
+                html, dest=response)            
+            return response
+        except:
+            pass
+        return HttpResponseRedirect(reverse_lazy('home:pagos'))
+
+
 
 def NuevoRecibo(request):
     pk = request.POST['contratacion']

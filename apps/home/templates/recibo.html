@@ -39,7 +39,7 @@
             </div>
             <div class="col-md-8">
               <label for="validationCustom04" class="form-label">Cliente</label>
-              <input type="text" class="form-control small" id="validationCustom04" value="{{contratacion.cliente.nombre }}" disabled>
+              <input type="text" class="form-control small" id="validationCustom04" value="{{contratacion.cliente.nombre }} {{contratacion.cliente.apellido }}" disabled>
               <div class="invalid-feedback">
                   Please select a valid state.
                 </div>
@@ -107,7 +107,7 @@
                 </thead>
             </table>
             <div class="row">
-                <a href="#" class="btn btn-success">Imprimir</a>
+                <a href="{% url 'home:recibopdf' recibo.id %}" class="btn btn-success">Imprimir</a>
                 <a class="btn btn-danger px-4 mt-2" href="{% url 'home:pagos' %}">Finalizar</a>
             </div>
         </div>

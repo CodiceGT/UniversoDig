@@ -62,6 +62,7 @@ urlpatterns = [
     path('reporte', ReporteExcel.as_view(), name='reporteClientes'),
     path('reporte/contratacion', ReporteContrataciones.as_view(), name='reporteContratacion'),
 
+    #Facturas PDF
+    path('recibopdf/<int:pk>', ReciboPDFView.as_view(), name='recibopdf'),
 
-    
 ]
