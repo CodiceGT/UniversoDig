@@ -81,29 +81,9 @@ class DetallePago(models.Model):
 
 class Informacion(models.Model):
     nombre = models.CharField(max_length=45)
+    logo = models.ImageField(upload_to='logo', default='descarga.png')
     direccion = models.CharField(max_length=128)
     telefono = models.CharField(max_length=15)
 
     def __str__(self):
         return '%s %s %s' % (self.nombre, self.direccion, self.telefono)
-
-
-#Modelos para manejo de usuarios
-class Cuenta(models.Model):
-    tipo = models.CharField(max_length=25)
-    usuario = models.OneToOneField(User, on_delete=models.CASCADE)
-
-
-    def __str__(self):
-        return self.usuario.username
-
-
-@receiver(post_save, sender=User)
-def crear_cuenta(sender, instance, created, **kwargs):
-    if created:
-        Cuenta.objects.create(usuario=instance)
-
-
-@receiver(post_save, sender=User)
-def guardar_cuenta(sender, instance, created, **kwargs):
-    instance.cuenta.save()

@@ -162,7 +162,6 @@ def InformacionView(request):
     nombre = request.POST['nombre']
     direccion = request.POST['direccion']
     telefono = request.POST['telefono']
-
     informacion = Informacion.objects.get(pk=1)
     informacion.nombre = nombre
     informacion.direccion = direccion
