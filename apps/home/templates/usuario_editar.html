@@ -1,0 +1,14 @@
+{% extends 'menu.html' %}
+
+{% load static %}
+
+{% block contenido %}
+    <div class="container p-5">
+        <form action="" method="post" class="w-75">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">Guardar cambios</button>
+            <a href="{% url 'home:usuario_eliminar' form.username.value %}" class="btn btn-danger">Eliminar este usuario</a>
+        </form>
+    </div>
+{% endblock contenido %}

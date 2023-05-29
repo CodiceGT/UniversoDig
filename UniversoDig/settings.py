@@ -14,6 +14,7 @@ import os
 from pathlib import Path
 from django.conf import settings
 from django.urls import reverse_lazy
+from django.contrib.messages import constants as messages
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -146,13 +147,13 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es-mx'
 
 TIME_ZONE = 'America/Mexico_City'
 
-TIME_ZONE = 'UTC'
-
 USE_I18N = True
+
+USE_L10N = True
 
 USE_TZ = True
 
@@ -189,3 +190,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True #Cerrar sesión al cerrar navegador
 SESSION_COOKIE_AGE = 360 #Tiempo de inactividad permitido
 SESSION_SAVE_EVERY_REQUEST = True #Mantener sesión mientras hayan peticiones
+
+MESSAGE_TAGS={
+    messages.DEBUG: 'debug',
+    messages.INFO: 'info',
+    messages.SUCCESS: 'success',
+    messages.WARNING: 'warning',
+    messages.ERROR: 'danger',
+}

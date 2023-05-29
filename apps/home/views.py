@@ -1,10 +1,11 @@
+from django.contrib import messages, auth
 from django.contrib.auth import logout
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, CreateView, UpdateView, TemplateView, View
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from django.db.models import Sum
+from django.db.models import Sum, Q
 from datetime import datetime, timedelta
 from .models import *
 from .forms import *
@@ -24,8 +25,20 @@ from django.contrib.staticfiles import finders
 # Create your views here.p
 
 #Vistas para inicio y cierre de sesión
-class LoginView(LoginView):
-    template_name = 'registration/login.html'
+def login_view(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = auth.authenticate(username=username, password=password)
+        if user is not None:
+            auth.login(request, user)
+            messages.success(request, 'Inicio de sesión correcto')
+            return redirect(
+                'home:home')  # Cambia 'home' por la URL de la página a la que deseas redirigir después del inicio de sesión exitoso
+        else:
+            messages.error(request, 'Credenciales inválidas')
+
+    return render(request, 'registration/login.html')
 
 
 @login_required
@@ -153,9 +166,6 @@ class ModificarContratacionView(UpdateView):
 def PagosView(request):
     return render(request, 'pagos.html', {'pagos':Recibo.objects.all().order_by('-pk'), 'contrataciones':Contratacion.objects.all()})
 
-#Vista para listar informacion de empresa
-def ListarInformaciónView(request):
-     return render(request, 'informacion.html', {'informacion':Informacion.objects.get(pk=1), 'usuarios':User.objects.all()})
 
 #Vista para registrar informacion de empresa
 def InformacionView(request):
@@ -169,6 +179,56 @@ def InformacionView(request):
     informacion.save()
 
     return redirect('home:informacion')
+
+
+#Vista para listar informacion de empresa
+def informacionempresa_view(request):
+    form = UserRegisterForm()
+    context = {'informacion':Informacion.objects.get(pk=1), 'form': form, 'usuarios': User.objects.all()}
+    return render(request, 'informacion.html', context)
+
+# ----------------- Vistas CRUD Usuarios -----------------
+def usuarios_view(request):
+    form = UserRegisterForm()
+    context = {'form': form, 'usuarios': User.objects.all()}
+    return render(request, 'usuarios.html', context)
+
+
+def usuarios_filtrados(request):
+    form = UserRegisterForm()
+    nombre = request.GET.get('nombre', '')  # Obtener el valor del parámetro 'nombre' de la solicitud GET
+
+    usuarios = User.objects.filter(Q(first_name__icontains=nombre) | Q(last_name__icontains=nombre))  # Filtrar usuarios cuyos nombres contengan el valor proporcionado
+
+    context = {'informacion':Informacion.objects.get(pk=1), 'form': form, 'usuarios': usuarios}
+
+    return render(request, 'informacion.html', context)
+
+def usuarionuevo_view(request):
+    form = UserRegisterForm(request.POST)
+    if form.is_valid():
+        form.save()
+        username = form.cleaned_data['first_name']
+        messages.success(request, f'Usuario {username} creado correctamente')
+    else:
+        error_message = form.errors.as_text()
+        messages.error(request, f'El usuario no se creó. Error: {error_message}')
+    return redirect('home:informacion')
+
+
+def usuarioeliminar_view(request, username):
+    colaborador = User.objects.get(username=username)
+    colaborador.delete()
+    messages.success(request, f'Usuario {colaborador.first_name} eliminado correctamente')
+    return redirect('home:informacion')
+
+
+class EditarUsuarioView(UpdateView):
+    template_name = 'usuario_editar.html'
+    form_class = UserForm
+    success_url = reverse_lazy('home:informacion')
+    model = User
+
 
 #Vista para borrar informacion de empresa
 def BorrarInformacionView(request, pk):

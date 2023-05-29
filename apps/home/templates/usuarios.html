@@ -1,32 +1,12 @@
-{% extends 'menu.html' %}
+{% extends 'base.html' %}
+
 {% load static %}
 
 {% block contenido %}
-
-<div class="container p-3">
-    <div class="justify-content-center mt-5 border border-primary rounded p-4">
-        <h1 class="title-container">
-            Informacion de la empresa
-        </h1>
-        <div class="row justify-content-center mt-3">        
-            <div class="table-responsive col-sm-12 col-md-11 col-xl-12">
-                <div class="container-fluid text-warning">
-                    <img src="{{ informacion.logo.url }}" alt="" width="200px">
-                    <p><b class="text-info">Empresa:</b> {{informacion.nombre}}</p>
-                    <p><b class="text-info">Dirección:</b> {{ informacion.direccion }}</p>
-                    <p><b class="text-info">Telefono:</b> {{ informacion.telefono }}</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-
-    <div class="justify-content-center mt-5 border border-primary rounded p-4">
-        <h1 class="title-container ">
-            Gestión de usuarios
-        </h1>
-        <div class="container p-3">
+<div class="container p-5">
+    
+    <div class="container p-3">
+        
         <!-- Button trigger modal -->
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
             Nuevo usuario
@@ -34,7 +14,7 @@
 
 
             <!-- Vertically centered modal -->
-
+            
             <!-- Modal -->
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
@@ -67,10 +47,9 @@
                             <input type="password" class="form-control" placeholder="" aria-label="Password2" aria-describedby="basic-addon5" name="password2" required>
                         </div>
                         <div class="input-group mb-3">
-                            <span class="input-group-text" id="basic-addon6" >Tipo de usuario</span>
-                            <select class="form-control" name="groups" id="id_groups" >
-                                <option value="1">Administrador</option>
-                                <option value="2">Cobrador</option>
+                            <span class="input-group-text" id="basic-addon6" hidden>Tipo de usuario</span>
+                            <select class="form-control" name="groups" id="id_groups" hidden>
+                                <option value="2">Estudiante</option>
                             </select>
                         </div>
                         <button type="submit" class="btn btn-primary">Guardar</button>
@@ -80,17 +59,14 @@
                 </div>
             </div>
             <!-- Vertically centered modal -->
+            
 
-
-            <div class="container d-flex align-center justify-content-center">
-                <!-- Formulario para filtrar -->
-                <form method="GET" class="input-group mt-2 w-50" action="{% url 'home:usuario_filtrado' %}">
-                  <input type="search" class="form-control border-info justify-content-center" name="nombre" placeholder="Filtrar por nombre">
-                  <div class="input-group-append">
-                        <button type="submit" class="btn btn-info">Buscar</button>
-                  </div>
-                </form> <!-- / Formulario para filtrar -->
-            </div>
+            <form method="GET" class="input-group mb-3 mx-5 my-2" action="{% url 'home:usuario_filtrado' %}">
+              <input type="search" class="form-control border" name="nombre" placeholder="Filtrar por nombre">
+              <div class="input-group-append">
+                    <button type="submit" class="btn btn-info">Buscar</button>
+              </div>
+            </form>
 
         </div>
         <div class="row">
@@ -118,8 +94,6 @@
             <!-- Final Card -->
             {% endfor %}
 
-        </div> <!-- Final seccion Usuarios -->
+        </div>
     </div>
-</div>
-
 {% endblock contenido %}

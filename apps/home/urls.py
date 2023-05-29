@@ -23,11 +23,15 @@ app_name='home'
 
 urlpatterns = [
     #Inicio y cierre de sesión
-    path('login/', LoginView.as_view(), name='login'),
+    path('login/', login_view, name='login'),
     path('logout/', LogoutView, name='logout'),
     
     #cuentas
     path('usuarios/', UsuarioView, name='usuarios'),
+    path('usuario/nuevo/', usuarionuevo_view, name='usuario_nuevo'),
+    path('usuarios/filtrado/', usuarios_filtrados, name='usuario_filtrado'),
+    path('usuario/editar/<int:pk>', EditarUsuarioView.as_view(), name='usuario_editar'),
+    path('usuario/eliminar/<str:username>', usuarioeliminar_view, name='usuario_eliminar'),
         
     #Dashboard
     path('', HomeView, name='home'),
@@ -54,7 +58,7 @@ urlpatterns = [
     path('detallepago/<int:pk>', NuevoDetalle, name='nuevoetalle'),
 
     #Información de empresa
-    path('informacion/', ListarInformaciónView, name='informacion'),
+    path('informacion/', informacionempresa_view, name='informacion'),
     path('informacion/nueva/', InformacionView, name='nuevainformacion'),
     path('informacion/borrar/<int:pk>', BorrarInformacionView, name='borrarinformacion'),
     path('informacion/editar/<int:pk>', ModificarInformacionView.as_view(), name='modificarinformacion'),
