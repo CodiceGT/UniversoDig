@@ -3,21 +3,40 @@
 
 {% block contenido %}
 
-<div class="container p-3">
-    <div class="justify-content-center mt-5 border border-primary rounded p-4">
+<div class="container px-3">
+    <div class="justify-content-center border border-primary rounded p-4">
         <h1 class="title-container">
             Informacion de la empresa
         </h1>
-        <div class="row justify-content-center mt-3">        
-            <div class="table-responsive col-sm-12 col-md-11 col-xl-12">
-                <div class="container-fluid text-warning">
-                    <img src="{{ informacion.logo.url }}" alt="" width="200px">
-                    <p><b class="text-info">Empresa:</b> {{informacion.nombre}}</p>
-                    <p><b class="text-info">Dirección:</b> {{ informacion.direccion }}</p>
-                    <p><b class="text-info">Telefono:</b> {{ informacion.telefono }}</p>
+
+
+        <div class="card border-0 mb-3" style="max-width:100%;">
+            <div class="row g-0">
+              <div class="col-md-4">
+                <img src="{{ informacion.logo.url }}" class="img-fluid rounded-start" alt="...">
+              </div>
+              <div class="col-md-8">
+                <div class="card-body">
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        <div class="input-group mb-3">
+                            <span class="input-group-text bg-primary text-light" id="basic-addon1">Empresa</span>
+                            <input type="text" value="{{informacion.nombre}}" class="form-control" placeholder="" aria-label="nombre" aria-describedby="basic-addon1" name="nombre" required="">
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text bg-primary text-light" id="basic-addon2">Dirección:</span>
+                            <input type="text" value="{{ informacion.direccion }}" class="form-control" placeholder="" aria-label="direccion" aria-describedby="basic-addon2" name="nombre" required="">
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text bg-primary text-light" id="basic-addon3">Teléfono</span>
+                            <input type="text" value="{{ informacion.telefono }}" class="form-control" placeholder="" aria-label="telefono" aria-describedby="basic-addon3" name="nombre" required="">
+                        </div>
+                        <button type="submit" class="btn btn-success form-control w-50">Guardar cambios</button>
+                  </form>
                 </div>
+              </div>
             </div>
-        </div>
+          </div>
     </div>
 
 
