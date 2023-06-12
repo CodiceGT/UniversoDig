@@ -22,8 +22,6 @@ from xhtml2pdf import pisa
 from django.contrib.staticfiles import finders
 
 
-# Create your views here.p
-
 #Vistas para inicio y cierre de sesión
 def login_view(request):
     if request.method == 'POST':

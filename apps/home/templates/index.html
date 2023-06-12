@@ -1,7 +1,9 @@
 {% extends 'menu.html' %}    
     {% block contenido %}
     <title>{% block titulo %}Home{% endblock titulo %}</title>
-    <h1 class="title-container "> Resumen </h1>
+
+    <secction class="container" id="hero">
+        <h1 class="title-container "> Resumen </h1>
         <div class="contenido col-sm-12 col-md-11 col-xl-12">            
             <div class="card">
                 <a href="#">
@@ -58,5 +60,6 @@
                 </table> 
             </div>          
                 
-        </div>          
+        </div>       
+    </div>   
     {% endblock contenido %}

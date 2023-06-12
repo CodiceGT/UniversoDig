@@ -5,7 +5,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLongTitle">Agregar nuevo Servicio</h5>
+          <h5 class="modal-title" id="exampleModalLongTitle">Agregar nuevo Plan</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <form action="{% url 'home:nuevoservicio' %}" method="post">
@@ -20,7 +20,7 @@
                 </select>
             </div>
             <div class="mb-3">
-                <label for="recipient-name" class="col-form-label">Nombre del servicio</label>
+                <label for="recipient-name" class="col-form-label">Nombre del Plan</label>
                 <input type="text" class="form-control" id="recipient-name" name='nombre'>
             </div>
             <div class="mb-3">
@@ -43,10 +43,10 @@
 
 <div class="container p-0">
     <div class="row justify-content-end">
-        <button type="button" class="btn btn-primary col-12 col-sm-4 col-lg-2" data-bs-toggle="modal" data-bs-target="#exampleModalCenter" data-bs-whatever="@mdo">Nuevo Servicio</button>
+        <button type="button" class="btn btn-primary col-12 col-sm-4 col-lg-2" data-bs-toggle="modal" data-bs-target="#exampleModalCenter" data-bs-whatever="@mdo">Nuevo Plan</button>
     </div>
     <h1 class="title-container">
-        Listado de Servicios
+        Listado de Planes
     </h1>
     <div class="row justify-content-center mt-3">
         <div class="table-responsive col-sm-12 col-md-11 col-xl-12 border border-primary rounded p-4">

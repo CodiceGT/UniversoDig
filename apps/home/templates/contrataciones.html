@@ -52,7 +52,7 @@
     </h1>
     <div class="row justify-content-center mt-3">
         <div class="table-responsive col-sm-12 col-md-11 col-xl-12 border border-primary rounded p-4">
-            <table class="table border border-danger rounded text-center">
+            <table class="table border border-danger rounded text-center small">
                 <thead>
                     <tr>
                         <th> Codigo </th>
@@ -67,10 +67,10 @@
                     {% for contratacion in contrataciones %}
                     <tr>
                         <td class="text-center">
-                            {{ contratacion.cui }}
+                            {{ contratacion.id }}
                         </td>
                         <td class="text-center">
-                            {{ contratacion.creacion }}
+                            {{ contratacion.creacion | date }}
                         </td>
                         <td class="text-center">
                             {{ contratacion.cliente }}

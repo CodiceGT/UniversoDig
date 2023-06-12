@@ -2,13 +2,13 @@
 {% block contenido %}
 <title>{% block titulo %}Pagos{% endblock titulo %}</title>
  <div class="container p-0">
-    <div class="contenido">
+    <div class="contenido small">
         <div class="form-row align-items-center border border-primary rounded p-4">
             <div class="col-auto my-0">
                 <form action="{% url 'home:nuevorecibo' %}" method="post">
                     {% csrf_token %}
                     <div class="">
-                        <label class="title-container mr-sm-2" for="contratacion">¿Qué servicio desea pagar?</label>                        
+                        <label class="title-container f-1" for="contratacion">¿Qué servicio desea pagar?</label>                        
                     </div>
                     <input class="custom-select mr-sm-2 col-sm-8 w-75 table-responsive-lg" list="listacontrataciones" name="contratacion" required>
                     <datalist id="listacontrataciones">
