@@ -35,3 +35,8 @@ class InformacionForm(forms.ModelForm):
     class Meta:
         model = Informacion
         fields = '__all__'
+
+class FormNuevoReporte(forms.ModelForm):
+    class Meta:
+        model = ReporteFallo
+        fields = ['contratacion', 'descripcion', 'tecnico_asignado']

@@ -241,6 +241,29 @@ class ModificarInformacionView(UpdateView):
     fields = ['nombre', 'direccion', 'telefono']
     success_url = reverse_lazy('home:informacion')
 
+
+#Reportes de fallos
+def reporte_fallo(request):
+    reporte_fallo = ReporteFallo.objects.all()
+
+    if request.method == 'POST':
+        form = FormNuevoReporte(request.POST)
+        if form.is_valid():
+            reporte = form.save(commit=False)
+            reporte.usuario = request.user
+            reporte.save()
+            messages.success(request, 'Se ha creado el reporte de fallo correctamente.')
+            return redirect('home:reportes')  # Redirige a la vista deseada después de crear el reporte
+        else:
+            messages.error(request, 'Ha ocurrido un error al crear el reporte de fallo.')
+    else:
+        form = FormNuevoReporte
+
+    return render(request, 'reporte_fallo.html', {'reportes': reporte_fallo, 'form':form})
+
+
+    
+
 #Vista para imprimir PDF de factura
 class ReciboPDFView(View):
     def get(self, request, *args, **kwargs):

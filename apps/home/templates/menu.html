@@ -23,7 +23,7 @@
           <img class="img-fluid img-thumbnail" src="{% static './img/logo-terminado.png' %}"  alt="">
           </div>
           <ul class="px-2">
-            {% for group in user.groups.all %}
+            {% for group in request.user.groups.all %}
                 {% if group.name == 'Administrador' %}
                 <li class="nav-item"> <a href="{% url 'home:home' %}" class="nav-link scrollto px-3 py-2 d-block"><i class="bi bi-house-door"></i> Inicio</a></li>
                 <div class="item separator"></div>
@@ -37,7 +37,7 @@
                 <div class="item separator"></div>
                 <li class="nav-item"> <a href="{% url 'home:clientes' %}" class="nav-link scrollto px-3 py-2 d-block"><i class="bi bi-person-lines-fill"></i> Clientes</a></li>
                 <div class="item separator"></div>
-                <li class="nav-item"> <a href="#" class="nav-link scrollto px-3 py-2 d-block"><i class="bi bi-clipboard-data"></i> Reportes</a></li>
+                <li class="nav-item"> <a href="{% url 'home:reportes' %}" class="nav-link scrollto px-3 py-2 d-block"><i class="bi bi-clipboard-data"></i> Reportes</a></li>
                 <div class="item separator"></div>
                 
                 {% elif group.name == 'Cobrador' %}
@@ -45,19 +45,20 @@
                 <div class="item separator"></div>
                 <li class="nav-item"> <a href="{% url 'home:pagos' %}" class="nav-link scrollto px-3 py-2 d-block"><i class="bi bi-credit-card-2-back"></i> Pagos</a></li>
                 <div class="item separator"></div>
-                <li class="nav-item"> <a href="#" class="nav-link scrollto px-3 py-2 d-block"><i class="bi bi-clipboard-data"></i> Reportes</a></li>
+                <li class="nav-item"> <a href="{% url 'home:reportes' %}" class="nav-link scrollto px-3 py-2 d-block"><i class="bi bi-clipboard-data"></i> Reportes</a></li>
                 <div class="item separator"></div>
                 
                 {% elif group.name == 'Tecnico' %}
                 <li class="nav-item"> <a href="{% url 'home:home' %}" class="nav-link scrollto px-3 py-2 d-block"><i class="bi bi-house-door"></i> Inicio</a></li>
                 <div class="item separator"></div>
-                <li class="nav-item"> <a href="#" class="nav-link scrollto px-3 py-2 d-block"><i class="bi bi-clipboard-data"></i> Reportes</a></li>
+                <li class="nav-item"> <a href="{% url 'home:reportes' %}" class="nav-link scrollto px-3 py-2 d-block"><i class="bi bi-clipboard-data"></i> Reportes</a></li>
                 <div class="item separator"></div>
+                
 
                 {% endif %}
             {% endfor %}
           </ul>
-          {% for group in user.groups.all %}
+          {% for group in request.user.groups.all %}
                 {% if group.name == 'Administrador' %}
                 <hr class="h-color mx-2">
                 <ul class="list-unstyled px-2">
@@ -85,7 +86,7 @@
                 <ul class="navbar-nav ml-auto mb-2 mb-lg-0">
                   <li class="nav-item dropdown ml-auto">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                      <i class="bi bi-person-circle">  {{user.first_name}} {{ user.last_name }}</i>
+                      <i class="bi bi-person-circle">  {{request.user.first_name}} {{ request.user.last_name }}</i>
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                       <a class="dropdown-item text-primary" href="#">{{ user.cuenta.tipo | upper }}</a>              
@@ -99,7 +100,7 @@
           </nav>
         
 
-        <div class="container pt-5">
+        <div class="container pt-2 px-3">
 
         <!-- Contenedor de alertas Toast -->
         <div class="toast-container position-fixed bottom-0 end-0 p-3">

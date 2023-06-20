@@ -1,0 +1,21 @@
+{% extends 'menu.html' %}
+
+{% block contenido %}
+<section>
+    <h2>Reportes de fallo</h2>
+    <p>¿Qué servicio está fallando?</p>
+    
+    <form action="{% url 'home:reportes' %}" method="POST">
+        {% csrf_token %}
+        {{form.as_p}}
+        <button type="submit">Guardar</button>
+    </form>
+
+    <hr>
+    <h3>Listado de Reportes</h3>
+    {% for reporte in reportes %}
+    <p> {{ reporte.id }} - {{reporte.contratacion}} - {{ reporte.descripcion }} </p>
+    {% endfor %}
+
+</section>
+{% endblock contenido %}

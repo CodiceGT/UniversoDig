@@ -63,6 +63,7 @@ urlpatterns = [
     path('informacion/borrar/<int:pk>', BorrarInformacionView, name='borrarinformacion'),
     path('informacion/editar/<int:pk>', ModificarInformacionView.as_view(), name='modificarinformacion'),
     
+    path('fallos/', reporte_fallo, name='reportes'),
     
     path('reporte', ReporteExcel.as_view(), name='reporteClientes'),
     path('reporte/contratacion', ReporteContrataciones.as_view(), name='reporteContratacion'),
