@@ -51,8 +51,9 @@ CORS_ORIGIN_WHITELIST = (
 # Application definition
 
 INSTALLED_APPS = [
-    'whitenoise.runserver_nostatic',
     'apps.home',
+    'django_crontab',
+    'whitenoise.runserver_nostatic',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -156,6 +157,12 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+
+# Tareas programadas
+CRONJOBS = [
+    ('0 0 15 * *', 'home.cron.actualizar_pendientes_pago'), #Actualizar pendientes de pago cada 15 del mes
+]
 
 
 # Redireccionamiento del Login

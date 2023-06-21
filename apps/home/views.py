@@ -331,9 +331,19 @@ def NuevoDetalle(request, pk):
             recibo.total = 0
         recibo.save()
         
-
-
     return render(request, 'recibo.html', {'contratacion':contratacion, 'recibo':recibo, 'meses':Mes.objects.all(), 'anios':Anio.objects.all()})
+
+
+def actualizar_pendiente(contratacion):
+    contratacion
+    dias_ultimo_pago = datetime.date.today() - timedelta(contratacion.ultimo_pago)
+    if dias_ultimo_pago.days >= 30:
+        meses = dias_ultimo_pago / 30
+        contratacion.saldo = meses.days * contratacion.servicio.costo
+        contratacion.estado = 'P'
+    else:
+        contratacion.estado = 'D'
+    contratacion.save()
 
 
 
