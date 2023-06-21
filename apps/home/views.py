@@ -304,45 +304,31 @@ def NuevoDetalle(request, pk):
     contratacion = Contratacion.objects.get(pk=recibo.contratacion.id)
 
     if mes != '' and anio != '' and subtotal != '':
-        if Mes.objects.filter(nombre=mes).count() == 0:
-            mes = Mes(nombre=mes)
-            mes.save()
-            mes = Mes.objects.last()
-        else:
-            mes = Mes.objects.get(nombre=mes)
-        
-        if Anio.objects.filter(numero=anio).count() == 0:
-            anio = Anio(numero=anio)
-            anio.save()
-            anio = Anio.objects.last()
-        else:
-            anio = Anio.objects.get(numero=anio)
+        mes, _ = Mes.objects.get_or_create(nombre=mes)
+        anio, _ = Anio.objects.get_or_create(numero=anio)
 
-        for recibito in Recibo.objects.filter(contratacion=contratacion).iterator():
-            if DetallePago.objects.filter(recibo=recibito, mes=mes, anio=anio).count() != 0:
-                valido = True
-                
-        if valido != True:
-            detallepago = DetallePago(mes=mes, anio=anio, subtotal=subtotal, recibo=recibo)
-            detallepago.save()
+        if not DetallePago.objects.filter(recibo__contratacion=contratacion, mes=mes, anio=anio).exists():
+            detallepago = DetallePago.objects.create(mes=mes, anio=anio, subtotal=subtotal, recibo=recibo)
+            contratacion.ultimo_pago += timedelta(days=30)
+            contratacion.save()
+            actualizar_pendiente(contratacion)
 
-        recibo.total = DetallePago.objects.filter(recibo=recibo).aggregate(Sum('subtotal'))['subtotal__sum']
-        if recibo.total is None:
-            recibo.total = 0
+        recibo.total = DetallePago.objects.filter(recibo=recibo).aggregate(total=Sum('subtotal'))['total'] or 0
         recibo.save()
         
     return render(request, 'recibo.html', {'contratacion':contratacion, 'recibo':recibo, 'meses':Mes.objects.all(), 'anios':Anio.objects.all()})
 
 
 def actualizar_pendiente(contratacion):
-    contratacion
-    dias_ultimo_pago = datetime.date.today() - timedelta(contratacion.ultimo_pago)
+    dias_ultimo_pago = datetime.now().astimezone(contratacion.ultimo_pago.tzinfo) - contratacion.ultimo_pago
+    #Verifica si tiene más de 30 días el último pago para sumarle a su saldo pendiente
     if dias_ultimo_pago.days >= 30:
         meses = dias_ultimo_pago / 30
         contratacion.saldo = meses.days * contratacion.servicio.costo
-        contratacion.estado = 'P'
+        contratacion.estado = 'P' # Establece como "Pendiente de pago"
     else:
-        contratacion.estado = 'D'
+        contratacion.saldo = 0
+        contratacion.estado = 'D' # Establece como "Al día"
     contratacion.save()
 
 
