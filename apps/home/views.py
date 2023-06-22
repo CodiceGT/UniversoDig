@@ -44,7 +44,7 @@ def HomeView(request):
     enddate = datetime.today() + timedelta(days=1)
     startdate = enddate - timedelta(days=7)
     recibos = Recibo.objects.filter(fecha__range=[startdate, enddate])
-    deudores = Contratacion.objects.filter(estado='p')
+    deudores = Contratacion.objects.filter(estado='P')
     ingresoSemana = recibos.aggregate(Sum('total'))['total__sum']
     if ingresoSemana is None:
         ingresoSemana = 0

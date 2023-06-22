@@ -29,7 +29,7 @@ class Servicio(models.Model):
 
 
     def __str__(self):
-        return '%s %s Q%s' % (self.tipo, self.nombre, self.costo)
+        return '%s %s' % (self.tipo, self.nombre)
 
 
 class Contratacion(models.Model):
