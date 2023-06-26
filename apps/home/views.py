@@ -182,7 +182,7 @@ def InformacionView(request):
 #Vista para listar informacion de empresa
 def informacionempresa_view(request):
     form = UserRegisterForm()
-    context = {'informacion':Informacion.objects.get(pk=1), 'form': form, 'usuarios': User.objects.all()}
+    context = {'informacion':Informacion.objects.get(pk=1), 'form': form, 'usuarios': User.objects.all().order_by('first_name')}
     return render(request, 'informacion.html', context)
 
 # ----------------- Vistas CRUD Usuarios -----------------
