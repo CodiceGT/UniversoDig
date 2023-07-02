@@ -27,7 +27,7 @@ urlpatterns = [
     path('logout/', LogoutView, name='logout'),
     
     #cuentas
-    path('usuarios/', UsuarioView, name='usuarios'),
+    path('usuarios/', usuarios_view, name='usuarios'),
     path('usuario/nuevo/', usuarionuevo_view, name='usuario_nuevo'),
     path('usuarios/filtrado/', usuarios_filtrados, name='usuario_filtrado'),
     path('usuario/editar/<int:pk>', EditarUsuarioView.as_view(), name='usuario_editar'),

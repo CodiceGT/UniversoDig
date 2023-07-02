@@ -10,7 +10,7 @@ from datetime import datetime, timedelta
 from .models import *
 from .forms import *
 
-#Generar pdf
+# Generar pdf
 from openpyxl import Workbook
 from django.http.response import HttpResponse
 
@@ -22,7 +22,7 @@ from xhtml2pdf import pisa
 from django.contrib.staticfiles import finders
 
 
-#Vistas para inicio y cierre de sesión
+# Vistas para inicio y cierre de sesión
 def login_view(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -48,7 +48,9 @@ def HomeView(request):
     ingresoSemana = recibos.aggregate(Sum('total'))['total__sum']
     if ingresoSemana is None:
         ingresoSemana = 0
-    return render(request, 'index.html', {'contrataciones':Contratacion.objects.all(), 'recibos':recibos, 'ingresototal':ingresoSemana, 'deudores':deudores})
+    return render(request, 'index.html',
+                  {'contrataciones': Contratacion.objects.all(), 'recibos': recibos, 'ingresototal': ingresoSemana,
+                   'deudores': deudores})
 
 
 def LogoutView(request):
@@ -56,12 +58,14 @@ def LogoutView(request):
     return redirect('home:login')
 
 
-#Vista para Dashboard
+# Vista para Dashboard
 
 
 '''def ClientesView(request):
     return render(request, 'Clientes.html')
 '''
+
+
 # Vista Para Registrar Clientes
 @login_required
 def NuevoClienteView(request):
@@ -71,39 +75,39 @@ def NuevoClienteView(request):
     direccion = request.POST['direccion']
     telefono = request.POST['telefono']
     correo = request.POST['correo']
-    
+
     cliente = Cliente(cui=cui, nombre=nombre, apellido=apellido, direccion=direccion, telefono=telefono, correo=correo)
     cliente.save()
-    
+
     return redirect('home:clientes')
 
-#Vista Para Listar Clientes
-def ListarCliente(request):
-    return render(request, 'Clientes.html', {'clientes':Cliente.objects.all()})
 
-#Vista Para Borrar Clientes
+# Vista Para Listar Clientes
+def ListarCliente(request):
+    return render(request, 'Clientes.html', {'clientes': Cliente.objects.all()})
+
+
+# Vista Para Borrar Clientes
 def BorrarClienteView(request, pk):
     cliente = Cliente.objects.get(pk=pk)
     cliente.delete()
     return redirect('home:clientes')
 
-#Vista Para Modificar Clientes
+
+# Vista Para Modificar Clientes
 class ModificarClienteView(UpdateView):
     template_name = 'modificarCliente.html'
     model = Cliente
     fields = ['cui', 'nombre', 'apellido', 'direccion', 'telefono', 'correo']
     success_url = reverse_lazy('home:clientes')
 
-#Vista Para Listar usuarios
-def UsuarioView(request):
-    model = User
-    return render(request, 'cuentas.html', {'usuarios':User.objects.all()})
 
-#Vistas para listar servicios
+# Vistas para listar servicios
 def ServiciosView(request):
-    return render(request, 'servicios.html', {'servicios':Servicio.objects.all()})
+    return render(request, 'servicios.html', {'servicios': Servicio.objects.all()})
 
-#Vista para insertar servicios
+
+# Vista para insertar servicios
 def NuevoServicioView(request):
     tipo = request.POST['tipo']
     nombre = request.POST['nombre']
@@ -114,13 +118,14 @@ def NuevoServicioView(request):
     return redirect('home:servicios')
 
 
-#Vista para borrar servicios
+# Vista para borrar servicios
 def BorrarServicioView(request, pk):
     servicio = Servicio.objects.get(pk=pk)
     servicio.delete()
     return redirect('home:servicios')
 
-#Vista para modificar servicios
+
+# Vista para modificar servicios
 class ModificarServicioView(UpdateView):
     template_name = 'modificarServicio.html'
     model = Servicio
@@ -128,16 +133,16 @@ class ModificarServicioView(UpdateView):
     success_url = reverse_lazy('home:servicios')
 
 
-#Vista para listar contrataciones
+# Vista para listar contrataciones
 def ContratacionesView(request):
     return render(request, 'contrataciones.html', {
-        'contrataciones':Contratacion.objects.all(),
-        'clientes':Cliente.objects.all(),
-        'servicios':Servicio.objects.all()
-        })
+        'contrataciones': Contratacion.objects.all(),
+        'clientes': Cliente.objects.all(),
+        'servicios': Servicio.objects.all()
+    })
 
 
-#Vista para crear una contratacion
+# Vista para crear una contratacion
 def NuevaContratacionView(request):
     cliente = Cliente.objects.get(pk=(request.POST['cliente']))
     servicio = Servicio.objects.get(pk=(request.POST['servicio']))
@@ -147,25 +152,28 @@ def NuevaContratacionView(request):
     return redirect('home:contrataciones')
 
 
-#Vista para borrar contratacion
+# Vista para borrar contratacion
 def BorrarContratacionView(request, pk):
     contratacion = Contratacion.objects.get(pk=pk)
     contratacion.delete()
     return redirect('home:contrataciones')
 
-#Vista para modificar contratacion
+
+# Vista para modificar contratacion
 class ModificarContratacionView(UpdateView):
     template_name = 'modificarContratacion.html'
     model = Contratacion
     fields = ['cliente', 'servicio', 'direccion']
     success_url = reverse_lazy('home:contrataciones')
 
-#Vista para listar pagos
+
+# Vista para listar pagos
 def PagosView(request):
-    return render(request, 'pagos.html', {'pagos':Recibo.objects.all().order_by('-pk'), 'contrataciones':Contratacion.objects.all()})
+    return render(request, 'pagos.html',
+                  {'pagos': Recibo.objects.all().order_by('-pk'), 'contrataciones': Contratacion.objects.all()})
 
 
-#Vista para registrar informacion de empresa
+# Vista para registrar informacion de empresa
 def InformacionView(request):
     nombre = request.POST['nombre']
     direccion = request.POST['direccion']
@@ -179,11 +187,13 @@ def InformacionView(request):
     return redirect('home:informacion')
 
 
-#Vista para listar informacion de empresa
+# Vista para listar informacion de empresa
 def informacionempresa_view(request):
     form = UserRegisterForm()
-    context = {'informacion':Informacion.objects.get(pk=1), 'form': form, 'usuarios': User.objects.all().order_by('first_name')}
+    context = {'informacion': Informacion.objects.get(pk=1), 'form': form,
+               'usuarios': User.objects.all().order_by('first_name')}
     return render(request, 'informacion.html', context)
+
 
 # ----------------- Vistas CRUD Usuarios -----------------
 def usuarios_view(request):
@@ -196,11 +206,13 @@ def usuarios_filtrados(request):
     form = UserRegisterForm()
     nombre = request.GET.get('nombre', '')  # Obtener el valor del parámetro 'nombre' de la solicitud GET
 
-    usuarios = User.objects.filter(Q(first_name__icontains=nombre) | Q(last_name__icontains=nombre))  # Filtrar usuarios cuyos nombres contengan el valor proporcionado
+    usuarios = User.objects.filter(Q(first_name__icontains=nombre) | Q(
+        last_name__icontains=nombre))  # Filtrar usuarios cuyos nombres contengan el valor proporcionado
 
-    context = {'informacion':Informacion.objects.get(pk=1), 'form': form, 'usuarios': usuarios}
+    context = {'informacion': Informacion.objects.get(pk=1), 'form': form, 'usuarios': usuarios}
 
     return render(request, 'informacion.html', context)
+
 
 def usuarionuevo_view(request):
     form = UserRegisterForm(request.POST)
@@ -211,30 +223,31 @@ def usuarionuevo_view(request):
     else:
         error_message = form.errors.as_text()
         messages.error(request, f'El usuario no se creó. Error: {error_message}')
-    return redirect('home:informacion')
+    return redirect('home:usuarios')
 
 
 def usuarioeliminar_view(request, username):
     colaborador = User.objects.get(username=username)
     colaborador.delete()
     messages.success(request, f'Usuario {colaborador.first_name} eliminado correctamente')
-    return redirect('home:informacion')
+    return redirect('home:usuarios')
 
 
 class EditarUsuarioView(UpdateView):
     template_name = 'usuario_editar.html'
     form_class = UserForm
-    success_url = reverse_lazy('home:informacion')
+    success_url = reverse_lazy('home:usuarios')
     model = User
 
 
-#Vista para borrar informacion de empresa
+# Vista para borrar informacion de empresa
 def BorrarInformacionView(request, pk):
     informacion = Informacion.objects.get(pk=pk)
     informacion.delete()
     return redirect('home:informacion')
 
-#Vista para modificar informacion de empresa
+
+# Vista para modificar informacion de empresa
 class ModificarInformacionView(UpdateView):
     template_name = 'modificarInformacion.html'
     model = Informacion
@@ -242,7 +255,7 @@ class ModificarInformacionView(UpdateView):
     success_url = reverse_lazy('home:informacion')
 
 
-#Reportes de fallos
+# Reportes de fallos
 def reporte_fallo(request):
     reporte_fallo = ReporteFallo.objects.all()
 
@@ -259,12 +272,10 @@ def reporte_fallo(request):
     else:
         form = FormNuevoReporte
 
-    return render(request, 'reporte_fallo.html', {'reportes': reporte_fallo, 'form':form})
+    return render(request, 'reporte_fallo.html', {'reportes': reporte_fallo, 'form': form})
 
 
-    
-
-#Vista para imprimir PDF de factura
+# Vista para imprimir PDF de factura
 class ReciboPDFView(View):
     def get(self, request, *args, **kwargs):
         try:
@@ -277,12 +288,11 @@ class ReciboPDFView(View):
             response['Content-Disposition'] = 'attachment; filename="report.pdf"'
             # create a pdf
             pisa_status = pisa.CreatePDF(
-                html, dest=response)            
+                html, dest=response)
             return response
         except:
             pass
         return HttpResponseRedirect(reverse_lazy('home:pagos'))
-
 
 
 def NuevoRecibo(request):
@@ -290,15 +300,18 @@ def NuevoRecibo(request):
     contratacion = Contratacion.objects.get(pk=pk)
     recibo = Recibo(contratacion=contratacion, total=0)
     recibo.save()
-    return render(request, 'recibo.html', {'contratacion':contratacion, 'recibo':Recibo.objects.last(), 'meses':Mes.objects.all(), 'anios':Anio.objects.all()})
+    return render(request, 'recibo.html',
+                  {'contratacion': contratacion, 'recibo': Recibo.objects.last(), 'meses': Mes.objects.all(),
+                   'anios': Anio.objects.all()})
+
 
 def NuevoDetalle(request, pk):
     recibo = pk
     mes = request.POST.get('mes', '')
     anio = request.POST.get('anio', '')
-    subtotal = request.POST.get('subtotal','')
+    subtotal = request.POST.get('subtotal', '')
 
-    valido = False #Variable que sirve para verificar si ese mes ya está pagado.
+    valido = False  # Variable que sirve para verificar si ese mes ya está pagado.
 
     recibo = Recibo.objects.get(pk=recibo)
     contratacion = Contratacion.objects.get(pk=recibo.contratacion.id)
@@ -315,31 +328,30 @@ def NuevoDetalle(request, pk):
 
         recibo.total = DetallePago.objects.filter(recibo=recibo).aggregate(total=Sum('subtotal'))['total'] or 0
         recibo.save()
-        
-    return render(request, 'recibo.html', {'contratacion':contratacion, 'recibo':recibo, 'meses':Mes.objects.all(), 'anios':Anio.objects.all()})
+
+    return render(request, 'recibo.html', {'contratacion': contratacion, 'recibo': recibo, 'meses': Mes.objects.all(),
+                                           'anios': Anio.objects.all()})
 
 
 def actualizar_pendiente(contratacion):
     dias_ultimo_pago = datetime.now().astimezone(contratacion.ultimo_pago.tzinfo) - contratacion.ultimo_pago
-    #Verifica si tiene más de 30 días el último pago para sumarle a su saldo pendiente
+    # Verifica si tiene más de 30 días el último pago para sumarle a su saldo pendiente
     if dias_ultimo_pago.days >= 30:
         meses = dias_ultimo_pago / 30
         contratacion.saldo = meses.days * contratacion.servicio.costo
-        contratacion.estado = 'P' # Establece como "Pendiente de pago"
+        contratacion.estado = 'P'  # Establece como "Pendiente de pago"
     else:
         contratacion.saldo = 0
-        contratacion.estado = 'D' # Establece como "Al día"
+        contratacion.estado = 'D'  # Establece como "Al día"
     contratacion.save()
 
 
-
 class ReporteExcel(TemplateView):
-    def get(self,request,*args,**kwargs):
+    def get(self, request, *args, **kwargs):
         cliente = Cliente.objects.all()
         wb = Workbook()
         ws = wb.active
         ws['B1'] = 'REPORTE DE CLIENTES'
-
 
         ws.merge_cells('B1:G1')
 
@@ -352,14 +364,14 @@ class ReporteExcel(TemplateView):
 
         cont = 4
         for cli in cliente:
-            ws.cell(row = cont, column = 2).value = cli.cui
-            ws.cell(row = cont, column = 3).value = cli.nombre
-            ws.cell(row = cont, column = 4).value = cli.apellido
-            ws.cell(row = cont, column = 5).value = cli.direccion
-            ws.cell(row = cont, column = 6).value = cli.telefono
-            ws.cell(row = cont, column = 7).value = cli.correo
-            cont+=1
-        
+            ws.cell(row=cont, column=2).value = cli.cui
+            ws.cell(row=cont, column=3).value = cli.nombre
+            ws.cell(row=cont, column=4).value = cli.apellido
+            ws.cell(row=cont, column=5).value = cli.direccion
+            ws.cell(row=cont, column=6).value = cli.telefono
+            ws.cell(row=cont, column=7).value = cli.correo
+            cont += 1
+
         nombre_archivo = "ReporteClientes.xlsx"
         response = HttpResponse(content_type="application/ms-excel")
         content = "attachment; filename = {0}".format(nombre_archivo)
@@ -369,12 +381,11 @@ class ReporteExcel(TemplateView):
 
 
 class ReporteContrataciones(TemplateView):
-    def get(self,request,*args,**kwargs):
+    def get(self, request, *args, **kwargs):
         contrato = Contratacion.objects.all()
         wb = Workbook()
         ws = wb.active
         ws['B1'] = 'REPORTE DE CONTRATACIONES'
-
 
         ws.merge_cells('B1:E1')
 
@@ -382,22 +393,19 @@ class ReporteContrataciones(TemplateView):
         ws['C3'] = 'SERVICIO'
         ws['D3'] = 'DIRECCION'
         ws['E3'] = 'CREACION'
-    
 
         cont = 4
         for puesto in contrato:
-            ws.cell(row = cont, column = 2).value = puesto.cliente
-            ws.cell(row = cont, column = 3).value = puesto.servicio
-            ws.cell(row = cont, column = 4).value = puesto.direccion
-            ws.cell(row = cont, column = 5).value = puesto.creacion
-            
-            cont+=1
-        
+            ws.cell(row=cont, column=2).value = puesto.cliente
+            ws.cell(row=cont, column=3).value = puesto.servicio
+            ws.cell(row=cont, column=4).value = puesto.direccion
+            ws.cell(row=cont, column=5).value = puesto.creacion
+
+            cont += 1
+
         nombre_archivo = "ReporteContratacion.xlsx"
         response = HttpResponse(content_type="application/ms-excel")
         content = "attachment; filename = {0}".format(nombre_archivo)
         response['Content-Disposition'] = content
         wb.save(response)
         return response
-
-
