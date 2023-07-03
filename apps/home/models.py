@@ -62,6 +62,7 @@ class Recibo(models.Model):
 class ReporteFallo(models.Model):
     ESTADO_CHOICES = (
         ('P', 'Pendiente'),
+        ('E', 'En progreso'),
         ('S', 'Solucionado'),
     )
     contratacion = models.ForeignKey(Contratacion, on_delete=models.CASCADE)

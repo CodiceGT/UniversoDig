@@ -254,7 +254,7 @@ class ModificarInformacionView(UpdateView):
 # Reportes de fallos
 @login_required
 def reporte_fallo(request):
-    reportes = ReporteFallo.objects.all()
+    reportes = ReporteFallo.objects.all().order_by('-fecha_reporte')
     usuarios = User.objects.filter(groups__name__in=['Tecnico','Administrador'])
 
     if request.method == 'POST':
