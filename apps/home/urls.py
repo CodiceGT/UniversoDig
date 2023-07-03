@@ -15,24 +15,25 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.conf.urls.static import static
-from django.urls import path, include
-from apps.home import views
+from django.urls import path
+
+from UniversoDig import settings
 from .views import *
 
-app_name='home'
+app_name = 'home'
 
 urlpatterns = [
     #Inicio y cierre de sesión
     path('login/', login_view, name='login'),
     path('logout/', LogoutView, name='logout'),
-    
+
     #cuentas
     path('usuarios/', usuarios_view, name='usuarios'),
     path('usuario/nuevo/', usuarionuevo_view, name='usuario_nuevo'),
     path('usuarios/filtrado/', usuarios_filtrados, name='usuario_filtrado'),
     path('usuario/editar/<int:pk>', EditarUsuarioView.as_view(), name='usuario_editar'),
     path('usuario/eliminar/<str:username>', usuarioeliminar_view, name='usuario_eliminar'),
-        
+
     #Dashboard
     path('', HomeView, name='home'),
     path('clientes/', ListarCliente, name='clientes'),
@@ -51,7 +52,7 @@ urlpatterns = [
     path('contrataciones/nuevo/', NuevaContratacionView, name='nuevacontratacion'),
     path('contrataciones/borrar/<int:pk>', BorrarContratacionView, name='borrarcontratacion'),
     path('contratacion/editar/<int:pk>', ModificarContratacionView.as_view(), name='modificarcontratacion'),
-    
+
     #Pagos
     path('pagos/', PagosView, name='pagos'),
     path('recibo/', NuevoRecibo, name='nuevorecibo'),
@@ -62,13 +63,13 @@ urlpatterns = [
     path('informacion/nueva/', InformacionView, name='nuevainformacion'),
     path('informacion/borrar/<int:pk>', BorrarInformacionView, name='borrarinformacion'),
     path('informacion/editar/<int:pk>', ModificarInformacionView.as_view(), name='modificarinformacion'),
-    
+
     path('fallos/', reporte_fallo, name='reportes'),
-    
+
     path('reporte', ReporteExcel.as_view(), name='reporteClientes'),
     path('reporte/contratacion', ReporteContrataciones.as_view(), name='reporteContratacion'),
 
     #Facturas PDF
     path('recibopdf/<int:pk>', ReciboPDFView.as_view(), name='recibopdf'),
-
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+

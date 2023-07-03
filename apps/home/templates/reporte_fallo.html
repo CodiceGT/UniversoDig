@@ -1,21 +1,57 @@
 {% extends 'menu.html' %}
 
 {% block contenido %}
-<section>
-    <h2>Reportes de fallo</h2>
-    <p>¿Qué servicio está fallando?</p>
-    
-    <form action="{% url 'home:reportes' %}" method="POST">
-        {% csrf_token %}
-        {{form.as_p}}
-        <button type="submit">Guardar</button>
-    </form>
+    <section>
+        <h2>Reportes de fallo</h2>
 
-    <hr>
-    <h3>Listado de Reportes</h3>
-    {% for reporte in reportes %}
-    <p> {{ reporte.id }} - {{reporte.contratacion}} - {{ reporte.descripcion }} </p>
-    {% endfor %}
+        <!-- Button modal Reporte -->
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+            Nuevo reporte
+        </button> <!-- / Button modal Reporte -->
 
-</section>
+        <!-- Modal Reporte-->
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+             aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">¿Qué servicio está fallando?</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{% url 'home:reportes' %}" method="POST">
+                            {% csrf_token %}
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">{{ form.contratacion.label }}</span>
+                                {{ form.contratacion }}
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">{{ form.descripcion.label }}</span>
+                                {{ form.descripcion }}
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text"><i class="bi bi-person-circle"> Técnico</i></span>
+                                <select class="form-control" name="tecnico_asignado" id="tecnico_asignado">
+                                    <option value="">---------</option>
+                                    {% for usuario in usuarios %}
+                                        <option value="{{ usuario.id }}"> {{ usuario.first_name }} {{ usuario.last_name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <button class="btn btn-primary" type="submit">Guardar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div><!-- / Modal Reporte-->
+
+
+        <hr>
+        <h3>Listado de Reportes</h3>
+        {% for reporte in reportes %}
+            <p> {{ reporte.id }} - {{ reporte.contratacion }}
+                - {{ reporte.descripcion }} {{ reporte.tecnico_asignado }} </p>
+        {% endfor %}
+
+    </section>
 {% endblock contenido %}

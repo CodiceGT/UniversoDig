@@ -1,25 +1,21 @@
+from datetime import datetime, timedelta
+
 from django.contrib import messages, auth
 from django.contrib.auth import logout
-from django.contrib.auth.views import LoginView
 from django.contrib.auth.decorators import login_required
-from django.views.generic import ListView, CreateView, UpdateView, TemplateView, View
-from django.shortcuts import render, redirect
-from django.urls import reverse_lazy
+from django.contrib.auth.models import User
 from django.db.models import Sum, Q
-from datetime import datetime, timedelta
-from .models import *
-from .forms import *
-
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, redirect
+from django.template.loader import get_template
+from django.urls import reverse_lazy
+from django.views.generic import UpdateView, TemplateView, View
 # Generar pdf
 from openpyxl import Workbook
-from django.http.response import HttpResponse
-
-import os
-from django.conf import settings
-from django.http import HttpResponse, HttpResponseRedirect
-from django.template.loader import get_template
 from xhtml2pdf import pisa
-from django.contrib.staticfiles import finders
+
+from .forms import FormNuevoReporte, UserForm, UserRegisterForm
+from .models import Anio, Cliente, DetallePago, Informacion, Mes, Servicio, Contratacion, Recibo, ReporteFallo
 
 
 # Vistas para inicio y cierre de sesión
@@ -256,8 +252,10 @@ class ModificarInformacionView(UpdateView):
 
 
 # Reportes de fallos
+@login_required
 def reporte_fallo(request):
-    reporte_fallo = ReporteFallo.objects.all()
+    reportes = ReporteFallo.objects.all()
+    usuarios = User.objects.filter(groups__name__in=['Tecnico','Administrador'])
 
     if request.method == 'POST':
         form = FormNuevoReporte(request.POST)
@@ -272,7 +270,7 @@ def reporte_fallo(request):
     else:
         form = FormNuevoReporte
 
-    return render(request, 'reporte_fallo.html', {'reportes': reporte_fallo, 'form': form})
+    return render(request, 'reporte_fallo.html', {'reportes': reportes, 'usuarios':usuarios, 'form': form})
 
 
 # Vista para imprimir PDF de factura
