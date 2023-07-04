@@ -111,7 +111,23 @@
                 <td>{{ reporte.contratacion.cliente }}</td>
                 <td>{{ reporte.contratacion.servicio }}</td>
                 <td>{{ reporte.descripcion }}</td>
-                <td>{{ reporte.tecnico_asignado.first_name }} {{ reporte.tecnico_asignado.last_name }}</td>
+                <td>
+                    <div class="dropdown">
+                        <a class="btn dropdown-toggle" href="#" role="button"
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            {{ reporte.tecnico_asignado.first_name }} {{ reporte.tecnico_asignado.last_name }}
+                        </a>
+
+                        <ul class="dropdown-menu">
+                            {% for usuario in usuarios %}
+                                <li><a class="dropdown-item"
+                                       href="{% url 'home:cambiartecnico_reporte' reporte.id usuario.id %}"> {{ usuario.first_name }} {{ usuario.last_name }} </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                </td>
                 </tr>
                 {% endfor %}
                 </tbody>

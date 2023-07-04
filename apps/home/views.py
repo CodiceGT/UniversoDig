@@ -277,7 +277,6 @@ def reporte_fallo(request):
 @login_required
 def cambiar_estado_reporte_fallo_view(request, pk, estado):
     grupos_usuario = request.user.groups.all()
-    print(grupos_usuario)
     if grupos_usuario[0].name in ['Administrador', 'Tecnico']:
         tecnico = User.objects.get(pk=request.user.id)
         reporte = ReporteFallo.objects.get(pk=pk)
@@ -290,6 +289,24 @@ def cambiar_estado_reporte_fallo_view(request, pk, estado):
             messages.success(request, f'{reporte} - {reporte.get_estado_display()}')
     else:
         messages.error(request, 'Usuario sin autorización para cambios de estado')
+    return redirect(reverse('home:reportes'))
+
+
+# Cambio de técnico de Reporte de fallo
+@login_required
+def cambiar_tecnico_reporte_fallo_view(request, id_reporte, id_tecnico):
+    grupos_usuario = request.user.groups.all()
+    if  grupos_usuario[0].name == 'Administrador':
+        reporte = ReporteFallo.objects.get(pk=id_reporte)
+        if reporte.estado == 'S':
+            messages.warning(request, f'{reporte} ya fue completado, no se puede cambiar el técnico asignado')
+        else:
+            tecnico = User.objects.get(pk=id_tecnico)
+            reporte.tecnico_asignado = tecnico
+            reporte.save()
+            messages.success(request, f'{reporte} asignado a {tecnico}')
+    else:
+        messages.error(request, 'Usuario sin autorización para cambio de técnico')
     return redirect(reverse('home:reportes'))
 
 

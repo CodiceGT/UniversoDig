@@ -22,8 +22,9 @@ from .views import login_view, LogoutView, usuarios_view, usuarionuevo_view, usu
     usuarioeliminar_view, HomeView, ListarCliente, NuevoClienteView, BorrarClienteView, ModificarClienteView, \
     ServiciosView, NuevoServicioView, BorrarServicioView, ModificarServicioView, ContratacionesView, \
     NuevaContratacionView, BorrarContratacionView, ModificarContratacionView, PagosView, NuevoRecibo, NuevoDetalle, \
-    informacionempresa_view, InformacionView, BorrarInformacionView, ModificarInformacionView, reporte_fallo, cambiar_estado_reporte_fallo_view, \
-    ReporteExcel, ReporteContrataciones, ReciboPDFView
+    informacionempresa_view, InformacionView, BorrarInformacionView, ModificarInformacionView, reporte_fallo, \
+    cambiar_estado_reporte_fallo_view, cambiar_tecnico_reporte_fallo_view, ReporteExcel, ReporteContrataciones, \
+    ReciboPDFView
 
 app_name = 'home'
 
@@ -71,7 +72,10 @@ urlpatterns = [
                   path('informacion/editar/<int:pk>', ModificarInformacionView.as_view(), name='modificarinformacion'),
 
                   path('fallos/', reporte_fallo, name='reportes'),
-                  path('reportes/cambiarestado/<int:pk>/<str:estado>', cambiar_estado_reporte_fallo_view, name='cambiarestado_reporte'),
+                  path('reportes/cambiarestado/<int:pk>/<str:estado>', cambiar_estado_reporte_fallo_view,
+                       name='cambiarestado_reporte'),
+                  path('reportes/cambiartecnico/<int:id_reporte>/<int:id_tecnico>', cambiar_tecnico_reporte_fallo_view,
+                       name='cambiartecnico_reporte'),
 
                   path('reporte', ReporteExcel.as_view(), name='reporteClientes'),
                   path('reporte/contratacion', ReporteContrataciones.as_view(), name='reporteContratacion'),
