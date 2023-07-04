@@ -18,58 +18,64 @@ from django.conf.urls.static import static
 from django.urls import path
 
 from UniversoDig import settings
-from .views import *
+from .views import login_view, LogoutView, usuarios_view, usuarionuevo_view, usuarios_filtrados, EditarUsuarioView, \
+    usuarioeliminar_view, HomeView, ListarCliente, NuevoClienteView, BorrarClienteView, ModificarClienteView, \
+    ServiciosView, NuevoServicioView, BorrarServicioView, ModificarServicioView, ContratacionesView, \
+    NuevaContratacionView, BorrarContratacionView, ModificarContratacionView, PagosView, NuevoRecibo, NuevoDetalle, \
+    informacionempresa_view, InformacionView, BorrarInformacionView, ModificarInformacionView, reporte_fallo, cambiar_estado_reporte_fallo_view, \
+    ReporteExcel, ReporteContrataciones, ReciboPDFView
 
 app_name = 'home'
 
 urlpatterns = [
-    #Inicio y cierre de sesión
-    path('login/', login_view, name='login'),
-    path('logout/', LogoutView, name='logout'),
+                  # Inicio y cierre de sesión
+                  path('login/', login_view, name='login'),
+                  path('logout/', LogoutView, name='logout'),
 
-    #cuentas
-    path('usuarios/', usuarios_view, name='usuarios'),
-    path('usuario/nuevo/', usuarionuevo_view, name='usuario_nuevo'),
-    path('usuarios/filtrado/', usuarios_filtrados, name='usuario_filtrado'),
-    path('usuario/editar/<int:pk>', EditarUsuarioView.as_view(), name='usuario_editar'),
-    path('usuario/eliminar/<str:username>', usuarioeliminar_view, name='usuario_eliminar'),
+                  # cuentas
+                  path('usuarios/', usuarios_view, name='usuarios'),
+                  path('usuario/nuevo/', usuarionuevo_view, name='usuario_nuevo'),
+                  path('usuarios/filtrado/', usuarios_filtrados, name='usuario_filtrado'),
+                  path('usuario/editar/<int:pk>', EditarUsuarioView.as_view(), name='usuario_editar'),
+                  path('usuario/eliminar/<str:username>', usuarioeliminar_view, name='usuario_eliminar'),
 
-    #Dashboard
-    path('', HomeView, name='home'),
-    path('clientes/', ListarCliente, name='clientes'),
-    path('clientes/nuevo/', NuevoClienteView, name='nuevocliente'),
-    path('clientes/borrar/<int:pk>', BorrarClienteView, name='borrarcliente'),
-    path('clientes/editar/<int:pk>', ModificarClienteView.as_view(), name='modificarcliente'),
+                  # Dashboard
+                  path('', HomeView, name='home'),
+                  path('clientes/', ListarCliente, name='clientes'),
+                  path('clientes/nuevo/', NuevoClienteView, name='nuevocliente'),
+                  path('clientes/borrar/<int:pk>', BorrarClienteView, name='borrarcliente'),
+                  path('clientes/editar/<int:pk>', ModificarClienteView.as_view(), name='modificarcliente'),
 
-    #Servicios
-    path('servicios/', ServiciosView, name='servicios'),
-    path('servicios/nuevo/', NuevoServicioView, name='nuevoservicio'),
-    path('servicios/borrar/<int:pk>', BorrarServicioView, name='borrarservicio'),
-    path('servicios/editar/<int:pk>', ModificarServicioView.as_view(),  name="modificarservicio"),
+                  # Servicios
+                  path('servicios/', ServiciosView, name='servicios'),
+                  path('servicios/nuevo/', NuevoServicioView, name='nuevoservicio'),
+                  path('servicios/borrar/<int:pk>', BorrarServicioView, name='borrarservicio'),
+                  path('servicios/editar/<int:pk>', ModificarServicioView.as_view(), name="modificarservicio"),
 
-    #Contrataciones
-    path('contrataciones/', ContratacionesView, name='contrataciones'),
-    path('contrataciones/nuevo/', NuevaContratacionView, name='nuevacontratacion'),
-    path('contrataciones/borrar/<int:pk>', BorrarContratacionView, name='borrarcontratacion'),
-    path('contratacion/editar/<int:pk>', ModificarContratacionView.as_view(), name='modificarcontratacion'),
+                  # Contrataciones
+                  path('contrataciones/', ContratacionesView, name='contrataciones'),
+                  path('contrataciones/nuevo/', NuevaContratacionView, name='nuevacontratacion'),
+                  path('contrataciones/borrar/<int:pk>', BorrarContratacionView, name='borrarcontratacion'),
+                  path('contratacion/editar/<int:pk>', ModificarContratacionView.as_view(),
+                       name='modificarcontratacion'),
 
-    #Pagos
-    path('pagos/', PagosView, name='pagos'),
-    path('recibo/', NuevoRecibo, name='nuevorecibo'),
-    path('detallepago/<int:pk>', NuevoDetalle, name='nuevoetalle'),
+                  # Pagos
+                  path('pagos/', PagosView, name='pagos'),
+                  path('recibo/', NuevoRecibo, name='nuevorecibo'),
+                  path('detallepago/<int:pk>', NuevoDetalle, name='nuevoetalle'),
 
-    #Información de empresa
-    path('informacion/', informacionempresa_view, name='informacion'),
-    path('informacion/nueva/', InformacionView, name='nuevainformacion'),
-    path('informacion/borrar/<int:pk>', BorrarInformacionView, name='borrarinformacion'),
-    path('informacion/editar/<int:pk>', ModificarInformacionView.as_view(), name='modificarinformacion'),
+                  # Información de empresa
+                  path('informacion/', informacionempresa_view, name='informacion'),
+                  path('informacion/nueva/', InformacionView, name='nuevainformacion'),
+                  path('informacion/borrar/<int:pk>', BorrarInformacionView, name='borrarinformacion'),
+                  path('informacion/editar/<int:pk>', ModificarInformacionView.as_view(), name='modificarinformacion'),
 
-    path('fallos/', reporte_fallo, name='reportes'),
+                  path('fallos/', reporte_fallo, name='reportes'),
+                  path('reportes/cambiarestado/<int:pk>/<str:estado>', cambiar_estado_reporte_fallo_view, name='cambiarestado_reporte'),
 
-    path('reporte', ReporteExcel.as_view(), name='reporteClientes'),
-    path('reporte/contratacion', ReporteContrataciones.as_view(), name='reporteContratacion'),
+                  path('reporte', ReporteExcel.as_view(), name='reporteClientes'),
+                  path('reporte/contratacion', ReporteContrataciones.as_view(), name='reporteContratacion'),
 
-    #Facturas PDF
-    path('recibopdf/<int:pk>', ReciboPDFView.as_view(), name='recibopdf'),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
+                  # Facturas PDF
+                  path('recibopdf/<int:pk>', ReciboPDFView.as_view(), name='recibopdf'),
+              ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -8,7 +8,7 @@ from django.db.models import Sum, Q
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.template.loader import get_template
-from django.urls import reverse_lazy
+from django.urls import reverse, reverse_lazy
 from django.views.generic import UpdateView, TemplateView, View
 # Generar pdf
 from openpyxl import Workbook
@@ -255,7 +255,7 @@ class ModificarInformacionView(UpdateView):
 @login_required
 def reporte_fallo(request):
     reportes = ReporteFallo.objects.all().order_by('-fecha_reporte')
-    usuarios = User.objects.filter(groups__name__in=['Tecnico','Administrador'])
+    usuarios = User.objects.filter(groups__name__in=['Tecnico', 'Administrador'])
 
     if request.method == 'POST':
         form = FormNuevoReporte(request.POST)
@@ -270,7 +270,27 @@ def reporte_fallo(request):
     else:
         form = FormNuevoReporte
 
-    return render(request, 'reporte_fallo.html', {'reportes': reportes, 'usuarios':usuarios, 'form': form})
+    return render(request, 'reporte_fallo.html', {'reportes': reportes, 'usuarios': usuarios, 'form': form})
+
+
+# Cambio de estado de Reporte de fallo
+@login_required
+def cambiar_estado_reporte_fallo_view(request, pk, estado):
+    grupos_usuario = request.user.groups.all()
+    print(grupos_usuario)
+    if grupos_usuario[0].name in ['Administrador', 'Tecnico']:
+        tecnico = User.objects.get(pk=request.user.id)
+        reporte = ReporteFallo.objects.get(pk=pk)
+        if reporte.estado == 'S':
+            messages.error(request, f'{reporte} - Ya está completado')
+        else:
+            reporte.estado = estado
+            reporte.tecnico_asignado = tecnico
+            reporte.save()
+            messages.success(request, f'{reporte} - {reporte.get_estado_display()}')
+    else:
+        messages.error(request, 'Usuario sin autorización para cambios de estado')
+    return redirect(reverse('home:reportes'))
 
 
 # Vista para imprimir PDF de factura

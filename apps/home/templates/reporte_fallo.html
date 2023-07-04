@@ -64,23 +64,48 @@
                 {% for reporte in reportes %}
                     {% if reporte.estado == 'P' %}
                         <tr class="text-center table-danger">
-                    {% elif reporte.estado == 'E' %}
+                            {% elif reporte.estado == 'E' %}
                         <tr class="text-center table-warning">
-                    {% elif reporte.estado == 'S' %}
+                            {% elif reporte.estado == 'S' %}
                         <tr class="text-center table-success">
-                    {% else %}
+                            {% else %}
                         <tr class="text-center">
                     {% endif %}
 
 
                 <td>
-                    {% if reporte.estado == 'P' %}
-                        <i class="bi bi-circle-fill text-danger"></i>
-                    {% elif reporte.estado == 'E' %}
-                        <i class="bi bi-circle-fill text-warning"></i>
-                    {% elif reporte.estado == 'S' %}
-                        <i class="bi bi-circle-fill text-success"></i>
-                    {% endif %}
+                    <div class="dropdown">
+                        <a class="btn dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                           aria-expanded="false">
+                            {% if reporte.estado == 'P' %}
+                                <i class="bi bi-circle-fill text-danger"></i>
+                            {% elif reporte.estado == 'E' %}
+                                <i class="bi bi-circle-fill text-warning"></i>
+                            {% elif reporte.estado == 'S' %}
+                                <i class="bi bi-circle-fill text-success"></i>
+                            {% endif %}
+                        </a>
+                        {% for group in request.user.groups.all %}
+                            {% if group.name == 'Administrador' or group.name == 'Tecnico' %}
+                                {% if reporte.estado == 'P' %}
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item"
+                                               href="{% url 'home:cambiarestado_reporte' reporte.id 'E' %}"> <i
+                                                class="bi bi-circle-fill text-warning"></i> En progreso</a></li>
+                                        <li><a class="dropdown-item"
+                                               href="{% url 'home:cambiarestado_reporte' reporte.id 'S' %}"> <i
+                                                class="bi bi-circle-fill text-success"></i> Solucionado</a></li>
+                                    </ul>
+                                {% elif reporte.estado == 'E' %}
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item"
+                                               href="{% url 'home:cambiarestado_reporte' reporte.id 'S' %}"> <i
+                                                class="bi bi-circle-fill text-success"></i> Solucionado</a></li>
+                                    </ul>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
                 </td>
                 <td>rep-{{ reporte.id }}</td>
                 <td>{{ reporte.contratacion.cliente }}</td>
