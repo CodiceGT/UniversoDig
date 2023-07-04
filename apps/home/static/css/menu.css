@@ -58,7 +58,7 @@ hr .h-color{
     background-color: var(--hovecolor);
 }
 
-@media(max-width: 767px){
+@media(max-width: 700px){
     #side_nav{
         margin-left: -250px;
         position: fixed;
