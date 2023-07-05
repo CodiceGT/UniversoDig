@@ -18,6 +18,17 @@ from .forms import FormNuevoReporte, UserForm, UserRegisterForm
 from .models import Anio, Cliente, DetallePago, Informacion, Mes, Servicio, Contratacion, Recibo, ReporteFallo
 
 
+# Función de pertenencia a grupos individuales o en colección
+def usuario_pertenece_grupos(id_usuario, nombres_grupos):
+    try:
+        usuario = User.objects.get(pk=id_usuario)
+        grupos_usuario = usuario.groups.values_list('name', flat=True)
+        pertenece = any(nombre_grupo in grupos_usuario for nombre_grupo in nombres_grupos)
+    except User.DoesNotExist:
+        pertenece = False
+    return pertenece
+
+
 # Vistas para inicio y cierre de sesión
 def login_view(request):
     if request.method == 'POST':
@@ -52,14 +63,6 @@ def HomeView(request):
 def LogoutView(request):
     logout(request)
     return redirect('home:login')
-
-
-# Vista para Dashboard
-
-
-'''def ClientesView(request):
-    return render(request, 'Clientes.html')
-'''
 
 
 # Vista Para Registrar Clientes
@@ -251,7 +254,8 @@ class ModificarInformacionView(UpdateView):
     success_url = reverse_lazy('home:informacion')
 
 
-# Reportes de fallos
+# ----------------- Vistas CRUD Reportes de fallos -----------------
+# Listado de Reportes de fallos
 @login_required
 def reporte_fallo(request):
     reportes = ReporteFallo.objects.all().order_by('-fecha_reporte')
@@ -276,8 +280,7 @@ def reporte_fallo(request):
 # Cambio de estado de Reporte de fallo
 @login_required
 def cambiar_estado_reporte_fallo_view(request, pk, estado):
-    grupos_usuario = request.user.groups.all()
-    if grupos_usuario[0].name in ['Administrador', 'Tecnico']:
+    if usuario_pertenece_grupos(request.user.id, ['Administrador', 'Tecnico']):
         tecnico = User.objects.get(pk=request.user.id)
         reporte = ReporteFallo.objects.get(pk=pk)
         if reporte.estado == 'S':
@@ -295,8 +298,7 @@ def cambiar_estado_reporte_fallo_view(request, pk, estado):
 # Cambio de técnico de Reporte de fallo
 @login_required
 def cambiar_tecnico_reporte_fallo_view(request, id_reporte, id_tecnico):
-    grupos_usuario = request.user.groups.all()
-    if  grupos_usuario[0].name == 'Administrador':
+    if usuario_pertenece_grupos(request.user.id, ['Administrador']):
         reporte = ReporteFallo.objects.get(pk=id_reporte)
         if reporte.estado == 'S':
             messages.warning(request, f'{reporte} ya fue completado, no se puede cambiar el técnico asignado')

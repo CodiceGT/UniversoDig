@@ -72,7 +72,7 @@ class ReporteFallo(models.Model):
     tecnico_asignado = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='reportes_asignados')
 
     def __str__(self):
-        return f"Reporte de fallo #{self.id} - Usuario: {self.contratacion.cliente}"
+        return f"Reporte de fallo #{self.id} - Cliente: {self.contratacion.cliente}"
 
 
 #Modelos de meses y años para control de pagos
