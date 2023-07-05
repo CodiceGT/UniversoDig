@@ -49,7 +49,7 @@
         <hr>
         <h3>Listado de Reportes</h3>
         <article class="table-responsive">
-            <table class="table table-hover">
+            <table class="table table-hover fs-6">
                 <thead class="thead">
                 <tr>
                     <td>Estado</td>
@@ -58,6 +58,11 @@
                     <td>Plan</td>
                     <td>Descripción</td>
                     <td>Técnico</td>
+                    {% for group in request.user.groups.all %}
+                        {% if group.name == 'Administrador' %}
+                            <td>.</td>
+                        {% endif %}
+                    {% endfor %}
                 </tr>
                 </thead>
                 <tbody>
@@ -130,8 +135,15 @@
                             {% endif %}
                         {% endfor %}
                     </div>
-
                 </td>
+                {% for group in request.user.groups.all %}
+                    {% if group.name == 'Administrador' %}
+                        <td>
+                            <a href="{% url 'home:borrar_reporte' reporte.id %}"><i
+                                    class="bi bi-trash text-danger"></i></a>
+                        </td>
+                    {% endif %}
+                {% endfor %}
                 </tr>
                 {% endfor %}
                 </tbody>

@@ -312,6 +312,18 @@ def cambiar_tecnico_reporte_fallo_view(request, id_reporte, id_tecnico):
     return redirect(reverse('home:reportes'))
 
 
+# Borrar reporte de fallos
+@login_required
+def borrar_reporte_fallos_view(request, id_reporte):
+    if usuario_pertenece_grupos(request.user.id, ['Administrador']):
+        reporte = ReporteFallo.objects.get(pk=id_reporte)
+        reporte.delete()
+        messages.success(request, f'{reporte} eliminado')
+    else:
+        messages.error(request, 'Usuario sin autorización para cambio de técnico')
+    return redirect(reverse('home:reportes'))
+
+
 # Vista para imprimir PDF de factura
 class ReciboPDFView(View):
     def get(self, request, *args, **kwargs):
