@@ -71,11 +71,10 @@ def NuevoClienteView(request):
     cui = request.POST['cui']
     nombre = request.POST['nombre']
     apellido = request.POST['apellido']
-    direccion = request.POST['direccion']
     telefono = request.POST['telefono']
     correo = request.POST['correo']
 
-    cliente = Cliente(cui=cui, nombre=nombre, apellido=apellido, direccion=direccion, telefono=telefono, correo=correo)
+    cliente = Cliente(cui=cui, nombre=nombre, apellido=apellido, telefono=telefono, correo=correo)
     cliente.save()
 
     return redirect('home:clientes')

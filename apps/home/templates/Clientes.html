@@ -18,8 +18,6 @@
               <input type="text" class="form-control" id="recipient-name" name='nombre'>
               <label for="recipient-name" class="col-form-label">Apellido</label>
               <input type="text" class="form-control" id="recipient-name" name='apellido'>
-              <label for="recipient-name" class="col-form-label">Direccion</label>
-              <input type="text" class="form-control" id="recipient-name" name='direccion'>
               <label for="recipient-name" class="col-form-label">Telefono</label>
               <input type="text" class="form-control" id="recipient-name" name='telefono'>
               <label for="recipient-name" class="col-form-label">Correo</label>
@@ -40,25 +38,26 @@
             <button type="button" class="btn btn-primary col-12 col-sm-4 col-lg-2" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Agregar Clientes</button>
         </div>
         <h1 class="title-container">
-            Listado de Clientes
+            <i class="bi bi-person-circle"></i> Listado de Clientes
         </h1>
-        <div class="row justify-content-center mt-3">            
-            <div class="table-responsive col-sm-12 col-md-11 col-xl-12 border border-primary rounded p-4">
+        <div class="row justify-content-center mt-3">
+            <div class="table-responsive">
                 <table class="table table-sm border border-secondary rounded text-center">
-                    <thead class="">
+                    <thead class="align-middle">
                         <tr>
+                            <th> <i class="bi bi-person-circle"></i> </th>
                             <th> CUI </th>
                             <th> Nombre </th>
                             <th> Apellido </th>
-                            <th> Direccion </th>
-                            <th> Telefono </th>
-                            <th> Correo </th>
+                            <th> Teléfono </th>
+                            <th class="fs-6"> <small>Planes <br>contratados</small> </th>
                             <th> Acciones </th>
                         </tr>
                     </thead>
-                    <tbody class="">
+                    <tbody class="align-middle">
                         {% for cliente in clientes %}
                         <tr>
+                        <td><i class="bi bi-person-circle"></i></td>
                             <td class="text-center">
                                 {{ cliente.cui }}
                             </td>
@@ -68,14 +67,16 @@
                             <td class="text-center">
                                 {{ cliente.apellido }}
                             </td>
-                            <td class="text-center">
-                                {{ cliente.direccion }}
-                            </td>
-                            <td class="text-center">
+                            <td class="text-center fs-6 lead">
+                                {% if cliente.telefono %}
+                                <a href="tel:+502{{ cliente.telefono }} alt="Llamar><i class="bi bi-telephone-outbound-fill"></i></a> - | -
+                                <a href="https://wa.me/{{ cliente.telefono }}/?text=Hola, Saludos de Universo Digital 😉"><i class="bi bi-whatsapp"></i></a>
+                                <br>
                                 {{ cliente.telefono }}
+                                {% endif %}
                             </td>
                             <td class="text-center">
-                                {{ cliente.correo }}
+                                {{ cliente.contratacion_set.all.count }}
                             </td>
                             <td class="text-center">
                                 <a href="{% url 'home:borrarcliente' cliente.id %}"><i class="bi bi-trash" style="color:red;"></i></a>
@@ -85,8 +86,8 @@
                         {% endfor %}
                     </tbody>
                 </table>
-            </div> 
-        </div>          
-    </div>          
-    <a href="{% url 'home:reporteClientes'%}"> EXPORTAR A EXCEL</a>    
+            </div>
+        </div>
+    </div>
+    <a href="{% url 'home:reporteClientes'%}"> EXPORTAR A EXCEL</a>
 {% endblock contenido %}
