@@ -19,7 +19,7 @@ from django.urls import path
 
 from UniversoDig import settings
 from .views import login_view, LogoutView, usuarios_view, usuarionuevo_view, usuarios_filtrados, EditarUsuarioView, \
-    usuarioeliminar_view, HomeView, ListarCliente, NuevoClienteView, BorrarClienteView, ModificarClienteView, \
+    usuarioeliminar_view, HomeView, ClienteListView, NuevoClienteView, BorrarClienteView, ModificarClienteView, \
     ServiciosView, NuevoServicioView, BorrarServicioView, ModificarServicioView, ContratacionesView, \
     NuevaContratacionView, BorrarContratacionView, ModificarContratacionView, PagosView, NuevoRecibo, NuevoDetalle, \
     informacionempresa_view, InformacionView, BorrarInformacionView, ModificarInformacionView, reporte_fallo, \
@@ -42,7 +42,7 @@ urlpatterns = [
 
                   # Dashboard
                   path('', HomeView, name='home'),
-                  path('clientes/', ListarCliente, name='clientes'),
+                  path('clientes/', ClienteListView.as_view(), name='clientes'),
                   path('clientes/nuevo/', NuevoClienteView, name='nuevocliente'),
                   path('clientes/borrar/<int:pk>', BorrarClienteView, name='borrarcliente'),
                   path('clientes/editar/<int:pk>', ModificarClienteView.as_view(), name='modificarcliente'),

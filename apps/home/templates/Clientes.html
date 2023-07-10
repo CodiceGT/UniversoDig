@@ -1,63 +1,72 @@
 {% extends 'menu.html' %}
 {% block contenido %}
-<title>{% block titulo %}Clientes{% endblock titulo %}</title>
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Agregar nuevo cliente</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <form action="{% url 'home:nuevocliente' %}" method="post">
-            {% csrf_token %}
-        <div class="modal-body">
-            <div class="mb-3" class="form-gruop">
-              <label for="recipient-name" class="col-form-label">CUI</label>
-              <input type="text" class="form-control" id="recipient-name" name='cui'>
-              <label for="recipient-name" class="col-form-label">Nombre</label>
-              <input type="text" class="form-control" id="recipient-name" name='nombre'>
-              <label for="recipient-name" class="col-form-label">Apellido</label>
-              <input type="text" class="form-control" id="recipient-name" name='apellido'>
-              <label for="recipient-name" class="col-form-label">Telefono</label>
-              <input type="text" class="form-control" id="recipient-name" name='telefono'>
-              <label for="recipient-name" class="col-form-label">Correo</label>
-              <input type="text" class="form-control" id="recipient-name" name='correo'>
+    <title>{% block titulo %}Clientes{% endblock titulo %}</title>
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Agregar nuevo cliente</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{% url 'home:nuevocliente' %}" method="post">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <div class="mb-3" class="form-gruop">
+                            <label for="recipient-name" class="col-form-label">CUI</label>
+                            <input type="text" class="form-control" id="recipient-name" name='cui'>
+                            <label for="recipient-name" class="col-form-label">Nombre</label>
+                            <input type="text" class="form-control" id="recipient-name" name='nombre'>
+                            <label for="recipient-name" class="col-form-label">Apellido</label>
+                            <input type="text" class="form-control" id="recipient-name" name='apellido'>
+                            <label for="recipient-name" class="col-form-label">Telefono</label>
+                            <input type="text" class="form-control" id="recipient-name" name='telefono'>
+                            <label for="recipient-name" class="col-form-label">Correo</label>
+                            <input type="text" class="form-control" id="recipient-name" name='correo'>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Añadir</button>
+                    </div>
+                </form>
             </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary">Añadir</button>
-        </div>
-    </form>
-      </div>
     </div>
-  </div>
 
     <div class="container p-0">
-        <div class="row justify-content-end">
-            <button type="button" class="btn btn-primary col-12 col-sm-4 col-lg-2" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Agregar Clientes</button>
-        </div>
         <h1 class="title-container">
             <i class="bi bi-person-circle"></i> Listado de Clientes
         </h1>
+            <form class="py-2" method="GET" action="{% url 'home:clientes' %}">
+                <div class="form-group row justify-content-center">
+                    <input class="form-control w-50 mx-1" type="text" name="nombre"
+                           placeholder="Buscar por nombre o apellido">
+                    <button class="btn btn-secondary col-2" type="submit">Buscar</button>
+                </div>
+            </form>
+            <div class="row justify-content-end">
+                <button type="button" class="btn btn-primary col-12 col-sm-4 col-lg-2" data-bs-toggle="modal"
+                        data-bs-target="#exampleModal" data-bs-whatever="@mdo"> <i class="bi bi-plus-circle"></i> Nuevo Cliente
+                </button>
+            </div>
         <div class="row justify-content-center mt-3">
             <div class="table-responsive">
                 <table class="table table-sm border border-secondary rounded text-center">
                     <thead class="align-middle">
-                        <tr>
-                            <th> <i class="bi bi-person-circle"></i> </th>
-                            <th> CUI </th>
-                            <th> Nombre </th>
-                            <th> Apellido </th>
-                            <th> Teléfono </th>
-                            <th class="fs-6"> <small>Planes <br>contratados</small> </th>
-                            <th> Acciones </th>
-                        </tr>
+                    <tr>
+                        <th><i class="bi bi-person-circle"></i></th>
+                        <th> CUI</th>
+                        <th> Nombre</th>
+                        <th> Apellido</th>
+                        <th> Teléfono</th>
+                        <th class="fs-6"><small>Planes <br>contratados</small></th>
+                        <th> Acciones</th>
+                    </tr>
                     </thead>
                     <tbody class="align-middle">
-                        {% for cliente in clientes %}
+                    {% for cliente in clientes %}
                         <tr>
-                        <td><i class="bi bi-person-circle"></i></td>
+                            <td><i class="bi bi-person-circle"></i></td>
                             <td class="text-center">
                                 {{ cliente.cui }}
                             </td>
@@ -69,25 +78,29 @@
                             </td>
                             <td class="text-center fs-6 lead">
                                 {% if cliente.telefono %}
-                                <a href="tel:+502{{ cliente.telefono }} alt="Llamar><i class="bi bi-telephone-outbound-fill"></i></a> - | -
-                                <a href="https://wa.me/{{ cliente.telefono }}/?text=Hola, Saludos de Universo Digital 😉"><i class="bi bi-whatsapp"></i></a>
-                                <br>
-                                {{ cliente.telefono }}
+                                    <a href="tel:+502{{ cliente.telefono }} alt=" Llamar><i
+                                            class="bi bi-telephone-outbound-fill"></i></a> - | -
+                                    <a href="https://wa.me/{{ cliente.telefono }}/?text=Hola, Saludos de Universo Digital 😉"><i
+                                            class="bi bi-whatsapp"></i></a>
+                                    <br>
+                                    {{ cliente.telefono }}
                                 {% endif %}
                             </td>
                             <td class="text-center">
                                 {{ cliente.contratacion_set.all.count }}
                             </td>
                             <td class="text-center">
-                                <a href="{% url 'home:borrarcliente' cliente.id %}"><i class="bi bi-trash" style="color:red;"></i></a>
-                                <a href="{% url 'home:modificarcliente' cliente.id %}"><i class="bi bi-pencil-square"></i></a>
+                                <a href="{% url 'home:borrarcliente' cliente.id %}"><i class="bi bi-trash"
+                                                                                       style="color:red;"></i></a>
+                                <a href="{% url 'home:modificarcliente' cliente.id %}"><i
+                                        class="bi bi-pencil-square"></i></a>
                             </td>
                         </tr>
-                        {% endfor %}
+                    {% endfor %}
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
-    <a href="{% url 'home:reporteClientes'%}"> EXPORTAR A EXCEL</a>
+    <a href="{% url 'home:reporteClientes' %}"> EXPORTAR A EXCEL</a>
 {% endblock contenido %}

@@ -9,7 +9,8 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.template.loader import get_template
 from django.urls import reverse, reverse_lazy
-from django.views.generic import UpdateView, TemplateView, View
+from django.utils.decorators import method_decorator
+from django.views.generic import UpdateView, ListView, TemplateView, View
 # Generar pdf
 from openpyxl import Workbook
 from xhtml2pdf import pisa
@@ -65,6 +66,7 @@ def LogoutView(request):
     return redirect('home:login')
 
 
+# ----------------- Vistas CRUD Clientes -----------------
 # Vista Para Registrar Clientes
 @login_required
 def NuevoClienteView(request):
@@ -81,8 +83,20 @@ def NuevoClienteView(request):
 
 
 # Vista Para Listar Clientes
-def ListarCliente(request):
-    return render(request, 'Clientes.html', {'clientes': Cliente.objects.all()})
+@method_decorator(login_required, name='dispatch')
+class ClienteListView(ListView):
+    model = Cliente
+    template_name = 'Clientes.html'
+    context_object_name = 'clientes'
+
+    def get_queryset(self):
+        query = self.request.GET.get('nombre')
+        if query:
+            queryset = Cliente.objects.filter(nombre__icontains=query) | Cliente.objects.filter(apellido__icontains=query)
+        else:
+            queryset = Cliente.objects.all()
+        return queryset
+
 
 
 # Vista Para Borrar Clientes
