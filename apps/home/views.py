@@ -15,7 +15,7 @@ from django.views.generic import UpdateView, ListView, TemplateView, View
 from openpyxl import Workbook
 from xhtml2pdf import pisa
 
-from .forms import FormNuevoReporte, UserForm, UserRegisterForm
+from .forms import FormNuevoReporte, UserForm, UserRegisterForm, ReciboSelectContratacionForm
 from .models import Anio, Cliente, DetallePago, Informacion, Mes, Servicio, Contratacion, Recibo, ReporteFallo
 
 
@@ -177,12 +177,6 @@ class ModificarContratacionView(UpdateView):
     model = Contratacion
     fields = ['cliente', 'servicio', 'direccion']
     success_url = reverse_lazy('home:contrataciones')
-
-
-# Vista para listar pagos
-def PagosView(request):
-    return render(request, 'pagos.html',
-                  {'pagos': Recibo.objects.all().order_by('-pk'), 'contrataciones': Contratacion.objects.all()})
 
 
 # Vista para registrar informacion de empresa
@@ -355,6 +349,14 @@ class ReciboPDFView(View):
         except:
             pass
         return HttpResponseRedirect(reverse_lazy('home:pagos'))
+
+
+# ----------------- Vistas CRUD Recibos y pagos -----------------
+# Vista para listar pagos
+def PagosView(request):
+    form = ReciboSelectContratacionForm
+    return render(request, 'pagos.html',
+                  {'pagos': Recibo.objects.all().order_by('-pk'), 'contrataciones': Contratacion.objects.all(), 'form': form})
 
 
 def NuevoRecibo(request):

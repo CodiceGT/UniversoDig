@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
-from .models import Cliente, Contratacion, Informacion, ReporteFallo, Servicio
+from .models import Cliente, Contratacion, Informacion, ReporteFallo, Servicio, Recibo
 
 
 class UserRegisterForm(UserCreationForm):
@@ -30,6 +30,14 @@ class RegistroServicioForm(forms.ModelForm):
         model = Servicio
         fields = '__all__'
 
+
+class ReciboSelectContratacionForm(forms.ModelForm):
+    class Meta:
+        model = Recibo
+        fields = ['contratacion']
+        widgets = {
+            'contratacion': forms.Select(attrs={'class': 'form-control'})
+        }
 
 class InformacionForm(forms.ModelForm):
     class Meta:
