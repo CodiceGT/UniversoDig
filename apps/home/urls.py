@@ -22,9 +22,9 @@ from .views import login_view, LogoutView, usuarios_view, usuarionuevo_view, usu
     usuarioeliminar_view, HomeView, ClienteListView, NuevoClienteView, BorrarClienteView, ModificarClienteView, \
     ServiciosView, NuevoServicioView, BorrarServicioView, ModificarServicioView, ContratacionesView, \
     NuevaContratacionView, BorrarContratacionView, ModificarContratacionView, PagosView, NuevoRecibo, NuevoDetalle, \
-    informacionempresa_view, InformacionView, BorrarInformacionView, ModificarInformacionView, reporte_fallo, \
-    cambiar_estado_reporte_fallo_view, cambiar_tecnico_reporte_fallo_view, borrar_reporte_fallos_view, ReporteExcel, \
-    ReporteContrataciones, ReciboPDFView
+    borrar_detalle_pago_view, informacionempresa_view, InformacionView, BorrarInformacionView, ModificarInformacionView, \
+    reporte_fallo, cambiar_estado_reporte_fallo_view, cambiar_tecnico_reporte_fallo_view, borrar_reporte_fallos_view, \
+    ReporteExcel, ReporteContrataciones, ReciboPDFView
 
 app_name = 'home'
 
@@ -63,7 +63,8 @@ urlpatterns = [
                   # Pagos
                   path('pagos/', PagosView, name='pagos'),
                   path('recibo/', NuevoRecibo, name='nuevorecibo'),
-                  path('detallepago/<int:pk>', NuevoDetalle, name='nuevoetalle'),
+                  path('detallepago/<int:pk>', NuevoDetalle, name='nuevodetalle'),
+                  path('detalle/borrar/<int:pk>', borrar_detalle_pago_view, name='borrar_detalle_pago'),
 
                   # Información de empresa
                   path('informacion/', informacionempresa_view, name='informacion'),

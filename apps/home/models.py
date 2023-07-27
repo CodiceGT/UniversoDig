@@ -40,6 +40,7 @@ class Contratacion(models.Model):
     )
     cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
     servicio = models.ForeignKey(Servicio, on_delete=models.CASCADE)
+    direccion = models.CharField(max_length=255, null=True, default='')
     saldo = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     ultimo_pago = models.DateTimeField(default=date.today)
     estado = models.CharField(max_length=1, choices=ESTADO_CHOICES, default='D') # Estados: d=al dia, p=pendiente de pago, c=cancelado,

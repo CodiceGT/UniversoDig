@@ -1,5 +1,7 @@
 # Custom VSCode config
 .vscode/
+.vscode/*
+*.code-workspace
 
 # Custom
 .idea/
@@ -224,3 +226,4 @@ venv.bak/
 .mypy_cache/
 
 # End of https://www.gitignore.io/api/linux,macos,python,django,pycharm
+.vscode/settings.json

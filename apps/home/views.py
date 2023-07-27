@@ -397,6 +397,14 @@ def NuevoDetalle(request, pk):
                                            'anios': Anio.objects.all()})
 
 
+@login_required
+def borrar_detalle_pago_view(request, pk):
+    id_recibo = request.GET.get('pk')
+    detalle = DetallePago.objects.get(pk=pk)
+    detalle.delete()
+    return render('home:nuevodetalle', id_recibo)
+
+
 def actualizar_pendiente(contratacion):
     dias_ultimo_pago = datetime.now().astimezone(contratacion.ultimo_pago.tzinfo) - contratacion.ultimo_pago
     # Verifica si tiene más de 30 días el último pago para sumarle a su saldo pendiente

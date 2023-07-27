@@ -44,7 +44,7 @@
                         </thead>
                         <tbody class="fontfamily">
                         {% for pago in pagos %}
-                            <tr onclick="window.location.href= href='{% url 'home:nuevoetalle' pago.id %}';">
+                            <tr onclick="window.location.href= href='{% url 'home:nuevodetalle' pago.id %}';">
                                 <th scope="row" class="text-center">
                                     {{ pago.id }}
                                 </th>
