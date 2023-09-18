@@ -1,8 +1,9 @@
 from datetime import date
 from django.db import models
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_delete
 from django.contrib.auth.models import User
 from django.dispatch import receiver
+from .choices import ANIO_CHOICES, MES_CHOICES
 
 
 # Create your models here.
@@ -46,6 +47,7 @@ class Contratacion(models.Model):
     estado = models.CharField(max_length=1, choices=ESTADO_CHOICES, default='D') # Estados: d=al dia, p=pendiente de pago, c=cancelado,
     creacion = models.DateTimeField(auto_now=True)
 
+
     def __str__(self):
         return '%s %s %s' % (self.pk, self.cliente, self.servicio)
 
@@ -54,6 +56,7 @@ class Recibo(models.Model):
     total = models.DecimalField(max_digits=10, decimal_places=2)
     contratacion = models.ForeignKey(Contratacion, on_delete=models.CASCADE)
     fecha = models.DateTimeField(auto_now=True)
+
 
     def __str__(self):
         return '%s %s %s %s' % (self.fecha.date(), self.pk, self.contratacion.pk, self.total)
@@ -71,41 +74,36 @@ class ReporteFallo(models.Model):
     estado = models.CharField(max_length=1, choices=ESTADO_CHOICES, default='P')
     tecnico_asignado = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='reportes_asignados')
 
+
     def __str__(self):
         return f"Reporte de fallo #{self.id} - Cliente: {self.contratacion.cliente}"
 
 
-#Modelos de meses y años para control de pagos
-#Año
-class Anio(models.Model):
-    numero = models.IntegerField()
-
-    def __str__(self):
-        return '%s' % (self.numero)
-
-
-class Mes(models.Model):
-    nombre = models.CharField(max_length=10)
-
-    def __str__(self):
-        return '%s' % (self.nombre)
-
-
 class DetallePago(models.Model):
-    mes = models.ForeignKey(Mes, on_delete=models.CASCADE)
-    anio = models.ForeignKey(Anio, on_delete=models.CASCADE)
+    mes = models.CharField(max_length=2, choices=MES_CHOICES)
+    anio = models.CharField(max_length=4, choices=ANIO_CHOICES)
     subtotal = models.DecimalField(max_digits=10, decimal_places=2)
     recibo = models.ForeignKey(Recibo, on_delete=models.CASCADE)
     creacion = models.DateTimeField(auto_now=True)
 
+
     def __str__(self):
         return '%s %s %s Q%s' % (self.recibo, self.mes, self.anio, self.subtotal)
 
+
+@receiver(pre_delete, sender=DetallePago)
+def recalcular_total_recibo(sender, instance, **kwargs):
+    recibo = instance.recibo
+    recibo.total -= instance.subtotal
+    recibo.save()
+
+
 class Informacion(models.Model):
     nombre = models.CharField(max_length=45)
-    logo = models.ImageField(upload_to='logo', default='descarga.png')
+    logo = models.ImageField(upload_to='logo', blank=True)
     direccion = models.CharField(max_length=128)
     telefono = models.CharField(max_length=15)
+
 
     def __str__(self):
         return '%s %s %s' % (self.nombre, self.direccion, self.telefono)

@@ -49,7 +49,7 @@
                                     {{ pago.id }}
                                 </th>
                                 <td class="text-center">
-                                    {{ pago.fecha.date }}
+                                    {{ pago.fecha.date | date:'d M Y' }}
                                 </td>
                                 <td class="text-center">
                                     {{ pago.contratacion.id }}

@@ -1,5 +1,4 @@
 from datetime import datetime, timedelta
-
 from django.contrib import messages, auth
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
@@ -11,12 +10,14 @@ from django.template.loader import get_template
 from django.urls import reverse, reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.generic import UpdateView, ListView, TemplateView, View
+from .choices import ANIO_CHOICES, MES_CHOICES
+
 # Generar pdf
 from openpyxl import Workbook
 from xhtml2pdf import pisa
 
 from .forms import FormNuevoReporte, UserForm, UserRegisterForm, ReciboSelectContratacionForm
-from .models import Anio, Cliente, DetallePago, Informacion, Mes, Servicio, Contratacion, Recibo, ReporteFallo
+from .models import Cliente, DetallePago, Informacion, Servicio, Contratacion, Recibo, ReporteFallo
 
 
 # Función de pertenencia a grupos individuales o en colección
@@ -365,8 +366,8 @@ def NuevoRecibo(request):
     recibo = Recibo(contratacion=contratacion, total=0)
     recibo.save()
     return render(request, 'recibo.html',
-                  {'contratacion': contratacion, 'recibo': Recibo.objects.last(), 'meses': Mes.objects.all(),
-                   'anios': Anio.objects.all()})
+                  {'contratacion': contratacion, 'recibo': Recibo.objects.last(), 'meses': MES_CHOICES,
+                   'anios': ANIO_CHOICES})
 
 
 def NuevoDetalle(request, pk):
@@ -381,9 +382,6 @@ def NuevoDetalle(request, pk):
     contratacion = Contratacion.objects.get(pk=recibo.contratacion.id)
 
     if mes != '' and anio != '' and subtotal != '':
-        mes, _ = Mes.objects.get_or_create(nombre=mes)
-        anio, _ = Anio.objects.get_or_create(numero=anio)
-
         if not DetallePago.objects.filter(recibo__contratacion=contratacion, mes=mes, anio=anio).exists():
             detallepago = DetallePago.objects.create(mes=mes, anio=anio, subtotal=subtotal, recibo=recibo)
             contratacion.ultimo_pago += timedelta(days=30)
@@ -392,17 +390,17 @@ def NuevoDetalle(request, pk):
 
         recibo.total = DetallePago.objects.filter(recibo=recibo).aggregate(total=Sum('subtotal'))['total'] or 0
         recibo.save()
+        
+    return render(request, 'recibo.html', {'contratacion': contratacion, 'recibo': recibo, 'meses': MES_CHOICES,
+                                           'anios': ANIO_CHOICES})
 
-    return render(request, 'recibo.html', {'contratacion': contratacion, 'recibo': recibo, 'meses': Mes.objects.all(),
-                                           'anios': Anio.objects.all()})
-
-
+#TODO Revisar que reste cuando se elimina un detalle
 @login_required
 def borrar_detalle_pago_view(request, pk):
-    id_recibo = request.GET.get('pk')
     detalle = DetallePago.objects.get(pk=pk)
+    id_recibo = detalle.recibo.id # Conservar el id del recibo para volver al detalle
     detalle.delete()
-    return render('home:nuevodetalle', id_recibo)
+    return redirect('home:nuevodetalle', pk=id_recibo)
 
 
 def actualizar_pendiente(contratacion):

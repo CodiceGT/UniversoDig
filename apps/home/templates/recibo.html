@@ -16,7 +16,7 @@
             </div>
             <div class="col-md-5">
               <label for="validationCustom02" class="form-label">Fecha</label>
-              <input type="text" class="form-control" id="validationCustom02" value="{{contratacion.creacion}}" disabled>
+              <input type="text" class="form-control" id="validationCustom02" value="{{contratacion.creacion | date:'d M Y' }}" disabled>
               <div class="valid-feedback">
                 Looks good!
               </div>
@@ -62,14 +62,14 @@
                 <div class="input-group outline-success mb-3">
                     <span class="input-group-text">Año</span>
                     <select class="form-select" name="anio" id="" required>
-                        {% for anio in anios %}
-                        <option value="{{anio.numero}}">{{anio.numero}}</option>
+                        {% for anio_code, anio_name in anios %}
+                        <option value="{{anio_code}}">{{anio_name}}</option>
                         {% endfor %}
                     </select>
                     <span class="input-group-text">Mes</span>
                     <select class="form-select" name="mes" id="" required>
-                        {% for mes in meses %}
-                        <option value="{{mes.nombre}}">{{mes.nombre}}</option>
+                        {% for mes_code, mes_name in meses %}
+                        <option value="{{mes_code}}">{{mes_name}}</option>
                         {% endfor %}
                     </select>
                     <span class="input-group-text">Q</span>
@@ -97,7 +97,7 @@
                 {% for detalles in recibo.detallepago_set.all %}
                 <tr>
                     <td>{{detalles.anio}}</td>
-                    <td>{{detalles.mes}}</td>
+                    <td>{{detalles.get_mes_display}}</td>
                     <td> Q {{detalles.subtotal}} <a href="{% url 'home:borrar_detalle_pago' detalles.id %}"><i class="bi bi-trash"></i></a> </td>
                 </tr>
                 {% endfor %}
