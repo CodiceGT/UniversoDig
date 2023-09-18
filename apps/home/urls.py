@@ -9,7 +9,7 @@ from .views import login_view, LogoutView, usuarios_view, usuarionuevo_view, usu
     NuevaContratacionView, BorrarContratacionView, ModificarContratacionView, PagosView, NuevoRecibo, NuevoDetalle, \
     borrar_detalle_pago_view, informacionempresa_view, InformacionView, BorrarInformacionView, ModificarInformacionView, \
     reporte_fallo, cambiar_estado_reporte_fallo_view, cambiar_tecnico_reporte_fallo_view, borrar_reporte_fallos_view, \
-    ReporteExcel, ReporteContrataciones, ReciboPDFView
+    ReporteExcel, ReporteContrataciones, ReciboPDFView, template_view
 
 app_name = 'home'
 
@@ -70,4 +70,6 @@ urlpatterns = [
 
                   # Facturas PDF
                   path('recibopdf/<int:pk>', ReciboPDFView.as_view(), name='recibopdf'),
+                  
+                  path('template/', template_view, name='template')
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

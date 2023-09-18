@@ -20,6 +20,10 @@ from .forms import FormNuevoReporte, UserForm, UserRegisterForm, ReciboSelectCon
 from .models import Cliente, DetallePago, Informacion, Servicio, Contratacion, Recibo, ReporteFallo
 
 
+def template_view(request):
+    return render(request, 'base_template/index.html')
+
+
 # Función de pertenencia a grupos individuales o en colección
 def usuario_pertenece_grupos(id_usuario, nombres_grupos):
     try:
