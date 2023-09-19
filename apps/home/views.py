@@ -57,13 +57,19 @@ def HomeView(request):
     enddate = datetime.today() + timedelta(days=1)
     startdate = enddate - timedelta(days=7)
     recibos = Recibo.objects.filter(fecha__range=[startdate, enddate])
-    deudores = Contratacion.objects.filter(estado='P')
+    
+    contrataciones = Contratacion.objects.all()
+    deudores = contrataciones.filter(estado='P')
+    deudores_porcentaje =  (deudores.count()/contrataciones.count())*100
+    
+    reportes = ReporteFallo.objects.filter(~Q(estado='S'))
+    
     ingresoSemana = recibos.aggregate(Sum('total'))['total__sum']
     if ingresoSemana is None:
         ingresoSemana = 0
     return render(request, 'index.html',
-                  {'contrataciones': Contratacion.objects.all(), 'recibos': recibos, 'ingresototal': ingresoSemana,
-                   'deudores': deudores})
+                  {'contrataciones': contrataciones, 'recibos': recibos, 'ingresototal': ingresoSemana,
+                   'deudores': deudores_porcentaje, 'reportes':reportes})
 
 
 def LogoutView(request):
@@ -210,7 +216,7 @@ def informacionempresa_view(request):
 def usuarios_view(request):
     form = UserRegisterForm()
     context = {'form': form, 'usuarios': User.objects.all()}
-    return render(request, 'usuarios.html', context)
+    return render(request, 'usuarios/usuarios.html', context)
 
 
 def usuarios_filtrados(request):
@@ -245,7 +251,7 @@ def usuarioeliminar_view(request, username):
 
 
 class EditarUsuarioView(UpdateView):
-    template_name = 'usuario_editar.html'
+    template_name = 'usuarios/usuario_editar.html'
     form_class = UserForm
     success_url = reverse_lazy('home:usuarios')
     model = User

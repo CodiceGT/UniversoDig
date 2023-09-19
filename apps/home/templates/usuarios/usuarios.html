@@ -1,35 +1,25 @@
-{% extends 'menu.html' %}
+{% extends 'base_menu.html' %}
 
 {% load static %}
 
 {% block contenido %}
 
     <section class="container px-3" id="usuarios">
-        <!-- Nav & Tabs -->
-        <ul class="nav nav-pills mb-3 " id="pills-tab" role="tablist">
-            <li class="nav-item" role="presentation">
-                <a class="nav-link" href="{% url 'home:informacion' %}">Empresa</a>
-            </li>
-            <li class="nav-item" role="presentation">
-                <a class="nav-link active" href="{% url 'home:usuarios' %}">Usuarios</a>
-            </li>
-        </ul>
-        <!-- End Nav & Tabs -->
 
         <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#nuevoUsuarioModal">
             Nuevo usuario
         </button>
 
 
         <!-- Vertically centered modal nuevoUsuario -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+        <div class="modal fade" id="nuevoUsuarioModal" tabindex="-1" role="dialog" aria-labelledby="nuevoUsuarioModalLabel"
              aria-hidden="true">
-            <div class="modal-dialog">
+            <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">Nuevo usuario</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <h1 class="modal-title fs-5" id="nuevoUsuarioModalLabel">Nuevo usuario</h1>
+                        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <form action="{% url 'home:usuario_nuevo' %}" method="post">
