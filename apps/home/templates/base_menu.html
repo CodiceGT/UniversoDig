@@ -45,7 +45,7 @@
             <hr class="sidebar-divider my-0">
 
             <!-- Nav Item - Dashboard -->
-            <li class="nav-item">
+            <li class="nav-item {% if request.path == '/dashboard/' %}active{% endif %}">
                 <a class="nav-link" href="{% url 'home:home' %}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
@@ -56,76 +56,26 @@
 
             <!-- Heading -->
             <div class="sidebar-heading">
-                Contratacion y cobranza
+                Contratación
             </div>
 
         
             <!-- Nav Item - Pagos -->
-            <li class="nav-item">
+            <li class="nav-item {% if request.path == '/pagos/' %}active{% endif %}">
                 <a class="nav-link" href="{% url 'home:pagos' %}">
                     <i class="fas fa-fw fa-chart-area"></i>
                     <span>Pagos</span></a>
             </li>
 
             <!-- Nav Item - Contrataciones -->
-            <li class="nav-item">
+            <li class="nav-item {% if request.path == '/contrataciones/' %}active{% endif %}">
                 <a class="nav-link" href="{% url 'home:contrataciones' %}">
                     <i class="fas fa-fw fa-chart-area"></i>
                     <span>Contrataciones</span></a>
             </li>
 
-            <!-- Divider -->
-            <hr class="sidebar-divider">
-
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                Administración
-            </div>
-
-            <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
-                    aria-expanded="true" aria-controls="collapsePages">
-                    <i class="fas fa-fw fa-folder"></i>
-                    <span>Pages</span>
-                </a>
-                <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Login Screens:</h6>
-                        <a class="collapse-item" href="login.html">Login</a>
-                        <a class="collapse-item" href="register.html">Register</a>
-                        <a class="collapse-item" href="forgot-password.html">Forgot Password</a>
-                        <div class="collapse-divider"></div>
-                        <h6 class="collapse-header">Other Pages:</h6>
-                        <a class="collapse-item" href="404.html">404 Page</a>
-                        <a class="collapse-item" href="blank.html">Blank Page</a>
-                    </div>
-                </div>
-            </li>
-
-            <!-- Nav Item - Charts -->
-            <li class="nav-item">
-                <a class="nav-link" href="#">
-                    <i class="fas fa-fw fa-chart-area"></i>
-                    <span>Informes</span></a>
-            </li>
-
-            <!-- Nav Item - Charts -->
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'home:servicios' %}">
-                    <i class="fas fa-fw fa-chart-area"></i>
-                    <span>Planes</span></a>
-            </li>
-
-            <!-- Nav Item - Charts -->
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'home:clientes' %}">
-                    <i class="fas fa-fw fa-chart-area"></i>
-                    <span>Clientes</span></a>
-            </li>
-
             <!-- Nav Item - Tables -->
-            <li class="nav-item">
+            <li class="nav-item {% if request.path == '/reportes/' %}active{% endif %}">
                 <a class="nav-link" href="{% url 'home:reportes' %}">
                     <i class="fas fa-fw fa-table"></i>
                     <span>Reportes</span></a>
@@ -134,7 +84,47 @@
             <!-- Divider -->
             <hr class="sidebar-divider">
 
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Informes
+            </div>
+
+            <!-- Nav Item - Charts -->
+            <li class="nav-item {% if request.path == '/informes/' %}active{% endif %}">
+                <a class="nav-link" href="#">
+                    <i class="fas fa-fw fa-chart-area"></i>
+                    <span>Informes</span></a>
+            </li>
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Administrar
+            </div>
+
+            
+            <!-- Nav Item - Mantenedores Collapse Menu -->
+            {% with route_list='/servicios/,/clientes/'|make_list %}
+            <li class="nav-item {% if request.path in route_list %}active{% endif %}">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseMantenedores"
+                    aria-expanded="true" aria-controls="collapseMantenedores">
+                    <i class="fas fa-fw fa-folder"></i>
+                    <span>Mantenedores</span>
+                </a>
+                <div id="collapseMantenedores" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Principales:</h6>
+                        <a class="collapse-item {% if request.path == '/servicios/' %}active{% endif %}" href="{% url 'home:servicios' %}">Planes</a>
+                        <a class="collapse-item {% if request.path == '/clientes/' %}active{% endif %}" href="{% url 'home:clientes' %}">Clientes</a>
+                    </div>
+                </div>
+            </li>
+            {% endwith %}
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
             <!-- Nav Item - Configuracion Sistema -->
+            {% with route_list='/informacion/,/usuarios/'|make_list %}
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
@@ -144,11 +134,12 @@
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Opciones de configuracion</h6>
-                        <a class="collapse-item" href="{% url 'home:informacion' %}">Sucursal</a>
-                        <a class="collapse-item" href="{% url 'home:usuarios' %}"> <i class="fa fa-user"></i> Usuarios</a>
+                        <a class="collapse-item {% if request.path == '/informacion/' %}active{% endif %}" href="{% url 'home:informacion' %}">Sucursal</a>
+                        <a class="collapse-item {% if request.path == '/usuarios/' %}active{% endif %}" href="{% url 'home:usuarios' %}"> <i class="fa fa-user"></i> Usuarios</a>
                     </div>
                 </div>
             </li>
+            {% endwith %}
             
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
@@ -179,7 +170,7 @@
                     <form
                         class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                         <div class="input-group">
-                            <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
+                            <input type="text" class="form-control bg-light border-0 small" placeholder="Buscar"
                                 aria-label="Search" aria-describedby="basic-addon2">
                             <div class="input-group-append">
                                 <button class="btn btn-primary" type="button">

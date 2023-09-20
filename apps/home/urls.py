@@ -20,13 +20,15 @@ urlpatterns = [
 
                   # cuentas
                   path('usuarios/', usuarios_view, name='usuarios'),
-                  path('usuario/nuevo/', usuarionuevo_view, name='usuario_nuevo'),
+                  path('usuarios/nuevo/', usuarionuevo_view, name='usuario_nuevo'),
                   path('usuarios/filtrado/', usuarios_filtrados, name='usuario_filtrado'),
-                  path('usuario/editar/<int:pk>', EditarUsuarioView.as_view(), name='usuario_editar'),
-                  path('usuario/eliminar/<str:username>', usuarioeliminar_view, name='usuario_eliminar'),
+                  path('usuarios/editar/<int:pk>', EditarUsuarioView.as_view(), name='usuario_editar'),
+                  path('usuarios/eliminar/<str:username>', usuarioeliminar_view, name='usuario_eliminar'),
 
                   # Dashboard
+                  #TODO corregir estas dos rutas
                   path('', HomeView, name='home'),
+                  path('dashboard/', HomeView, name='home'),
                   path('clientes/', ClienteListView.as_view(), name='clientes'),
                   path('clientes/nuevo/', NuevoClienteView, name='nuevocliente'),
                   path('clientes/borrar/<int:pk>', BorrarClienteView, name='borrarcliente'),
