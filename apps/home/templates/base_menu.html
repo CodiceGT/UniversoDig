@@ -380,6 +380,22 @@
                         <span>Copyright &copy; CODICE 2023</span>
                     </div>
                 </div>
+
+                <!-- Contenedor de alertas Toast -->
+                <div class="toast-container fixed-top d-flex justify-content-end my-1">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <!-- Then put toasts within -->
+                            <div class="toast text-white bg-{{ message.tags }} rounded-pill custom-toast" role="alert" aria-live="assertive" aria-atomic="true">
+                                <div class="d-flex">
+                                    <div class="toast-body m-auto">
+                                        {{ message }}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </div> <!-- / Fin Contenedor de alertas Toast -->
             </footer>
             <!-- End of Footer -->
 
@@ -430,6 +446,23 @@
     <!-- Page level custom scripts -->
     <script src="{% static 'template/js/demo/chart-area-demo.js' %}"></script>
     <script src="{% static 'template/js/demo/chart-pie-demo.js' %}"></script>
+
+    <!--Script para mostrar los mensajes Toast-->
+    <script>
+        var myAlert = document.getElementsByClassName('toast');
+        mostrarToast();
+      
+        function mostrarToast() {
+          for (let i = 0; i < myAlert.length; i++) {
+            var my_Toast = new bootstrap.Toast(myAlert[i]);
+      
+            // Configura el tiempo de retraso en milisegundos (5 segundos)
+            my_Toast._config.delay = 2000; // 7000 milisegundos = 5 segundos
+      
+            my_Toast.show();
+          }
+        }
+      </script><!-- Fin Script mostrar mensajes Toast-->
 
 </body>
 
