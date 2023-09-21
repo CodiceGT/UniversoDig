@@ -161,7 +161,7 @@ USE_TZ = True
 
 # Tareas programadas
 CRONJOBS = [
-    ('0 0 15 * *', 'home.cron.actualizar_pendientes_pago'), #Actualizar pendientes de pago cada 15 del mes
+    ('0 3 * * *', 'home.cron.actualizar_pendientes_pago'), #Actualizar pendientes de pago cada día a las 3 de la mañana
 ]
 
 
