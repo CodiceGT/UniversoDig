@@ -9,7 +9,7 @@ from .views import login_view, LogoutView, usuarios_view, usuarionuevo_view, usu
     NuevaContratacionView, BorrarContratacionView, ModificarContratacionView, PagosView, NuevoRecibo, NuevoDetalle, \
     borrar_detalle_pago_view, informacionempresa_view, InformacionView, BorrarInformacionView, ModificarInformacionView, \
     reporte_fallo, cambiar_estado_reporte_fallo_view, cambiar_tecnico_reporte_fallo_view, borrar_reporte_fallos_view, \
-    ReporteExcel, ReporteContrataciones, ReciboPDFView, template_view
+    ReporteExcel, ReporteContrataciones, ReciboPDFView, template_view, ContratacionAPIView
 
 app_name = 'home'
 
@@ -47,6 +47,10 @@ urlpatterns = [
                   path('contratacion/editar/<int:pk>', ModificarContratacionView.as_view(),
                        name='modificarcontratacion'),
 
+               # Contrataciones API
+               # URL para listar contrataciones (método GET)
+               path('contrataciones_api/', ContratacionAPIView.as_view(), name='listar_contrataciones'),
+               
                   # Pagos
                   path('pagos/', PagosView, name='pagos'),
                   path('recibo/', NuevoRecibo, name='nuevorecibo'),

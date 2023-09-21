@@ -20,6 +20,7 @@
 
     <!-- Custom styles for this template-->
     <link href="{% static 'template/css/sb-admin-2.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/select2/select2.min.css' %}" rel="stylesheet">
 
 </head>
 
@@ -439,13 +440,12 @@
 
     <!-- Custom scripts for all pages-->
     <script src="{% static 'template/js/sb-admin-2.min.js' %}"></script>
+    
+    <!-- Select2 -->
+    <script src="{% static 'scripts/select2/select2.min.js' %}"></script>
 
     <!-- Page level plugins -->
     <script src="{% static 'template/vendor/chart.js/Chart.min.js' %}"></script>
-
-    <!-- Page level custom scripts -->
-    <script src="{% static 'template/js/demo/chart-area-demo.js' %}"></script>
-    <script src="{% static 'template/js/demo/chart-pie-demo.js' %}"></script>
 
     <!--Script para mostrar los mensajes Toast-->
     <script>
@@ -464,6 +464,11 @@
         }
       </script><!-- Fin Script mostrar mensajes Toast-->
 
+      {% block scriptsDependencias %}
+      {% endblock scriptsDependencias %}
+      
+      {% block scriptsCustom %}
+      {% endblock scriptsCustom %}
 </body>
 
 </html>

@@ -1,14 +1,17 @@
 from datetime import datetime, timedelta
+from unidecode import unidecode  # Importa la función unidecode
 from django.contrib import messages, auth
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.db.models import Sum, Q
-from django.http import HttpResponse, HttpResponseRedirect
+from django.db.models import Sum, Q, F
+from django.db.models.functions import Lower
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect
 from django.template.loader import get_template
 from django.urls import reverse, reverse_lazy
 from django.utils.decorators import method_decorator
+from django.views import View
 from django.views.generic import UpdateView, ListView, TemplateView, View
 from .choices import ANIO_CHOICES, MES_CHOICES
 
@@ -190,6 +193,97 @@ class ModificarContratacionView(UpdateView):
     success_url = reverse_lazy('home:contrataciones')
 
 
+class ContratacionAPIView(View):
+    def get(self, request, *args, **kwargs):
+        # Obtén el valor del parámetro 'q' de la solicitud
+        
+        search_term = request.GET.get('q')
+
+        # Convierte el término de búsqueda a minúsculas y elimina tildes
+        search_term = unidecode(search_term.lower())
+        print(search_term)
+        
+        # Realiza una consulta para obtener las contrataciones cuyo cliente tiene un nombre o apellido que contiene el término de búsqueda
+        contrataciones = Contratacion.objects.filter(
+            Q(cliente__nombre__icontains=search_term) | Q(cliente__apellido__icontains=search_term)
+        )
+
+        # Convierte las contrataciones en un formato JSON
+        contrataciones_json = [{'id': c.id, 'cliente': str(c.cliente), 'servicio': str(c.servicio),}
+                              for c in contrataciones]
+
+        # Devuelve la respuesta JSON
+        return JsonResponse({'contrataciones': contrataciones_json})
+
+    def post(self, request, *args, **kwargs):
+        # Aquí puedes manejar la lógica para crear una nueva contratación
+        # Recupera los datos del cuerpo de la solicitud (request body) y crea una nueva Contratacion
+        # Por ejemplo, si los datos se envían como JSON en el cuerpo de la solicitud:
+        data = request.POST  # Asegúrate de que los datos se envíen como JSON
+        cliente_id = data.get('cliente')
+        servicio_id = data.get('servicio')
+        direccion = data.get('direccion')
+        saldo = data.get('saldo')
+        ultimo_pago = data.get('ultimo_pago')
+        estado = data.get('estado')
+
+        # Crea una nueva Contratacion con los datos proporcionados
+        nueva_contratacion = Contratacion(
+            cliente_id=cliente_id,
+            servicio_id=servicio_id,
+            direccion=direccion,
+            saldo=saldo,
+            ultimo_pago=ultimo_pago,
+            estado=estado
+        )
+        nueva_contratacion.save()
+
+        # Después de crear la nueva contratación, puedes devolver una respuesta JSON
+        return JsonResponse({'message': 'Contratación creada con éxito'})
+
+    def put(self, request, pk, *args, **kwargs):
+        # Aquí puedes manejar la lógica para actualizar una contratación existente
+        # pk es el ID de la contratación que deseas actualizar
+        # Recupera los datos del cuerpo de la solicitud (request body) y actualiza la Contratacion
+        # Por ejemplo, si los datos se envían como JSON en el cuerpo de la solicitud:
+        data = request.POST  # Asegúrate de que los datos se envíen como JSON
+        cliente_id = data.get('cliente')
+        servicio_id = data.get('servicio')
+        direccion = data.get('direccion')
+        saldo = data.get('saldo')
+        ultimo_pago = data.get('ultimo_pago')
+        estado = data.get('estado')
+
+        # Obtiene la Contratacion existente por su ID
+        contratacion = Contratacion.objects.get(pk=pk)
+
+        # Actualiza los campos de la Contratacion con los nuevos datos
+        contratacion.cliente_id = cliente_id
+        contratacion.servicio_id = servicio_id
+        contratacion.direccion = direccion
+        contratacion.saldo = saldo
+        contratacion.ultimo_pago = ultimo_pago
+        contratacion.estado = estado
+
+        # Guarda los cambios en la Contratacion
+        contratacion.save()
+
+        # Después de actualizar la contratación, puedes devolver una respuesta JSON
+        return JsonResponse({'message': 'Contratación actualizada con éxito'})
+
+    def delete(self, request, pk, *args, **kwargs):
+        # Aquí puedes manejar la lógica para eliminar una contratación
+        # pk es el ID de la contratación que deseas eliminar
+        # Realiza la eliminación de la Contratacion
+        # Por ejemplo:
+        try:
+            contratacion = Contratacion.objects.get(pk=pk)
+            contratacion.delete()
+            return JsonResponse({'message': 'Contratación eliminada con éxito'})
+        except Contratacion.DoesNotExist:
+            return JsonResponse({'message': 'La Contratación no existe'}, status=404)
+
+
 # Vista para registrar informacion de empresa
 def InformacionView(request):
     nombre = request.POST['nombre']
@@ -368,7 +462,7 @@ def PagosView(request):
     form = ReciboSelectContratacionForm
     return render(request, 'pagos.html',
                   {'pagos': Recibo.objects.all().order_by('-pk'), 'contrataciones': Contratacion.objects.all(), 'form': form})
-
+    
 
 def NuevoRecibo(request):
     pk = request.POST['contratacion']

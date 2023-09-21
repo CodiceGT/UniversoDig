@@ -1,4 +1,5 @@
 {% extends 'base_menu.html' %}
+{% load static %}
     {% block titulo %}Inicio{% endblock titulo %}
 
     {% block contenido %}
@@ -180,3 +181,9 @@
     </div>
     <!-- ./ Contenido general traido de la plantilla -->
     {% endblock contenido %}
+
+    {% block scriptsDependencias %}
+        <!-- Page level custom scripts -->
+        <script src="{% static 'template/js/demo/chart-area-demo.js' %}"></script>
+        <script src="{% static 'template/js/demo/chart-pie-demo.js' %}"></script>
+    {% endblock scriptsDependencias %}
