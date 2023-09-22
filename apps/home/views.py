@@ -223,9 +223,9 @@ class ContratacionAPIView(View):
         cliente_id = data.get('cliente')
         servicio_id = data.get('servicio')
         direccion = data.get('direccion')
-        saldo = data.get('saldo')
-        ultimo_pago = data.get('ultimo_pago')
-        estado = data.get('estado')
+        ultimo_pago = datetime.now()
+        saldo = 0
+        estado = 'D'
 
         # Crea una nueva Contratacion con los datos proporcionados
         nueva_contratacion = Contratacion(

@@ -90,10 +90,10 @@
                                 {{ cliente.contratacion_set.all.count }}
                             </td>
                             <td class="text-center">
-                                <a href="{% url 'home:borrarcliente' cliente.id %}"><i class="bi bi-trash"
+                                <a href="{% url 'home:borrarcliente' cliente.id %}"><i class="fa fa-trash"
                                                                                        style="color:red;"></i></a>
                                 <a href="{% url 'home:modificarcliente' cliente.id %}"><i
-                                        class="bi bi-pencil-square"></i></a>
+                                        class="fa fa-edit"></i></a>
                             </td>
                         </tr>
                     {% endfor %}

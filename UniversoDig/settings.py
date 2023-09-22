@@ -195,7 +195,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 #Configuración para que la sesión expire por inactividad o cierre del navegador
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True #Cerrar sesión al cerrar navegador
-SESSION_COOKIE_AGE = 360 #Tiempo de inactividad permitido
+SESSION_COOKIE_AGE = 900 #Segundos de tiempo de inactividad permitido
 SESSION_SAVE_EVERY_REQUEST = True #Mantener sesión mientras hayan peticiones
 
 MESSAGE_TAGS={

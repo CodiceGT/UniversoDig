@@ -98,7 +98,7 @@
                 <tr>
                     <td>{{detalles.anio}}</td>
                     <td>{{detalles.get_mes_display}}</td>
-                    <td> Q {{detalles.subtotal}} <a href="{% url 'home:borrar_detalle_pago' detalles.id %}"><i class="bi bi-trash"></i></a> </td>
+                    <td> Q {{detalles.subtotal}} <a href="{% url 'home:borrar_detalle_pago' detalles.id %}"><i class="fa fa-trash"></i></a> </td>
                 </tr>
                 {% endfor %}
                 <tfoot>

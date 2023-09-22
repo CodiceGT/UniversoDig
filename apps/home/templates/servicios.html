@@ -76,8 +76,8 @@
                                 {{servicio.costo}}
                             </td>
                             <td class="text-center">
-                                <a href="{% url 'home:borrarservicio' servicio.id %}"><i class="bi bi-trash" style="color:red;"></i></a>
-                                <a href="{% url 'home:modificarservicio' servicio.id %}"><i class="bi bi-pencil-square"></i></a>
+                                <a href="{% url 'home:borrarservicio' servicio.id %}"><i class="fa fa-trash" style="color:red;"></i></a>
+                                <a href="{% url 'home:modificarservicio' servicio.id %}"><i class="fa fa-edit"></i></a>
                             </td>
                         </tr>
                         {% endfor %}

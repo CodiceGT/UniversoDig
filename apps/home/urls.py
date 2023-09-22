@@ -50,6 +50,7 @@ urlpatterns = [
                # Contrataciones API
                # URL para listar contrataciones (método GET)
                path('contrataciones_api/', ContratacionAPIView.as_view(), name='listar_contrataciones'),
+               path('contrataciones_api/nueva/', ContratacionAPIView.as_view(), name='nueva_contratacion_ajax'),
                
                   # Pagos
                   path('pagos/', PagosView, name='pagos'),
