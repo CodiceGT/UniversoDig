@@ -9,7 +9,7 @@ from .views import login_view, LogoutView, usuarios_view, usuarionuevo_view, usu
     NuevaContratacionView, BorrarContratacionView, ModificarContratacionView, PagosView, NuevoRecibo, NuevoDetalle, \
     borrar_detalle_pago_view, informacionempresa_view, InformacionView, BorrarInformacionView, ModificarInformacionView, \
     reporte_fallo, cambiar_estado_reporte_fallo_view, cambiar_tecnico_reporte_fallo_view, borrar_reporte_fallos_view, \
-    ReporteExcel, ReporteContrataciones, ReciboPDFView, template_view, ContratacionAPIView
+    ReporteExcel, ReporteContrataciones, ReciboPDFView, template_view, ContratacionAPIView, actualizar_pendientes_pagos_view
 
 app_name = 'home'
 
@@ -51,6 +51,7 @@ urlpatterns = [
                # URL para listar contrataciones (método GET)
                path('contrataciones_api/', ContratacionAPIView.as_view(), name='listar_contrataciones'),
                path('contrataciones_api/nueva/', ContratacionAPIView.as_view(), name='nueva_contratacion_ajax'),
+               path('dashboard/actualiar_pagos', actualizar_pendientes_pagos_view, name='actualizar_pendiente_pago'),
                
                   # Pagos
                   path('pagos/', PagosView, name='pagos'),

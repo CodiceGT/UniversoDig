@@ -1,5 +1,5 @@
 {% extends 'base_menu.html' %} {% block contenido %}
-<title>{% block titulo %}Contrataciones{% endblock titulo %}</title>
+{% block titulo %}Contrataciones{% endblock titulo %}
 <div
   class="modal fade"
   id="exampleModal"
@@ -105,11 +105,13 @@
     </button>
   </div>
   <h1 class="title-container">Listado de Contrataciones</h1>
-  <div class="row justify-content-center mt-3">
-    <div
-      class="table-responsive col-sm-12 col-md-11 col-xl-12 border border-primary rounded p-4"
-    >
-      <table class="table border border-danger rounded text-center small">
+  <div class="row mt-3">
+    <div class="container">
+
+      <div
+      class="table-responsive"
+      >
+      <table id="dataTable1" class="table table-bordered dataTable small">
         <thead>
           <tr>
             <th>Codigo</th>
@@ -117,6 +119,7 @@
             <th>Cliente</th>
             <th>Servicio</th>
             <th>Direccion</th>
+            <th>Saldo</th>
             <th>Acciones</th>
           </tr>
         </thead>
@@ -128,22 +131,89 @@
             <td class="text-center">{{ contratacion.cliente }}</td>
             <td class="text-center">{{ contratacion.servicio }}</td>
             <td class="text-center">{{ contratacion.direccion }}</td>
+            <td class="text-center">{{ contratacion.saldo }}</td>
             <td class="text-center">
               <a href="{% url 'home:borrarcontratacion' contratacion.id %}"
-                ><i class="fa fa-trash" aria-hidden="true"></i
-              ></a>
-              <a href="{% url 'home:modificarcontratacion' contratacion.id %}"
+              ><i class="fa fa-trash" aria-hidden="true"></i
+                ></a>
+                <a href="{% url 'home:modificarcontratacion' contratacion.id %}"
                 ><i class="fa fa-edit"></i
-              ></a>
-            </td>
-          </tr>
-          {% endfor %}
+                  ></a>
+                </td>
+              </tr>
+              {% endfor %}
+            </div>
         </tbody>
       </table>
     </div>
   </div>
 </div>
 <a href="{% url 'home:reporteContratacion'%}"> EXPORTAR A EXCEL</a>
+
+<!-- Begin Page Content -->
+  <!-- Page Heading -->
+  <h1 class="h3 mb-2 text-gray-800">Tables</h1>
+  <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below.
+      For more information about DataTables, please visit the <a target="_blank"
+          href="https://datatables.net">official DataTables documentation</a>.</p>
+
+  <!-- DataTales Example -->
+  <div class="card shadow mb-4">
+      <div class="card-header py-3">
+          <h6 class="m-0 font-weight-bold text-primary">Tabla de contrataciones</h6>
+      </div>
+      <div class="card-body">
+          <div class="table-responsive">
+              <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                  <thead>
+                      <tr>
+                        <th>Codigo</th>
+                        <th>Fecha</th>
+                        <th>Cliente</th>
+                        <th>Servicio</th>
+                        <th>Direccion</th>
+                        <th>Saldo</th>
+                        <th>Acciones</th>
+                      </tr>
+                  </thead>
+                  <tfoot>
+                      <tr>
+                        <th>Codigo</th>
+                        <th>Fecha</th>
+                        <th>Cliente</th>
+                        <th>Servicio</th>
+                        <th>Direccion</th>
+                        <th>Saldo</th>
+                        <th>Acciones</th>
+                      </tr>
+                  </tfoot>
+                  <tbody>
+                    {% for contratacion in contrataciones %}
+          <tr>
+            <td class="text-center">{{ contratacion.id }}</td>
+            <td class="text-center">{{ contratacion.creacion | date:"d/m/y" }}</td>
+            <td class="text-center">{{ contratacion.cliente }}</td>
+            <td class="text-center">{{ contratacion.servicio }}</td>
+            <td class="text-center">{{ contratacion.direccion }}</td>
+            <td class="text-center">{{ contratacion.saldo }}</td>
+            <td class="text-center">
+              <a href="{% url 'home:borrarcontratacion' contratacion.id %}"
+              ><i class="fa fa-trash" aria-hidden="true"></i
+                ></a>
+                <a href="{% url 'home:modificarcontratacion' contratacion.id %}"
+                ><i class="fa fa-edit"></i
+                  ></a>
+                </td>
+              </tr>
+              {% endfor %}
+                  </tbody>
+              </table>
+          </div>
+      </div>
+  </div>
+
+
+<!-- /.container-fluid -->
 {% endblock contenido %}
 {% block scriptsCustom %}
 <script>
@@ -206,5 +276,14 @@
         return cookieValue;
     }
     
+</script>
+
+<!-- Script para cargar el dataTable-->
+<script>
+  // Call the dataTables jQuery plugin
+$(document).ready(function() {
+  $('#dataTable').DataTable();
+});
+
 </script>
 {% endblock scriptsCustom %}

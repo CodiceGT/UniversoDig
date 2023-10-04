@@ -14,6 +14,7 @@ from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.generic import UpdateView, ListView, TemplateView, View
 from .choices import ANIO_CHOICES, MES_CHOICES
+from .cron import actualizar_pendiente, actualizar_pendientes_pago
 
 # Generar pdf
 from openpyxl import Workbook
@@ -284,6 +285,11 @@ class ContratacionAPIView(View):
             return JsonResponse({'message': 'La Contratación no existe'}, status=404)
 
 
+def actualizar_pendientes_pagos_view(request):
+    actualizar_pendientes_pago()
+    return redirect('home:home')
+
+
 # Vista para registrar informacion de empresa
 def InformacionView(request):
     nombre = request.POST['nombre']
@@ -505,19 +511,6 @@ def borrar_detalle_pago_view(request, pk):
     id_recibo = detalle.recibo.id # Conservar el id del recibo para volver al detalle
     detalle.delete()
     return redirect('home:nuevodetalle', pk=id_recibo)
-
-
-def actualizar_pendiente(contratacion):
-    dias_ultimo_pago = datetime.now().astimezone(contratacion.ultimo_pago.tzinfo) - contratacion.ultimo_pago
-    # Verifica si tiene más de 30 días el último pago para sumarle a su saldo pendiente
-    if dias_ultimo_pago.days >= 30:
-        meses = dias_ultimo_pago / 30
-        contratacion.saldo = meses.days * contratacion.servicio.costo
-        contratacion.estado = 'P'  # Establece como "Pendiente de pago"
-    else:
-        contratacion.saldo = 0
-        contratacion.estado = 'D'  # Establece como "Al día"
-    contratacion.save()
 
 
 class ReporteExcel(TemplateView):
