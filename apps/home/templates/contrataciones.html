@@ -208,6 +208,30 @@
               {% endfor %}
                   </tbody>
               </table>
+
+
+              <table id="miTabla" class="display">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Edad</th>
+                        <th>Ciudad</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>John Doe</td>
+                        <td>30</td>
+                        <td>New York</td>
+                    </tr>
+                    <tr>
+                        <td>Jane Smith</td>
+                        <td>25</td>
+                        <td>Los Angeles</td>
+                    </tr>
+                    <!-- Agrega más filas de datos aquí -->
+                </tbody>
+            </table>
           </div>
       </div>
   </div>
@@ -282,7 +306,8 @@
 <script>
   // Call the dataTables jQuery plugin
 $(document).ready(function() {
-  $('#dataTable').DataTable();
+  $('#dataTable1').DataTable();
+  $('#miTabla').DataTable();
 });
 
 </script>

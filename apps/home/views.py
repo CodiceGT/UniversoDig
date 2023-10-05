@@ -1,4 +1,5 @@
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
+from dateutil.relativedelta import relativedelta
 from unidecode import unidecode  # Importa la función unidecode
 from django.contrib import messages, auth
 from django.contrib.auth import logout
@@ -58,22 +59,25 @@ def login_view(request):
 
 @login_required
 def HomeView(request):
-    enddate = datetime.today() + timedelta(days=1)
-    startdate = enddate - timedelta(days=7)
-    recibos = Recibo.objects.filter(fecha__range=[startdate, enddate])
+    today = date.today()
+    first_day_of_month = today.replace(day=1)
+    last_day_of_month = (today + relativedelta(day=31))
+    
+    recibos = Recibo.objects.filter(fecha__range=[first_day_of_month, last_day_of_month])
     
     contrataciones = Contratacion.objects.all()
     deudores = contrataciones.filter(estado='P')
-    deudores_porcentaje =  (deudores.count()/contrataciones.count())*100
+    deudores_porcentaje = (deudores.count() / contrataciones.count()) * 100
     
     reportes = ReporteFallo.objects.filter(~Q(estado='S'))
     
-    ingresoSemana = recibos.aggregate(Sum('total'))['total__sum']
-    if ingresoSemana is None:
-        ingresoSemana = 0
+    ingresoMes = recibos.aggregate(Sum('total'))['total__sum']
+    if ingresoMes is None:
+        ingresoMes = 0
+    
     return render(request, 'index.html',
-                  {'contrataciones': contrataciones, 'recibos': recibos, 'ingresototal': ingresoSemana,
-                   'deudores': deudores_porcentaje, 'reportes':reportes})
+                  {'contrataciones': contrataciones, 'recibos': recibos, 'ingresototal': ingresoMes,
+                   'deudores': deudores_porcentaje, 'reportes': reportes})
 
 
 def LogoutView(request):

@@ -23,11 +23,11 @@
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                    Clientes</div>
+                                     Clientes</div>
                                 <div class="h5 mb-0 font-weight-bold text-gray-800">{{contrataciones.count}}</div>
                             </div>
                             <div class="col-auto">
-                                <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                <i class="bi bi-person-fill text-primary" style="font-size:30px;"></i>
                             </div>
                         </div>
                     </div>
@@ -41,11 +41,11 @@
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                    Ingresos (Semana)</div>
+                                    Ingresos (MES)</div>
                                 <div class="h5 mb-0 font-weight-bold text-gray-800">Q {{ingresototal}}</div>
                             </div>
                             <div class="col-auto">
-                                <i class="fas fa-2x text-gray-300">Q</i>
+                                <i class="bi text-success" style="font-size:30px;"><b>Q</b></i>
                             </div>
                         </div>
                     </div>
@@ -54,11 +54,11 @@
 
             <!-- Earnings (Monthly) Card Example -->
             <div class="col-xl-3 col-md-6 mb-4">
-                <div class="card border-left-info shadow h-100 py-2">
+                <div class="card border-left-warning shadow h-100 py-2">
                     <div class="card-body">
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Clientes deudores
+                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Clientes deudores
                                 </div>
                                 <div class="row no-gutters align-items-center">
                                     <div class="col-auto">
@@ -66,7 +66,7 @@
                                     </div>
                                     <div class="col">
                                         <div class="progress progress-sm mr-2">
-                                            <div class="progress-bar bg-info" role="progressbar"
+                                            <div class="progress-bar bg-warning" role="progressbar"
                                                 style="width: {{deudores}}%" aria-valuenow="50" aria-valuemin="0"
                                                 aria-valuemax="100"></div>
                                         </div>
@@ -74,7 +74,7 @@
                                 </div>
                             </div>
                             <div class="col-auto">
-                                <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                                <i class="bi bi-currency-dollar text-warning" style="font-size:30px">↓</i>
                             </div>
                         </div>
                     </div>
@@ -93,7 +93,7 @@
                                 <div class="h5 mb-0 font-weight-bold text-gray-800"> {{reportes.count}} </div>
                             </div>
                             <div class="col-auto">
-                                <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                <i class="bi bi-exclamation-triangle text-danger fw-bold" style="font-size:30px"></i>
                             </div>
                         </div>
                     </div>
@@ -115,7 +115,7 @@
                         <div class="dropdown no-arrow">
                             <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                <i class="bi bi-three-dots-vertical"></i>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
                                 aria-labelledby="dropdownMenuLink">
@@ -146,7 +146,7 @@
                         <div class="dropdown no-arrow">
                             <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                <i class="bi bi-three-dots-vertical"></i>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
                                 aria-labelledby="dropdownMenuLink">
@@ -165,13 +165,13 @@
                         </div>
                         <div class="mt-4 text-center small">
                             <span class="mr-2">
-                                <i class="fas fa-circle text-primary"></i> Direct
+                                <i class="bi bi-circle-fill text-primary"></i> Direct
                             </span>
                             <span class="mr-2">
-                                <i class="fas fa-circle text-success"></i> Social
+                                <i class="bi bi-circle-fill text-success"></i> Social
                             </span>
                             <span class="mr-2">
-                                <i class="fas fa-circle text-info"></i> Referral
+                                <i class="bi bi-circle-fill text-info"></i> Referral
                             </span>
                         </div>
                     </div>
