@@ -67,7 +67,13 @@ def HomeView(request):
     
     contrataciones = Contratacion.objects.all()
     deudores = contrataciones.filter(estado='P')
-    deudores_porcentaje = (deudores.count() / contrataciones.count()) * 100
+
+    contrataciones_count = contrataciones.count()
+    if contrataciones_count == 0:
+        deudores_porcentaje = 0
+    else:
+        deudores_porcentaje = (deudores.count() / contrataciones_count) * 100
+
     
     reportes = ReporteFallo.objects.filter(~Q(estado='S'))
     
