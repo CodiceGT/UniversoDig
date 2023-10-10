@@ -304,10 +304,26 @@
 
 <!-- Script para cargar el dataTable-->
 <script>
+  const urlContrataciones = "{% url 'home:listar_contrataciones' %}";
+  var tablaContrataciones;
   // Call the dataTables jQuery plugin
 $(document).ready(function() {
-  $('#dataTable1').DataTable();
-  $('#miTabla').DataTable();
+  tablaContrataciones = $('#miTabla').DataTable({
+    "ajax": {
+        "url": urlGetListaAsociados, // Reemplaza esto con la URL correcta para obtener los datos
+        "dataSrc": "data" // Deja esto vacío si la respuesta AJAX devuelve un arreglo de objetos directamente
+    },
+    "responsive": true,
+    "language": {
+        "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
+    },
+    "columns": [
+        { "data": "nombre" },
+        { "data": "nombre" },
+        { "data": "nombre" },
+    ]
+  });
+
 });
 
 </script>

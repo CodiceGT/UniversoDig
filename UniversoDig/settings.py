@@ -11,14 +11,18 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 import os
+import environ
 from pathlib import Path
 from django.conf import settings
 from django.urls import reverse_lazy
 from django.contrib.messages import constants as messages
 
+
+env = environ.Env()
+environ.Env.read_env()
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
@@ -27,26 +31,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-$f#+^_3y$$43m7b+bn$=l#3xl0)0&5j$k=^=6j05ltb7u!ytd_'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.str('DEBUG')
 
 ALLOWED_HOSTS = ["*"]
-
-CORS_ALLOW_CREDENTIALS = True
-
-CORS_ORIGIN_ALLOW_ALL = True
-
-#CSRF_TRUSTED_ORIGINS = ['https://umgdwebprojectfinal-production.up.railway.app']
-
-CORS_REPLACE_HTTPS_REFERER = True
-
-#CSRF_COOKIE_DOMAIN = 'railway.app'
-"""
-CORS_ORIGIN_WHITELIST = (
-    'https://umgdwebprojectfinal-production.up.railway.app',
-    'umgdwebprojectfinal-production.up.railway.app',
-    'railway.app',
-)
-"""
 
 # Application definition
 
@@ -101,17 +88,13 @@ WSGI_APPLICATION = 'UniversoDig.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': env.str('DB_ENGINE'),
+            'NAME': env.str('DB_NAME'),
+            'USER': env.str('DB_USER'),
+            'PASSWORD': env.str('DB_PASSWORD'),
+            'HOST': env.str('DB_HOST'),
+            'PORT': env.str('DB_PORT'),
     }
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.mysql',
-    #         'NAME': 'railway',
-    #         'USER': 'root',
-    #         'PASSWORD': 'VUkdk6TYkC2z7R8YY3DM',
-    #         'HOST': 'containers-us-west-146.railway.app',
-    #         'PORT': '5872',
-    # }
 }
 
 #DATABASES = {

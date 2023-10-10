@@ -1,1 +1,0 @@
-web: gunicorn UniversoDig.wsgi --log-file -

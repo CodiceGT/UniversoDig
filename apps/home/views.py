@@ -206,7 +206,6 @@ class ContratacionAPIView(View):
 
         # Convierte el término de búsqueda a minúsculas y elimina tildes
         search_term = unidecode(search_term.lower())
-        print(search_term)
         
         # Realiza una consulta para obtener las contrataciones cuyo cliente tiene un nombre o apellido que contiene el término de búsqueda
         contrataciones = Contratacion.objects.filter(
@@ -214,7 +213,7 @@ class ContratacionAPIView(View):
         )
 
         # Convierte las contrataciones en un formato JSON
-        contrataciones_json = [{'id': c.id, 'cliente': str(c.cliente), 'servicio': str(c.servicio),}
+        contrataciones_json = [{'id': c.id, 'cliente': str(c.cliente), 'servicio': str(c.servicio), 'direccion': c.direccion}
                               for c in contrataciones]
 
         # Devuelve la respuesta JSON
