@@ -211,7 +211,10 @@ class ContratacionAPIView(View):
         search_term = request.GET.get('q')
 
         # Convierte el término de búsqueda a minúsculas y elimina tildes
-        search_term = unidecode(search_term.lower())
+        if search_term is not None:
+            search_term = unidecode(search_term.lower())
+        else:
+            search_term = ''
         
         # Realiza una consulta para obtener las contrataciones cuyo cliente tiene un nombre o apellido que contiene el término de búsqueda
         contrataciones = Contratacion.objects.filter(

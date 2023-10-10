@@ -1,4 +1,6 @@
-{% extends 'base_menu.html' %} {% block contenido %}
+{% extends 'base_menu.html' %} 
+{% load static %}
+{% block contenido %}
 {% block titulo %}Contrataciones{% endblock titulo %}
 <div
   class="modal fade"
@@ -305,25 +307,25 @@
 <!-- Script para cargar el dataTable-->
 <script>
   const urlContrataciones = "{% url 'home:listar_contrataciones' %}";
+  
   var tablaContrataciones;
   // Call the dataTables jQuery plugin
 $(document).ready(function() {
   tablaContrataciones = $('#miTabla').DataTable({
     "ajax": {
-        "url": urlGetListaAsociados, // Reemplaza esto con la URL correcta para obtener los datos
-        "dataSrc": "data" // Deja esto vacío si la respuesta AJAX devuelve un arreglo de objetos directamente
+        "url": urlContrataciones, // Reemplaza esto con la URL correcta para obtener los datos
+        "dataSrc": "contrataciones" // Deja esto vacío si la respuesta AJAX devuelve un arreglo de objetos directamente
     },
     "responsive": true,
     "language": {
-        "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
+        "url": urlDataTablesSpanish
     },
     "columns": [
-        { "data": "nombre" },
-        { "data": "nombre" },
-        { "data": "nombre" },
+        { "data": "cliente" },
+        { "data": "servicio" },
+        { "data": "direccion" },
     ]
   });
-
 });
 
 </script>
