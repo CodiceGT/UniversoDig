@@ -33,6 +33,18 @@
     
     <!-- DataTables -->
     <link rel="stylesheet" href="{% static 'datatables/dataTables.css' %}">
+
+    <style>
+        /* Estilos personalizados */
+        .navbar-mobile {
+            background-color: #333; /* Color de fondo del navbar */
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            display: flex; /* Utiliza Flexbox para los ítems */
+        }
+    </style>
 </head>
 
 <body id="page-top">
@@ -40,8 +52,23 @@
     <!-- Page Wrapper -->
     <div id="wrapper">
 
+        {% if request.is_mobile %}
+        <!-- Código HTML específico para dispositivos móviles -->
+        <!-- mobile navbar -->
+        <nav class="navbar navbar-mobile fixed-bottom navbar-vertical bg-primary m-0 p-0">
+            <div class="btn-group btn-group-lg col-12 m-0 p-0" role="group" aria-label="Basic mixed styles example">
+                <a href="{% url 'home:home' %}" type="button" style="font-size:25px;" class="btn btn-primary"><i class="bi bi-house-fill"></i></a>
+                <a href="{% url 'home:clientes' %}" type="button" style="font-size:25px;" class="btn btn-primary"><i class="bi bi-person-fill-add"></i></a>
+                <a href="{% url 'home:pagos' %}" type="button" style="font-size:25px;" class="btn btn-info active"><i class="bi bi-cash"></i></a>
+                <a href="{% url 'home:servicios' %}" type="button" style="font-size:25px;" class="btn btn-primary"><i class="bi bi-card-list"></i></a>
+                <a href="{% url 'home:usuarios' %}" type="button" style="font-size:25px;" class="btn btn-primary"><i class="bi bi-gear"></i></a>
+              </div>
+        </nav>
+        <!-- End mobile navbar -->
+        {% else %}
+        <!-- Código HTML para computadoras de escritorio o tablets -->
         <!-- Sidebar -->
-        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion navbar-horizontal" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="#">
@@ -162,9 +189,13 @@
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>
             </div>
         
-        </ul>
-        
+        </ul>        
         <!-- End of Sidebar -->
+        {% endif %}
+
+        
+
+        
 
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
@@ -414,7 +445,7 @@
     <!-- End of Page Wrapper -->
 
     <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
+    <a class="scroll-to-top rounded mb-5" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
 
