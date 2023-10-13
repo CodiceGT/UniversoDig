@@ -222,8 +222,17 @@ class ContratacionAPIView(View):
         )
 
         # Convierte las contrataciones en un formato JSON
-        contrataciones_json = [{'id': c.id, 'cliente': str(c.cliente), 'servicio': str(c.servicio), 'direccion': c.direccion}
-                              for c in contrataciones]
+        contrataciones_json = [
+            {
+                'id': c.id,
+                'cliente': str(c.cliente),
+                'servicio': str(c.servicio),
+                'direccion': c.direccion,
+                'saldo': c.saldo,
+                'creacion': c.creacion.strftime('%d/%m/%y'),
+                'ultimo_pago': c.ultimo_pago.strftime('%d/%m/%y'),
+                'estado': c.get_estado_display(),
+            }for c in contrataciones]
 
         # Devuelve la respuesta JSON
         return JsonResponse({'contrataciones': contrataciones_json})

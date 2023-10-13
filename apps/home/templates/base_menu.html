@@ -32,7 +32,8 @@
     <link rel="stylesheet" href="{% static 'template/vendor/fontawesome-free/css/all.min.css' %}">
     
     <!-- DataTables -->
-    <link rel="stylesheet" href="{% static 'datatables/dataTables.css' %}">
+    <link rel="stylesheet" href="{% static 'datatables/jquery.dataTables.min.css' %}">
+    <link rel="stylesheet" href="{% static 'datatables/responsive.dataTables.min.css' %}">
 
     <style>
         /* Estilos personalizados */
@@ -52,10 +53,9 @@
     <!-- Page Wrapper -->
     <div id="wrapper">
 
-        {% if request.is_mobile %}
         <!-- Código HTML específico para dispositivos móviles -->
         <!-- mobile navbar -->
-        <nav class="navbar navbar-mobile fixed-bottom navbar-vertical bg-primary m-0 p-0">
+        <nav style="display:none;" class="navbar navbar-mobile fixed-bottom navbar-vertical bg-primary m-0 p-0">
             <div class="btn-group btn-group-lg col-12 m-0 p-0" role="group" aria-label="Basic mixed styles example">
                 <a href="{% url 'home:home' %}" type="button" style="font-size:25px;" class="btn btn-primary"><i class="bi bi-house-fill"></i></a>
                 <a href="{% url 'home:clientes' %}" type="button" style="font-size:25px;" class="btn btn-primary"><i class="bi bi-person-fill-add"></i></a>
@@ -65,7 +65,6 @@
               </div>
         </nav>
         <!-- End mobile navbar -->
-        {% else %}
         <!-- Código HTML para computadoras de escritorio o tablets -->
         <!-- Sidebar -->
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion navbar-horizontal" id="accordionSidebar">
@@ -191,8 +190,6 @@
         
         </ul>        
         <!-- End of Sidebar -->
-        {% endif %}
-
         
 
         
@@ -474,7 +471,9 @@
     <script src="{% static 'template/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
       
     <!-- Script para DataTables -->
-    <script src="{% static 'datatables/datatables.js' %}"></script>
+    <script src="{% static 'datatables/jquery.dataTables.min.js' %}"></script>
+    <!-- JavaScript de DataTables Responsive -->
+<script src="{% static 'datatables/dataTables.responsive.min.js' %}"></script>
     <script>
         const urlDataTablesSpanish = "{% static 'datatables/es-es.json' %}"
     </script>
