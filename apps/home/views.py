@@ -4,7 +4,6 @@ from unidecode import unidecode  # Importa la función unidecode
 from django.contrib import messages, auth
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
 from django.db.models import Sum, Q, F
 from django.db.models.functions import Lower
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
@@ -17,12 +16,8 @@ from django.views.generic import UpdateView, ListView, TemplateView, View
 from .choices import ANIO_CHOICES, MES_CHOICES
 from .cron import actualizar_pendiente, actualizar_pendientes_pago
 
-# Generar pdf
-from openpyxl import Workbook
-from xhtml2pdf import pisa
-
 from .forms import FormNuevoReporte, UserForm, UserRegisterForm, ReciboSelectContratacionForm
-from .models import Cliente, DetallePago, Informacion, Servicio, Contratacion, Recibo, ReporteFallo
+from .models import *
 
 
 def template_view(request):
@@ -32,10 +27,10 @@ def template_view(request):
 # Función de pertenencia a grupos individuales o en colección
 def usuario_pertenece_grupos(id_usuario, nombres_grupos):
     try:
-        usuario = User.objects.get(pk=id_usuario)
+        usuario = CustomUser.objects.get(pk=id_usuario)
         grupos_usuario = usuario.groups.values_list('name', flat=True)
         pertenece = any(nombre_grupo in grupos_usuario for nombre_grupo in nombres_grupos)
-    except User.DoesNotExist:
+    except CustomUser.DoesNotExist:
         pertenece = False
     return pertenece
 
@@ -101,7 +96,9 @@ def NuevoClienteView(request):
     telefono = request.POST['telefono']
     correo = request.POST['correo']
 
-    cliente = Cliente(cui=cui, nombre=nombre, apellido=apellido, telefono=telefono, correo=correo)
+    colaborador = CustomUser.objects.get(id=request.user.id)
+
+    cliente = Cliente(cui=cui, nombre=nombre, apellido=apellido, telefono=telefono, correo=correo, usuario_registro=colaborador)
     cliente.save()
 
     return redirect('home:clientes')
@@ -150,7 +147,9 @@ def NuevoServicioView(request):
     nombre = request.POST['nombre']
     ancho_banda = request.POST['ancho_banda']
     costo = request.POST['costo']
-    servicio = Servicio(tipo=tipo, nombre=nombre, ancho_banda=ancho_banda, costo=costo)
+    colaborador = CustomUser.objects.get(id=request.user.id)
+
+    servicio = Servicio(tipo=tipo, nombre=nombre, ancho_banda=ancho_banda, costo=costo, usuario_registro=colaborador)
     servicio.save()
     return redirect('home:servicios')
 
@@ -311,32 +310,32 @@ def actualizar_pendientes_pagos_view(request):
     return redirect('home:home')
 
 
-# Vista para registrar informacion de empresa
-def InformacionView(request):
+# Vista para registrar sucursal de empresa
+def SucursalView(request):
     nombre = request.POST['nombre']
     direccion = request.POST['direccion']
     telefono = request.POST['telefono']
-    informacion = Informacion.objects.get(pk=1)
-    informacion.nombre = nombre
-    informacion.direccion = direccion
-    informacion.telefono = telefono
-    informacion.save()
+    sucursal = Sucursal.objects.get(pk=1)
+    sucursal.nombre = nombre
+    sucursal.direccion = direccion
+    sucursal.telefono = telefono
+    sucursal.save()
 
-    return redirect('home:informacion')
+    return redirect('home:sucursal')
 
 
-# Vista para listar informacion de empresa
-def informacionempresa_view(request):
+# Vista para listar sucursal de empresa
+def sucursalempresa_view(request):
     form = UserRegisterForm()
-    context = {'informacion': Informacion.objects.get(pk=1), 'form': form,
-               'usuarios': User.objects.all().order_by('first_name')}
+    context = {'sucursal': Sucursal.objects.get(pk=1), 'form': form,
+               'usuarios': CustomUser.objects.all().order_by('first_name')}
     return render(request, 'informacion.html', context)
 
 
 # ----------------- Vistas CRUD Usuarios -----------------
 def usuarios_view(request):
     form = UserRegisterForm()
-    context = {'form': form, 'usuarios': User.objects.all()}
+    context = {'form': form, 'usuarios': CustomUser.objects.all()}
     return render(request, 'usuarios/usuarios.html', context)
 
 
@@ -344,10 +343,10 @@ def usuarios_filtrados(request):
     form = UserRegisterForm()
     nombre = request.GET.get('nombre', '')  # Obtener el valor del parámetro 'nombre' de la solicitud GET
 
-    usuarios = User.objects.filter(Q(first_name__icontains=nombre) | Q(
+    usuarios = CustomUser.objects.filter(Q(first_name__icontains=nombre) | Q(
         last_name__icontains=nombre))  # Filtrar usuarios cuyos nombres contengan el valor proporcionado
 
-    context = {'informacion': Informacion.objects.get(pk=1), 'form': form, 'usuarios': usuarios}
+    context = {'sucursal': Sucursal.objects.get(pk=1), 'form': form, 'usuarios': usuarios}
 
     return render(request, 'informacion.html', context)
 
@@ -365,7 +364,7 @@ def usuarionuevo_view(request):
 
 
 def usuarioeliminar_view(request, username):
-    colaborador = User.objects.get(username=username)
+    colaborador = CustomUser.objects.get(username=username)
     colaborador.delete()
     messages.success(request, f'Usuario {colaborador.first_name} eliminado correctamente')
     return redirect('home:usuarios')
@@ -375,22 +374,22 @@ class EditarUsuarioView(UpdateView):
     template_name = 'usuarios/usuario_editar.html'
     form_class = UserForm
     success_url = reverse_lazy('home:usuarios')
-    model = User
+    model = CustomUser
 
 
-# Vista para borrar informacion de empresa
-def BorrarInformacionView(request, pk):
-    informacion = Informacion.objects.get(pk=pk)
-    informacion.delete()
-    return redirect('home:informacion')
+# Vista para borrar sucursal de empresa
+def BorrarSucursalView(request, pk):
+    sucursal = Sucursal.objects.get(pk=pk)
+    sucursal.delete()
+    return redirect('home:sucursal')
 
 
-# Vista para modificar informacion de empresa
-class ModificarInformacionView(UpdateView):
+# Vista para modificar sucursal de empresa
+class ModificarSucursalView(UpdateView):
     template_name = 'modificarInformacion.html'
-    model = Informacion
+    model = Sucursal
     fields = ['nombre', 'direccion', 'telefono']
-    success_url = reverse_lazy('home:informacion')
+    success_url = reverse_lazy('home:sucursal')
 
 
 # ----------------- Vistas CRUD Reportes de fallos -----------------
@@ -398,7 +397,7 @@ class ModificarInformacionView(UpdateView):
 @login_required
 def reporte_fallo(request):
     reportes = ReporteFallo.objects.all().order_by('-fecha_reporte')
-    usuarios = User.objects.filter(groups__name__in=['Tecnico', 'Administrador'])
+    usuarios = CustomUser.objects.filter(groups__name__in=['Tecnico', 'Administrador'])
 
     if request.method == 'POST':
         form = FormNuevoReporte(request.POST)
@@ -420,13 +419,13 @@ def reporte_fallo(request):
 @login_required
 def cambiar_estado_reporte_fallo_view(request, pk, estado):
     if usuario_pertenece_grupos(request.user.id, ['Administrador', 'Tecnico']):
-        tecnico = User.objects.get(pk=request.user.id)
+        tecnico = CustomUser.objects.get(pk=request.user.id)
         reporte = ReporteFallo.objects.get(pk=pk)
         if reporte.estado == 'S':
             messages.error(request, f'{reporte} - Ya está completado')
         else:
             reporte.estado = estado
-            reporte.tecnico_asignado = tecnico
+            reporte.tecnico = tecnico
             reporte.save()
             messages.success(request, f'{reporte} - {reporte.get_estado_display()}')
     else:
@@ -442,8 +441,8 @@ def cambiar_tecnico_reporte_fallo_view(request, id_reporte, id_tecnico):
         if reporte.estado == 'S':
             messages.warning(request, f'{reporte} ya fue completado, no se puede cambiar el técnico asignado')
         else:
-            tecnico = User.objects.get(pk=id_tecnico)
-            reporte.tecnico_asignado = tecnico
+            tecnico = CustomUser.objects.get(pk=id_tecnico)
+            reporte.tecnico = tecnico
             reporte.save()
             messages.success(request, f'{reporte} asignado a {tecnico}')
     else:
@@ -461,26 +460,6 @@ def borrar_reporte_fallos_view(request, id_reporte):
     else:
         messages.error(request, 'Usuario sin autorización para cambio de técnico')
     return redirect(reverse('home:reportes'))
-
-
-# Vista para imprimir PDF de factura
-class ReciboPDFView(View):
-    def get(self, request, *args, **kwargs):
-        try:
-            template = get_template('recibopdf.html')
-            context = {
-                'recibo': Recibo.objects.get(pk=self.kwargs['pk'])
-            }
-            html = template.render(context)
-            response = HttpResponse(content_type='application/pdf')
-            response['Content-Disposition'] = 'attachment; filename="report.pdf"'
-            # create a pdf
-            pisa_status = pisa.CreatePDF(
-                html, dest=response)
-            return response
-        except:
-            pass
-        return HttpResponseRedirect(reverse_lazy('home:pagos'))
 
 
 # ----------------- Vistas CRUD Recibos y pagos -----------------
@@ -532,68 +511,3 @@ def borrar_detalle_pago_view(request, pk):
     id_recibo = detalle.recibo.id # Conservar el id del recibo para volver al detalle
     detalle.delete()
     return redirect('home:nuevodetalle', pk=id_recibo)
-
-
-class ReporteExcel(TemplateView):
-    def get(self, request, *args, **kwargs):
-        cliente = Cliente.objects.all()
-        wb = Workbook()
-        ws = wb.active
-        ws['B1'] = 'REPORTE DE CLIENTES'
-
-        ws.merge_cells('B1:G1')
-
-        ws['B3'] = 'CUI'
-        ws['C3'] = 'NOMBRE'
-        ws['D3'] = 'APELLIDO'
-        ws['E3'] = 'DIRECCION'
-        ws['F3'] = 'TELEFONO'
-        ws['G3'] = 'CORREO'
-
-        cont = 4
-        for cli in cliente:
-            ws.cell(row=cont, column=2).value = cli.cui
-            ws.cell(row=cont, column=3).value = cli.nombre
-            ws.cell(row=cont, column=4).value = cli.apellido
-            ws.cell(row=cont, column=5).value = cli.direccion
-            ws.cell(row=cont, column=6).value = cli.telefono
-            ws.cell(row=cont, column=7).value = cli.correo
-            cont += 1
-
-        nombre_archivo = "ReporteClientes.xlsx"
-        response = HttpResponse(content_type="application/ms-excel")
-        content = "attachment; filename = {0}".format(nombre_archivo)
-        response['Content-Disposition'] = content
-        wb.save(response)
-        return response
-
-
-class ReporteContrataciones(TemplateView):
-    def get(self, request, *args, **kwargs):
-        contrato = Contratacion.objects.all()
-        wb = Workbook()
-        ws = wb.active
-        ws['B1'] = 'REPORTE DE CONTRATACIONES'
-
-        ws.merge_cells('B1:E1')
-
-        ws['B3'] = 'CLIENTE'
-        ws['C3'] = 'SERVICIO'
-        ws['D3'] = 'DIRECCION'
-        ws['E3'] = 'CREACION'
-
-        cont = 4
-        for puesto in contrato:
-            ws.cell(row=cont, column=2).value = puesto.cliente
-            ws.cell(row=cont, column=3).value = puesto.servicio
-            ws.cell(row=cont, column=4).value = puesto.direccion
-            ws.cell(row=cont, column=5).value = puesto.creacion
-
-            cont += 1
-
-        nombre_archivo = "ReporteContratacion.xlsx"
-        response = HttpResponse(content_type="application/ms-excel")
-        content = "attachment; filename = {0}".format(nombre_archivo)
-        response['Content-Disposition'] = content
-        wb.save(response)
-        return response
