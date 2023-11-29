@@ -11,55 +11,42 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 import os
+import environ
 from pathlib import Path
 from django.conf import settings
 from django.urls import reverse_lazy
 from django.contrib.messages import constants as messages
 
+
+env = environ.Env()
+environ.Env.read_env()
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-$f#+^_3y$$43m7b+bn$=l#3xl0)0&5j$k=^=6j05ltb7u!ytd_'
+SECRET_KEY = env.str('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.str('DEBUG')
 
 ALLOWED_HOSTS = ["*"]
-
-CORS_ALLOW_CREDENTIALS = True
-
-CORS_ORIGIN_ALLOW_ALL = True
-
-#CSRF_TRUSTED_ORIGINS = ['https://umgdwebprojectfinal-production.up.railway.app']
-
-CORS_REPLACE_HTTPS_REFERER = True
-
-#CSRF_COOKIE_DOMAIN = 'railway.app'
-"""
-CORS_ORIGIN_WHITELIST = (
-    'https://umgdwebprojectfinal-production.up.railway.app',
-    'umgdwebprojectfinal-production.up.railway.app',
-    'railway.app',
-)
-"""
 
 # Application definition
 
 INSTALLED_APPS = [
-    'apps.home',
-    'django_crontab',
-    'whitenoise.runserver_nostatic',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'whitenoise.runserver_nostatic',
+    'django_crontab',
+    'apps.home',
 ]
 
 MIDDLEWARE = [
@@ -101,17 +88,13 @@ WSGI_APPLICATION = 'UniversoDig.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': env.str('DB_ENGINE'),
+            'NAME': env.str('DB_NAME'),
+            'USER': env.str('DB_USER'),
+            'PASSWORD': env.str('DB_PASSWORD'),
+            'HOST': env.str('DB_HOST'),
+            'PORT': env.str('DB_PORT'),
     }
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.mysql',
-    #         'NAME': 'railway',
-    #         'USER': 'root',
-    #         'PASSWORD': 'VUkdk6TYkC2z7R8YY3DM',
-    #         'HOST': 'containers-us-west-146.railway.app',
-    #         'PORT': '5872',
-    # }
 }
 
 #DATABASES = {
@@ -161,7 +144,7 @@ USE_TZ = True
 
 # Tareas programadas
 CRONJOBS = [
-    ('0 0 15 * *', 'home.cron.actualizar_pendientes_pago'), #Actualizar pendientes de pago cada 15 del mes
+    ('0 3 * * *', 'home.cron.actualizar_pendientes_pago'), #Actualizar pendientes de pago cada día a las 3 de la mañana
 ]
 
 
@@ -195,7 +178,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 #Configuración para que la sesión expire por inactividad o cierre del navegador
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True #Cerrar sesión al cerrar navegador
-SESSION_COOKIE_AGE = 360 #Tiempo de inactividad permitido
+SESSION_COOKIE_AGE = 900 #Segundos de tiempo de inactividad permitido
 SESSION_SAVE_EVERY_REQUEST = True #Mantener sesión mientras hayan peticiones
 
 MESSAGE_TAGS={

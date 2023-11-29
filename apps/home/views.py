@@ -1,16 +1,21 @@
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
+from dateutil.relativedelta import relativedelta
+from unidecode import unidecode  # Importa la función unidecode
 from django.contrib import messages, auth
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.db.models import Sum, Q
-from django.http import HttpResponse, HttpResponseRedirect
+from django.db.models import Sum, Q, F
+from django.db.models.functions import Lower
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect
 from django.template.loader import get_template
 from django.urls import reverse, reverse_lazy
 from django.utils.decorators import method_decorator
+from django.views import View
 from django.views.generic import UpdateView, ListView, TemplateView, View
 from .choices import ANIO_CHOICES, MES_CHOICES
+from .cron import actualizar_pendiente, actualizar_pendientes_pago
 
 # Generar pdf
 from openpyxl import Workbook
@@ -18,6 +23,10 @@ from xhtml2pdf import pisa
 
 from .forms import FormNuevoReporte, UserForm, UserRegisterForm, ReciboSelectContratacionForm
 from .models import Cliente, DetallePago, Informacion, Servicio, Contratacion, Recibo, ReporteFallo
+
+
+def template_view(request):
+    return render(request, 'base_template/index.html')
 
 
 # Función de pertenencia a grupos individuales o en colección
@@ -50,16 +59,31 @@ def login_view(request):
 
 @login_required
 def HomeView(request):
-    enddate = datetime.today() + timedelta(days=1)
-    startdate = enddate - timedelta(days=7)
-    recibos = Recibo.objects.filter(fecha__range=[startdate, enddate])
-    deudores = Contratacion.objects.filter(estado='P')
-    ingresoSemana = recibos.aggregate(Sum('total'))['total__sum']
-    if ingresoSemana is None:
-        ingresoSemana = 0
+    today = date.today()
+    first_day_of_month = today.replace(day=1)
+    last_day_of_month = (today + relativedelta(day=31))
+    
+    recibos = Recibo.objects.filter(fecha__range=[first_day_of_month, last_day_of_month])
+    
+    contrataciones = Contratacion.objects.all()
+    deudores = contrataciones.filter(estado='P')
+
+    contrataciones_count = contrataciones.count()
+    if contrataciones_count == 0:
+        deudores_porcentaje = 0
+    else:
+        deudores_porcentaje = (deudores.count() / contrataciones_count) * 100
+
+    
+    reportes = ReporteFallo.objects.filter(~Q(estado='S'))
+    
+    ingresoMes = recibos.aggregate(Sum('total'))['total__sum']
+    if ingresoMes is None:
+        ingresoMes = 0
+    
     return render(request, 'index.html',
-                  {'contrataciones': Contratacion.objects.all(), 'recibos': recibos, 'ingresototal': ingresoSemana,
-                   'deudores': deudores})
+                  {'contrataciones': contrataciones, 'recibos': recibos, 'ingresototal': ingresoMes,
+                   'deudores': deudores_porcentaje, 'reportes': reportes})
 
 
 def LogoutView(request):
@@ -180,6 +204,113 @@ class ModificarContratacionView(UpdateView):
     success_url = reverse_lazy('home:contrataciones')
 
 
+class ContratacionAPIView(View):
+    def get(self, request, *args, **kwargs):
+        # Obtén el valor del parámetro 'q' de la solicitud
+        
+        search_term = request.GET.get('q')
+
+        # Convierte el término de búsqueda a minúsculas y elimina tildes
+        if search_term is not None:
+            search_term = unidecode(search_term.lower())
+        else:
+            search_term = ''
+        
+        # Realiza una consulta para obtener las contrataciones cuyo cliente tiene un nombre o apellido que contiene el término de búsqueda
+        contrataciones = Contratacion.objects.filter(
+            Q(cliente__nombre__icontains=search_term) | Q(cliente__apellido__icontains=search_term)
+        )
+
+        # Convierte las contrataciones en un formato JSON
+        contrataciones_json = [
+            {
+                'id': c.id,
+                'cliente': str(c.cliente),
+                'servicio': str(c.servicio),
+                'direccion': c.direccion,
+                'saldo': c.saldo,
+                'creacion': c.creacion.strftime('%d/%m/%y'),
+                'ultimo_pago': c.ultimo_pago.strftime('%d/%m/%y'),
+                'estado': c.get_estado_display(),
+            }for c in contrataciones]
+
+        # Devuelve la respuesta JSON
+        return JsonResponse({'contrataciones': contrataciones_json})
+
+    def post(self, request, *args, **kwargs):
+        # Aquí puedes manejar la lógica para crear una nueva contratación
+        # Recupera los datos del cuerpo de la solicitud (request body) y crea una nueva Contratacion
+        # Por ejemplo, si los datos se envían como JSON en el cuerpo de la solicitud:
+        data = request.POST  # Asegúrate de que los datos se envíen como JSON
+        cliente_id = data.get('cliente')
+        servicio_id = data.get('servicio')
+        direccion = data.get('direccion')
+        ultimo_pago = datetime.now()
+        saldo = 0
+        estado = 'D'
+
+        # Crea una nueva Contratacion con los datos proporcionados
+        nueva_contratacion = Contratacion(
+            cliente_id=cliente_id,
+            servicio_id=servicio_id,
+            direccion=direccion,
+            saldo=saldo,
+            ultimo_pago=ultimo_pago,
+            estado=estado
+        )
+        nueva_contratacion.save()
+
+        # Después de crear la nueva contratación, puedes devolver una respuesta JSON
+        return JsonResponse({'message': 'Contratación creada con éxito'})
+
+    def put(self, request, pk, *args, **kwargs):
+        # Aquí puedes manejar la lógica para actualizar una contratación existente
+        # pk es el ID de la contratación que deseas actualizar
+        # Recupera los datos del cuerpo de la solicitud (request body) y actualiza la Contratacion
+        # Por ejemplo, si los datos se envían como JSON en el cuerpo de la solicitud:
+        data = request.POST  # Asegúrate de que los datos se envíen como JSON
+        cliente_id = data.get('cliente')
+        servicio_id = data.get('servicio')
+        direccion = data.get('direccion')
+        saldo = data.get('saldo')
+        ultimo_pago = data.get('ultimo_pago')
+        estado = data.get('estado')
+
+        # Obtiene la Contratacion existente por su ID
+        contratacion = Contratacion.objects.get(pk=pk)
+
+        # Actualiza los campos de la Contratacion con los nuevos datos
+        contratacion.cliente_id = cliente_id
+        contratacion.servicio_id = servicio_id
+        contratacion.direccion = direccion
+        contratacion.saldo = saldo
+        contratacion.ultimo_pago = ultimo_pago
+        contratacion.estado = estado
+
+        # Guarda los cambios en la Contratacion
+        contratacion.save()
+
+        # Después de actualizar la contratación, puedes devolver una respuesta JSON
+        return JsonResponse({'message': 'Contratación actualizada con éxito'})
+
+    def delete(self, request, pk, *args, **kwargs):
+        # Aquí puedes manejar la lógica para eliminar una contratación
+        # pk es el ID de la contratación que deseas eliminar
+        # Realiza la eliminación de la Contratacion
+        # Por ejemplo:
+        try:
+            contratacion = Contratacion.objects.get(pk=pk)
+            contratacion.delete()
+            return JsonResponse({'message': 'Contratación eliminada con éxito'})
+        except Contratacion.DoesNotExist:
+            return JsonResponse({'message': 'La Contratación no existe'}, status=404)
+
+
+def actualizar_pendientes_pagos_view(request):
+    actualizar_pendientes_pago()
+    return redirect('home:home')
+
+
 # Vista para registrar informacion de empresa
 def InformacionView(request):
     nombre = request.POST['nombre']
@@ -206,7 +337,7 @@ def informacionempresa_view(request):
 def usuarios_view(request):
     form = UserRegisterForm()
     context = {'form': form, 'usuarios': User.objects.all()}
-    return render(request, 'usuarios.html', context)
+    return render(request, 'usuarios/usuarios.html', context)
 
 
 def usuarios_filtrados(request):
@@ -241,7 +372,7 @@ def usuarioeliminar_view(request, username):
 
 
 class EditarUsuarioView(UpdateView):
-    template_name = 'usuario_editar.html'
+    template_name = 'usuarios/usuario_editar.html'
     form_class = UserForm
     success_url = reverse_lazy('home:usuarios')
     model = User
@@ -358,7 +489,7 @@ def PagosView(request):
     form = ReciboSelectContratacionForm
     return render(request, 'pagos.html',
                   {'pagos': Recibo.objects.all().order_by('-pk'), 'contrataciones': Contratacion.objects.all(), 'form': form})
-
+    
 
 def NuevoRecibo(request):
     pk = request.POST['contratacion']
@@ -401,19 +532,6 @@ def borrar_detalle_pago_view(request, pk):
     id_recibo = detalle.recibo.id # Conservar el id del recibo para volver al detalle
     detalle.delete()
     return redirect('home:nuevodetalle', pk=id_recibo)
-
-
-def actualizar_pendiente(contratacion):
-    dias_ultimo_pago = datetime.now().astimezone(contratacion.ultimo_pago.tzinfo) - contratacion.ultimo_pago
-    # Verifica si tiene más de 30 días el último pago para sumarle a su saldo pendiente
-    if dias_ultimo_pago.days >= 30:
-        meses = dias_ultimo_pago / 30
-        contratacion.saldo = meses.days * contratacion.servicio.costo
-        contratacion.estado = 'P'  # Establece como "Pendiente de pago"
-    else:
-        contratacion.saldo = 0
-        contratacion.estado = 'D'  # Establece como "Al día"
-    contratacion.save()
 
 
 class ReporteExcel(TemplateView):

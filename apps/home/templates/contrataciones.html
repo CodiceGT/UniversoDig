@@ -1,96 +1,249 @@
-{% extends 'menu.html' %}
-{% block contenido %}
-<title>{% block titulo %}Contrataciones{% endblock titulo %}</title>
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Nueva Contratacion</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>  
-            <form action="{% url 'home:nuevacontratacion' %}" method="post">
-                {% csrf_token %}
-                <div class="modal-body">
-                    <div class="mb-3">
-                    <label for="recipient-name" class="col-form-label">Cliente</label>
-                    <input type="text" class="form-control" list="listaclientes" name="cliente">
-                        <datalist id="listaclientes">
-                            {% for cliente in clientes %}
-                            <option value=" {{cliente.id}} ">{{cliente.nombre}} {{cliente.apellido}} </option>
-                            {% endfor %}
-                        </datalist>
-                    </div>
-                    <div class="mb-3">
-                        <label for="recipient-name" class="col-form-label">Servicio</label>
-                        <input type="text" class="form-control" list="listaservicios" name="servicio">
-                        <datalist id="listaservicios">
-                            {% for servicio in servicios %}
-                            <option value=" {{servicio.id}} "> {{servicio.tipo}} {{servicio.nombre}} {{servicio.costo}} </option>
-                            {% endfor %}
-                        </datalist>
-                    </div>
-                    <div class="mb-3"> 
-                        <label for="recipient-name" class="col-form-label">Direccion</label>   
-                        <input type="text" class="form-control" name="direccion" placeholder="Direccion">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Añadir</button>
-                </div>
+{% extends 'base_menu.html' %} {% load static %} {% block contenido %}
+{% block titulo %}Contrataciones{% endblock titulo %}
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Nueva Contratacion</h5>
+        <button
+          type="button"
+          class="btn"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span class="fa fa-times"></span>
+        </button>
+      </div>
+      <!-- Formulario de creación de contratación nueva -->
+      <form
+        id="formNewContratacion"
+        method="post"
+        class="form needs-validation"
+        novalidate
+      >
+        {% csrf_token %}
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="recipient-name" class="col-form-label">Cliente</label>
+            <input
+              type="text"
+              class="form-control"
+              list="listaclientes"
+              name="cliente"
+              required
+            />
+            <datalist id="listaclientes">
+              {% for cliente in clientes %}
+              <option value=" {{cliente.id}} ">
+                {{cliente.nombre}} {{cliente.apellido}}
+              </option>
+              {% endfor %}
+            </datalist>
+            <span class="invalid-feedback">Elije un cliente</span>
+          </div>
+          <div class="mb-3">
+            <label for="recipient-name" class="col-form-label">Servicio</label>
+            <input
+              type="text"
+              class="form-control"
+              list="listaservicios"
+              name="servicio"
+              required
+            />
+            <datalist id="listaservicios">
+              {% for servicio in servicios %}
+              <option value=" {{servicio.id}} ">
+                {{servicio.tipo}} {{servicio.nombre}} {{servicio.costo}}
+              </option>
+              {% endfor %}
+            </datalist>
+            <span class="invalid-feedback">Elije un plan a contratar</span>
+          </div>
+          <div class="mb-3">
+            <label for="recipient-name" class="col-form-label">Direccion</label>
+            <input
+              type="text"
+              class="form-control"
+              name="direccion"
+              minlength="6"
+              placeholder="Direccion"
+              required
+            />
+            <span class="invalid-feedback"
+              >Escribe la dirección de instalación</span
+            >
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Cancelar
+          </button>
+          <button type="submit" class="btn btn-primary">Añadir</button>
+        </div>
+      </form>
+      <!-- Formulario de creación de contratación nueva -->
     </div>
-    </div>        
-</form>
+  </div>
 </div>
 
-<div class="container p-0">
-    <div class="row justify-content-end">
-        <button type="button" class="btn btn-primary col-12 col-sm-4 col-lg-2" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Nueva Contratacion</button>
+<!-- Begin Page Content -->
+<!-- Page Heading -->
+<h1 class="h3 mb-2 text-gray-800">Contrataciones</h1>
+<p class="mb-4"></p>
+
+<!-- DataTales Example -->
+<div class="card shadow mb-4">
+  <div class="card-header py-3">
+    <h6 class="m-0 font-weight-bold text-primary">Tabla de contrataciones</h6>
+  </div>
+  <div class="card-body">
+    <div class="table-responsive">
+      <table id="miTabla" class="table nowrap">
+        <caption>
+          Registro de contrataciones de planes.
+        </caption>
+        <thead>
+          <tr>
+            <th>Estado</th>
+            <th>Nombre</th>
+            <th>Plan</th>
+            <th>Dirección</th>
+            <th>Contratación</th>
+            <th>Ultimo Pago</th>
+            <th>Saldo</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Agrega más filas de datos aquí -->
+        </tbody>
+      </table>
     </div>
-    <h1 class="title-container">
-        Listado de Contrataciones
-    </h1>
-    <div class="row justify-content-center mt-3">
-        <div class="table-responsive col-sm-12 col-md-11 col-xl-12 border border-primary rounded p-4">
-            <table class="table border border-danger rounded text-center small">
-                <thead>
-                    <tr>
-                        <th> Codigo </th>
-                        <th> Fecha </th>
-                        <th> Cliente </th>
-                        <th> Servicio </th>
-                        <th> Direccion </th>
-                        <th> Acciones </th>
-                    </tr>
-                </thead>
-                <tbody class="fontfamily">
-                    {% for contratacion in contrataciones %}
-                    <tr>
-                        <td class="text-center">
-                            {{ contratacion.id }}
-                        </td>
-                        <td class="text-center">
-                            {{ contratacion.creacion | date }}
-                        </td>
-                        <td class="text-center">
-                            {{ contratacion.cliente }}
-                        </td>
-                        <td class="text-center">
-                            {{ contratacion.servicio }}
-                        </td>
-                        <td class="text-center">
-                            {{ contratacion.direccion }}
-                        </td>
-                        <td class="text-center">
-                            <a href="{% url 'home:borrarcontratacion' contratacion.id %}"><i class="bi bi-trash3-fill"></i></a>
-                            <a href="{% url 'home:modificarcontratacion' contratacion.id %}"><i class="bi bi-pencil-square"></i></a>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>  
-</div> 
-<a href="{% url 'home:reporteContratacion'%}"> EXPORTAR A EXCEL</a>          
-{% endblock contenido %}
+  </div>
+</div>
+
+<!-- /.container-fluid -->
+{% endblock contenido %} {% block scriptsCustom %}
+<script>
+  $("#formNewContratacion").on("submit", function () {
+    event.preventDefault();
+    var formulario = $(this);
+
+    if (!formulario[0].checkValidity()) {
+      console.error("El formulario no es válido");
+    } else {
+      postCreateContratacion();
+    }
+  });
+
+  function postCreateContratacion() {
+    // Obtén el formulario o los datos que deseas enviar
+    var formulario = document.getElementById("formNewContratacion");
+    var formData = new FormData(formulario);
+
+    // Realiza la solicitud AJAX POST
+    $.ajax({
+      url: "{% url 'home:nueva_contratacion_ajax' %}", // Reemplaza con la URL de tu vista en Django
+      type: "POST",
+      data: formData,
+      processData: false, // Evita que jQuery procese los datos
+      contentType: false, // Evita que jQuery establezca el encabezado "Content-Type"
+      headers: {
+        "X-CSRFToken": getCookie("csrftoken"),
+      },
+      success: function (data) {
+        Swal.fire({
+          icon: "success",
+          title: "Contratación creada con éxito",
+          showConfirmButton: false,
+          timer: 2000, // 2 segundos
+        }).then(function () {
+          // Después de 2 segundos, recarga la página
+          location.reload();
+        });
+      },
+      error: function (xhr, textStatus, errorThrown) {
+        console.log("Error al crear la contratación");
+      },
+    });
+  }
+
+  // Función para obtener el valor del token CSRF de las cookies
+  function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== "") {
+      var cookies = document.cookie.split(";");
+      for (var i = 0; i < cookies.length; i++) {
+        var cookie = cookies[i].trim();
+        if (cookie.substring(0, name.length + 1) === name + "=") {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+</script>
+
+<!-- Script para cargar el dataTable-->
+<script>
+  const urlContrataciones = "{% url 'home:listar_contrataciones' %}";
+
+  var tablaContrataciones;
+  // Call the dataTables jQuery plugin
+  $(document).ready(function () {
+    tablaContrataciones = $("#miTabla").DataTable({
+      ajax: {
+        url: urlContrataciones, // Reemplaza esto con la URL correcta para obtener los datos
+        dataSrc: "contrataciones", // Deja esto vacío si la respuesta AJAX devuelve un arreglo de objetos directamente
+      },
+      responsive: true,
+      language: {
+        url: urlDataTablesSpanish,
+      },
+      columns: [
+        { data: "estado" },
+        { data: "cliente" },
+        { data: "servicio" },
+        { data: "direccion" },
+        { data: "creacion" },
+        { data: "ultimo_pago" },
+        { data: "saldo" },
+        {
+          data: "id",
+          render: function () {
+            return (
+              '<a href="#"><i class="fa fa-trash m-1" aria-hidden="true"></i></a>' +
+              '<a href="#"><i class="fa fa-edit m-1"></i></a>'
+            );
+          },
+        },
+      ],
+    });
+
+    $('#myTable').addClass("nowrap").dataTable( {
+					responsive: true,
+					columnDefs: [
+						{
+							target: 4,
+							render: DataTable.render.date(),
+						},
+						{
+							target: 5,
+							render: DataTable.render.number(null, null, 0, '$'),
+						},
+						{
+							targets: [3, 4 ,5],
+							className: 'dt-body-right'
+						}
+					]
+				} );
+  });
+</script>
+{% endblock scriptsCustom %}

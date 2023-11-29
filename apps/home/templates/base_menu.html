@@ -1,0 +1,521 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    
+    <title>{% block titulo %}{% endblock titulo %}</title>
+    
+    <!-- Custom fonts for this template-->
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+        
+        <!-- Custom styles for this template-->
+    <link href="{% static 'template/css/sb-admin-2.min.css' %}" rel="stylesheet">
+    
+    <!-- Estilos para Select2 -->
+    <link href="{% static 'css/select2/select2.min.css' %}" rel="stylesheet">
+
+    <!-- Estilos para SweetAlert2 -->
+    <link href="{% static 'css/sweetalert2.min.css' %}" rel="stylesheet">
+
+    <!-- Iconos de bootstrap -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap_icons/bootstrap-icons.css' %}">
+
+    <link rel="stylesheet" href="{% static 'template/vendor/fontawesome-free/css/all.min.css' %}">
+    
+    <!-- DataTables -->
+    <link rel="stylesheet" href="{% static 'datatables/jquery.dataTables.min.css' %}">
+    <link rel="stylesheet" href="{% static 'datatables/responsive.dataTables.min.css' %}">
+
+    <style>
+        /* Estilos personalizados */
+        .navbar-mobile {
+            background-color: #333; /* Color de fondo del navbar */
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            display: flex; /* Utiliza Flexbox para los ítems */
+        }
+    </style>
+</head>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Código HTML específico para dispositivos móviles -->
+        <!-- mobile navbar -->
+        <nav style="display:none;" class="navbar navbar-mobile fixed-bottom navbar-vertical bg-primary m-0 p-0">
+            <div class="btn-group btn-group-lg col-12 m-0 p-0" role="group" aria-label="Basic mixed styles example">
+                <a href="{% url 'home:home' %}" type="button" style="font-size:25px;" class="btn btn-primary"><i class="bi bi-house-fill"></i></a>
+                <a href="{% url 'home:clientes' %}" type="button" style="font-size:25px;" class="btn btn-primary"><i class="bi bi-person-fill-add"></i></a>
+                <a href="{% url 'home:pagos' %}" type="button" style="font-size:25px;" class="btn btn-info active"><i class="bi bi-cash"></i></a>
+                <a href="{% url 'home:servicios' %}" type="button" style="font-size:25px;" class="btn btn-primary"><i class="bi bi-card-list"></i></a>
+                <a href="{% url 'home:usuarios' %}" type="button" style="font-size:25px;" class="btn btn-primary"><i class="bi bi-gear"></i></a>
+              </div>
+        </nav>
+        <!-- End mobile navbar -->
+        <!-- Código HTML para computadoras de escritorio o tablets -->
+        <!-- Sidebar -->
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion navbar-horizontal" id="accordionSidebar">
+
+            <!-- Sidebar - Brand -->
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="#">
+                <div class="sidebar-brand-icon rotate-n-15">
+                    <i class="bi bi-globe" style="font-size: 30px;"></i> <!-- Icono de Bootstrap para la casa -->
+                </div>
+                <div class="sidebar-brand-text mx-3">Universo <sup>Digital</sup></div>
+            </a>
+        
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
+        
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item {% if request.path == '/dashboard/' %}active{% endif %}">
+                <a class="nav-link" href="{% url 'home:home' %}">
+                    <i class="bi bi-speedometer2" style="font-size: 15px;"></i> <!-- Icono de Bootstrap para el dashboard -->
+                    <span>Dashboard</span>
+                </a>
+            </li>
+        
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+        
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Contratación
+            </div>
+        
+            <!-- Nav Item - Pagos -->
+            <li class="nav-item {% if request.path == '/pagos/' %}active{% endif %}">
+                <a class="nav-link" href="{% url 'home:pagos' %}">
+                    <i class="bi bi-cash-stack" style="font-size: 15px;"></i> <!-- Icono de Bootstrap para pagos -->
+                    <span>Pagos</span>
+                </a>
+            </li>
+        
+            <!-- Nav Item - Contrataciones -->
+            <li class="nav-item {% if request.path == '/contrataciones/' %}active{% endif %}">
+                <a class="nav-link" href="{% url 'home:contrataciones' %}">
+                    <i class="bi bi-graph-up" style="font-size: 15px;"></i> <!-- Icono de Bootstrap para contrataciones -->
+                    <span>Contrataciones</span>
+                </a>
+            </li>
+        
+            <!-- Nav Item - Reportes -->
+            <li class="nav-item {% if request.path == '/reportes/' %}active{% endif %}">
+                <a class="nav-link" href="{% url 'home:reportes' %}">
+                    <i class="bi bi-table" style="font-size: 15px;"></i> <!-- Icono de Bootstrap para reportes -->
+                    <span>Reportes</span>
+                </a>
+            </li>
+        
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+        
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Informes
+            </div>
+        
+            <!-- Nav Item - Informes -->
+            <li class="nav-item {% if request.path == '/informes/' %}active{% endif %}">
+                <a class="nav-link" href="#">
+                    <i class="bi bi-bar-chart" style="font-size: 15px;"></i> <!-- Icono de Bootstrap para informes -->
+                    <span>Informes</span>
+                </a>
+            </li>
+        
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Administrar
+            </div>
+        
+            <!-- Nav Item - Mantenedores Collapse Menu -->
+            {% with route_list='/servicios/,/clientes/'|make_list %}
+            <li class="nav-item {% if request.path in route_list %}active{% endif %}">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseMantenedores"
+                    aria-expanded="true" aria-controls="collapseMantenedores">
+                    <i class="bi bi-folder" style="font-size: 15px;"></i> <!-- Icono de Bootstrap para mantenedores -->
+                    <span>Mantenedores</span>
+                </a>
+                <div id="collapseMantenedores" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Principales:</h6>
+                        <a class="collapse-item {% if request.path == '/servicios/' %}active{% endif %}" href="{% url 'home:servicios' %}">Planes</a>
+                        <a class="collapse-item {% if request.path == '/clientes/' %}active{% endif %}" href="{% url 'home:clientes' %}">Clientes</a>
+                    </div>
+                </div>
+            </li>
+            {% endwith %}
+        
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+        
+            <!-- Nav Item - Configuracion Sistema -->
+            {% with route_list='/informacion/,/usuarios/'|make_list %}
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+                    aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="bi bi-gear" style="font-size: 15px;"></i> <!-- Icono de Bootstrap para configuración -->
+                    <span>Configuración</span>
+                </a>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Opciones de configuración</h6>
+                        <a class="collapse-item {% if request.path == '/informacion/' %}active{% endif %}" href="{% url 'home:informacion' %}">Sucursal</a>
+                        <a class="collapse-item {% if request.path == '/usuarios/' %}active{% endif %}" href="{% url 'home:usuarios' %}"> <i class="bi bi-person"></i> Usuarios</a>
+                    </div>
+                </div>
+            </li>
+            {% endwith %}
+            
+            <!-- Divider -->
+            <hr class="sidebar-divider d-none d-md-block">
+        
+            <!-- Sidebar Toggler (Sidebar) -->
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+        
+        </ul>        
+        <!-- End of Sidebar -->
+        
+
+        
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- Topbar -->
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+                    <!-- Sidebar Toggle (Topbar) -->
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+
+                    <!-- Topbar Search -->
+                    <form
+                        class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                        <div class="input-group">
+                            <input type="text" class="form-control bg-light border-0 small" placeholder="Buscar"
+                                aria-label="Search" aria-describedby="basic-addon2">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="button">
+                                    <i class="fas fa-search fa-sm"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <!-- Topbar Navbar -->
+                    <ul class="navbar-nav ml-auto">
+
+                        <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+                        <li class="nav-item dropdown no-arrow d-sm-none">
+                            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-search fa-fw"></i>
+                            </a>
+                            <!-- Dropdown - Messages -->
+                            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
+                                aria-labelledby="searchDropdown">
+                                <form class="form-inline mr-auto w-100 navbar-search">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control bg-light border-0 small"
+                                            placeholder="Search for..." aria-label="Search"
+                                            aria-describedby="basic-addon2">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary" type="button">
+                                                <i class="fas fa-search fa-sm"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </li>
+
+                        <!-- Nav Item - Alerts -->
+                        <li class="nav-item dropdown no-arrow mx-1">
+                            <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="bi bi-bell" style="font-size: 20px;"></i> <!-- Ícono de Bootstrap para la campana con tamaño de fuente 45px -->
+                                <!-- Contador - Alertas -->
+                                <span class="badge badge-danger badge-counter">3+</span>
+                            </a>
+                            <!-- Menú desplegable - Alertas -->
+                            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                aria-labelledby="alertsDropdown">
+                                <h6 class="dropdown-header">
+                                    Centro de Alertas
+                                </h6>
+                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                    <div class="mr-3">
+                                        <div class="icon-circle bg-primary">
+                                            <i class="bi bi-file-earmark-text text-white"></i> <!-- Ícono de Bootstrap para el archivo con texto con color de fondo azul -->
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="small text-gray-500">12 de diciembre de 2019</div>
+                                        <span class="font-weight-bold">¡Un nuevo informe mensual está listo para descargar!</span>
+                                    </div>
+                                </a>
+                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                    <div class="mr-3">
+                                        <div class="icon-circle bg-success">
+                                            <i class="bi bi-cash-stack text-white"></i> <!-- Ícono de Bootstrap para el dinero con color de fondo verde -->
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="small text-gray-500">7 de diciembre de 2019</div>
+                                        ¡Se han depositado $290.29 en tu cuenta!
+                                    </div>
+                                </a>
+                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                    <div class="mr-3">
+                                        <div class="icon-circle bg-warning">
+                                            <i class="bi bi-exclamation-triangle text-white"></i> <!-- Ícono de Bootstrap para la advertencia con color de fondo amarillo -->
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="small text-gray-500">2 de diciembre de 2019</div>
+                                        Alerta de Gasto: Hemos notado un gasto inusualmente alto en tu cuenta.
+                                    </div>
+                                </a>
+                                <a class="dropdown-item text-center small text-gray-500" href="#">Ver Todas las Alertas</a>
+                            </div>
+                        </li>
+                        
+
+                        <!-- Nav Item - Messages -->
+                        <li class="nav-item dropdown no-arrow mx-1">
+                            <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="bi bi-envelope" style="font-size: 20px;"></i> <!-- Ícono de Bootstrap para el sobre con tamaño de fuente 35px -->
+                                <!-- Contador - Mensajes -->
+                                <span class="badge badge-danger badge-counter">7</span>
+                            </a>
+                            <!-- Menú desplegable - Mensajes -->
+                            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                aria-labelledby="messagesDropdown">
+                                <h6 class="dropdown-header">
+                                    Centro de Mensajes
+                                </h6>
+                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                    <div class="dropdown-list-image mr-3">
+                                        <i class="bi bi-person-circle" style="font-size: 35px;"></i> <!-- Ícono de Bootstrap para la imagen de perfil con tamaño de fuente 35px -->
+                                        <div class="status-indicator bg-success"></div>
+                                    </div>
+                                    <div class="font-weight-bold">
+                                        <div class="text-truncate">¡Hola! Me preguntaba si me puedes ayudar con un problema que he estado teniendo.</div>
+                                        <div class="small text-gray-500">Emily Fowler · 58m</div>
+                                    </div>
+                                </a>
+                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                    <div class="dropdown-list-image mr-3">
+                                        <i class="bi bi-person-circle" style="font-size: 35px;"></i> <!-- Ícono de Bootstrap para la imagen de perfil con tamaño de fuente 35px -->
+                                        <div class="status-indicator"></div>
+                                    </div>
+                                    <div>
+                                        <div class="text-truncate">Tengo las fotos que ordenaste el mes pasado, ¿cómo te gustaría que te las envíe?</div>
+                                        <div class="small text-gray-500">Jae Chun · 1d</div>
+                                    </div>
+                                </a>
+                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                    <div class="dropdown-list-image mr-3">
+                                        <i class="bi bi-person-circle" style="font-size: 35px;"></i> <!-- Ícono de Bootstrap para la imagen de perfil con tamaño de fuente 35px -->
+                                        <div class="status-indicator bg-warning"></div>
+                                    </div>
+                                    <div>
+                                        <div class="text-truncate">El informe del mes pasado se ve genial, estoy muy contento con el progreso hasta ahora, ¡sigue con el buen trabajo!</div>
+                                        <div class="small text-gray-500">Morgan Alvarez · 2d</div>
+                                    </div>
+                                </a>
+                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                    <div class="dropdown-list-image mr-3">
+                                        <i class="bi bi-person-circle" style="font-size: 35px;"></i> <!-- Ícono de Bootstrap para la imagen de perfil con tamaño de fuente 35px -->
+                                        <div class="status-indicator bg-success"></div>
+                                    </div>
+                                    <div>
+                                        <div class="text-truncate">¿Soy un buen chico? La razón por la que pregunto es porque alguien me dijo que la gente dice esto a todos los perros, incluso si no son buenos...</div>
+                                        <div class="small text-gray-500">Chicken the Dog · 2w</div>
+                                    </div>
+                                </a>
+                                <a class="dropdown-item text-center small text-gray-500" href="#">Leer Más Mensajes</a>
+                            </div>
+                        </li>
+                        
+
+                        <div class="topbar-divider d-none d-sm-block"></div>
+
+                        <!-- Nav Item - User Information -->
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="bi bi-person" style="font-size: 25px;"></i> <!-- Ícono de Bootstrap para el perfil con tamaño de fuente 20px -->
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
+                            </a>
+                            <!-- Dropdown - Información de Usuario -->
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="#">
+                                    <i class="bi bi-person-circle"></i> <!-- Ícono de Bootstrap para el perfil -->
+                                    Perfil
+                                </a>
+                                <a class="dropdown-item" href="#">
+                                    <i class="bi bi-gear"></i> <!-- Ícono de Bootstrap para configuración -->
+                                    Configuración
+                                </a>
+                                <a class="dropdown-item" href="#">
+                                    <i class="bi bi-journal"></i> <!-- Ícono de Bootstrap para registro de actividad -->
+                                    Registro de Actividad
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                    <i class="bi bi-box-arrow-right"></i> <!-- Ícono de Bootstrap para cerrar sesión -->
+                                    Cerrar Sesión
+                                </a>
+                            </div>
+                        </li>
+                        
+
+                    </ul>
+
+                </nav>
+                <!-- End of Topbar -->
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                    {% block contenido %}
+
+                    {% endblock contenido %}
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; CODICE 2023</span>
+                    </div>
+                </div>
+
+                <!-- Contenedor de alertas Toast -->
+                <div class="toast-container fixed-top d-flex justify-content-end my-1">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <!-- Then put toasts within -->
+                            <div class="toast text-white bg-{{ message.tags }} rounded-pill custom-toast" role="alert" aria-live="assertive" aria-atomic="true">
+                                <div class="d-flex">
+                                    <div class="toast-body m-auto">
+                                        {{ message }}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </div> <!-- / Fin Contenedor de alertas Toast -->
+            </footer>
+            <!-- End of Footer -->
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded mb-5" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <!-- Logout Modal-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">¿Listo para salir?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">¿Estás seguro que quieres cerrar tu sesión actual?</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                    <a class="btn btn-primary" href="{% url 'home:logout' %}">Cerrar sesión</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="{% static 'scripts/jquery_3_7_1.js' %}"></script>
+    <script src="{% static 'template/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+      
+    <!-- Script para DataTables -->
+    <script src="{% static 'datatables/jquery.dataTables.min.js' %}"></script>
+    <!-- JavaScript de DataTables Responsive -->
+<script src="{% static 'datatables/dataTables.responsive.min.js' %}"></script>
+    <script>
+        const urlDataTablesSpanish = "{% static 'datatables/es-es.json' %}"
+    </script>
+    
+    <!-- Custom scripts for all pages-->
+    <script src="{% static 'template/js/sb-admin-2.min.js' %}"></script>
+    
+    <!-- Select2 -->
+    <script src="{% static 'scripts/select2/select2.min.js' %}"></script>
+
+    <!-- SweetAlert -->
+    <script src="{% static 'scripts/sweetalert2.min.js' %}"></script>
+
+    <!-- Page level plugins -->
+    <script src="{% static 'template/vendor/chart.js/Chart.min.js' %}"></script>
+
+    <!-- Validacioones para los formularios de bootstrap -->
+    <script src="{% static 'scripts/bootstrapFormValidations.js' %}"></script>
+
+
+    <!--Script para mostrar los mensajes Toast-->
+    <script>
+        var myAlert = document.getElementsByClassName('toast');
+        mostrarToast();
+      
+        function mostrarToast() {
+          for (let i = 0; i < myAlert.length; i++) {
+            var my_Toast = new bootstrap.Toast(myAlert[i]);
+      
+            // Configura el tiempo de retraso en milisegundos (5 segundos)
+            my_Toast._config.delay = 2000; // 7000 milisegundos = 5 segundos
+      
+            my_Toast.show();
+          }
+        }
+    </script><!-- Fin Script mostrar mensajes Toast-->
+
+      {% block scriptsDependencias %}
+      {% endblock scriptsDependencias %}
+      
+      {% block scriptsCustom %}
+      {% endblock scriptsCustom %}
+</body>
+
+</html>
