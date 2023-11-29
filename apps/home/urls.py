@@ -9,7 +9,7 @@ from .views import login_view, LogoutView, usuarios_view, usuarionuevo_view, usu
     NuevaContratacionView, BorrarContratacionView, ModificarContratacionView, PagosView, NuevoRecibo, NuevoDetalle, \
     borrar_detalle_pago_view, informacionempresa_view, InformacionView, BorrarInformacionView, ModificarInformacionView, \
     reporte_fallo, cambiar_estado_reporte_fallo_view, cambiar_tecnico_reporte_fallo_view, borrar_reporte_fallos_view, \
-    ReporteExcel, ReporteContrataciones, ReciboPDFView
+    ReporteExcel, ReporteContrataciones, ReciboPDFView, template_view, ContratacionAPIView, actualizar_pendientes_pagos_view
 
 app_name = 'home'
 
@@ -20,13 +20,15 @@ urlpatterns = [
 
                   # cuentas
                   path('usuarios/', usuarios_view, name='usuarios'),
-                  path('usuario/nuevo/', usuarionuevo_view, name='usuario_nuevo'),
+                  path('usuarios/nuevo/', usuarionuevo_view, name='usuario_nuevo'),
                   path('usuarios/filtrado/', usuarios_filtrados, name='usuario_filtrado'),
-                  path('usuario/editar/<int:pk>', EditarUsuarioView.as_view(), name='usuario_editar'),
-                  path('usuario/eliminar/<str:username>', usuarioeliminar_view, name='usuario_eliminar'),
+                  path('usuarios/editar/<int:pk>', EditarUsuarioView.as_view(), name='usuario_editar'),
+                  path('usuarios/eliminar/<str:username>', usuarioeliminar_view, name='usuario_eliminar'),
 
                   # Dashboard
+                  #TODO corregir estas dos rutas
                   path('', HomeView, name='home'),
+                  path('dashboard/', HomeView, name='home'),
                   path('clientes/', ClienteListView.as_view(), name='clientes'),
                   path('clientes/nuevo/', NuevoClienteView, name='nuevocliente'),
                   path('clientes/borrar/<int:pk>', BorrarClienteView, name='borrarcliente'),
@@ -45,6 +47,12 @@ urlpatterns = [
                   path('contratacion/editar/<int:pk>', ModificarContratacionView.as_view(),
                        name='modificarcontratacion'),
 
+               # Contrataciones API
+               # URL para listar contrataciones (método GET)
+               path('contrataciones_api/', ContratacionAPIView.as_view(), name='listar_contrataciones'),
+               path('contrataciones_api/nueva/', ContratacionAPIView.as_view(), name='nueva_contratacion_ajax'),
+               path('dashboard/actualiar_pagos', actualizar_pendientes_pagos_view, name='actualizar_pendiente_pago'),
+               
                   # Pagos
                   path('pagos/', PagosView, name='pagos'),
                   path('recibo/', NuevoRecibo, name='nuevorecibo'),
@@ -70,4 +78,6 @@ urlpatterns = [
 
                   # Facturas PDF
                   path('recibopdf/<int:pk>', ReciboPDFView.as_view(), name='recibopdf'),
+                  
+                  path('template/', template_view, name='template')
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

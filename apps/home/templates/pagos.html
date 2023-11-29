@@ -1,4 +1,4 @@
-{% extends 'menu.html' %}
+{% extends 'base_menu.html' %}
 {% block contenido %}
     <title>{% block titulo %}Pagos{% endblock titulo %}</title>
     <div class="container p-0">
@@ -10,13 +10,11 @@
                         <div class="">
                             <label class="title-container f-1" for="contratacion">¿Qué servicio desea pagar?</label>
                         </div>
-                        <input class="custom-select mr-sm-2 col-sm-8 w-75 table-responsive-lg"
-                               list="listacontrataciones" name="contratacion" required>
-                        <datalist id="listacontrataciones">
-                            {% for contratacion in contrataciones %}
-                                <option value="{{ contratacion.id }}">{{ contratacion.cliente.nombre }} {{ contratacion.servicio.tipo }} {{ contratacion.servicio.nombre }} </option>
-                            {% endfor %}
-                        </datalist>
+                        
+                        <select class="custom-select mr-sm-2 col-sm-8 w-75 table-responsive-lg select2-simple" id="select2-simple" name="contratacion" style="width: 300px;">
+                            <!-- Las opciones se llenarán automáticamente a través de Ajax -->
+                        </select>
+
                         <button type="submit" class="btn btn-primary mt-2">Nuevo pago</button>
                     </form>
                 </div>
@@ -74,4 +72,64 @@
             </div>
         </div>
     </div>
-{% endblock contenido %}
+
+    {% endblock contenido %}
+
+    {% block scriptsCustom %}
+    <script>
+        // Configura el select2
+        $('#select2-simple').select2({
+            ajax: {
+                // URL para buscar contrataciones (ajusta la URL según tu configuración)
+                url: "{% url 'home:listar_contrataciones' %}",
+    
+                // Especifica que se espera recibir datos JSON
+                dataType: 'json',
+    
+                // Retardo en milisegundos antes de enviar la solicitud
+                delay: 250,
+    
+                // Función para enviar datos adicionales en la solicitud
+                data: function(params) {
+                    return {
+                        q: params.term, // Término de búsqueda del usuario
+                        page: params.page
+                    };
+                },
+    
+                // Función para procesar los resultados recibidos de la API
+                processResults: function(data, params) {
+                    if (data && data.contrataciones) {
+                        return {
+                            results: $.map(data.contrataciones, function(contratacion) {
+                                return {
+                                    id: contratacion.id,
+                                    text: contratacion.cliente + ' - ' + contratacion.servicio
+                                };
+                            }),
+                            pagination: {
+                                more: false
+                            }
+                        };
+                    } else {
+                        // Si no se recibieron datos válidos, muestra un error en la consola
+                        console.error('Error: No se recibieron datos válidos de la API.');
+                        return { results: [] };
+                    }
+                },
+    
+                // Activa la caché para evitar solicitudes duplicadas
+                cache: true,
+    
+                // Manejo de errores
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.error('Error en la solicitud Ajax:', textStatus, errorThrown);
+                }
+            },
+            placeholder: 'Buscar contrataciones',
+            minimumInputLength: 2,
+            method: 'GET'
+        });
+    </script>
+    
+    {% endblock scriptsCustom %}

@@ -1,4 +1,4 @@
-{% extends 'menu.html' %}
+{% extends 'base_menu.html' %}
 {% block contenido %}
 <title>{% block titulo %}Servicios{% endblock titulo %}</title>
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -6,7 +6,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLongTitle">Agregar nuevo Plan</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
         </div>
         <form action="{% url 'home:nuevoservicio' %}" method="post">
             {% csrf_token %}
@@ -33,7 +33,7 @@
             </div>            
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
           <button type="submit" class="btn btn-primary">Añadir</button>
         </div>
     </form>
@@ -43,7 +43,7 @@
 
 <div class="container p-0">
     <div class="row justify-content-end">
-        <button type="button" class="btn btn-primary col-12 col-sm-4 col-lg-2" data-bs-toggle="modal" data-bs-target="#exampleModalCenter" data-bs-whatever="@mdo">Nuevo Plan</button>
+        <button type="button" class="btn btn-primary col-12 col-sm-4 col-lg-2" data-toggle="modal" data-target="#exampleModalCenter" data-whatever="@mdo">Nuevo Plan</button>
     </div>
     <h1 class="title-container">
         Listado de Planes
@@ -76,8 +76,8 @@
                                 {{servicio.costo}}
                             </td>
                             <td class="text-center">
-                                <a href="{% url 'home:borrarservicio' servicio.id %}"><i class="bi bi-trash" style="color:red;"></i></a>
-                                <a href="{% url 'home:modificarservicio' servicio.id %}"><i class="bi bi-pencil-square"></i></a>
+                                <a href="{% url 'home:borrarservicio' servicio.id %}"><i class="fa fa-trash" style="color:red;"></i></a>
+                                <a href="{% url 'home:modificarservicio' servicio.id %}"><i class="fa fa-edit"></i></a>
                             </td>
                         </tr>
                         {% endfor %}
