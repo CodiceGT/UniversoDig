@@ -80,7 +80,7 @@
                                 {% if cliente.telefono %}
                                     <a href="tel:+502{{ cliente.telefono }} alt=" Llamar><i
                                             class="bi bi-telephone-outbound-fill"></i></a> - | -
-                                    <a href="https://wa.me/{{ cliente.telefono }}/?text=Hola, Saludos de Universo Digital 😉"><i
+                                    <a href="https://wa.me/{{ cliente.telefono }}/?text=Hola, Saludos... "><i
                                             class="bi bi-whatsapp"></i></a>
                                     <br>
                                     {{ cliente.telefono }}
@@ -102,5 +102,4 @@
             </div>
         </div>
     </div>
-    <a href="{% url 'home:reporteClientes' %}"> EXPORTAR A EXCEL</a>
 {% endblock contenido %}

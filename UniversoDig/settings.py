@@ -167,7 +167,6 @@ STATIC_URL = '/static/'
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
 
-
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
@@ -175,7 +174,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
+AUTH_USER_MODEL = 'home.CustomUser'
 #Configuración para que la sesión expire por inactividad o cierre del navegador
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True #Cerrar sesión al cerrar navegador
 SESSION_COOKIE_AGE = 900 #Segundos de tiempo de inactividad permitido

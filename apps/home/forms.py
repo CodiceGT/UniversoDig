@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
-from .models import Cliente, Contratacion, Informacion, ReporteFallo, Servicio, Recibo
+from .models import Cliente, Contratacion, Sucursal, ReporteFallo, Servicio, Recibo, CustomUser
 
 
 class UserRegisterForm(UserCreationForm):
@@ -9,13 +9,13 @@ class UserRegisterForm(UserCreationForm):
     password2 = forms.CharField(label='Confirmar contraseña', widget=forms.PasswordInput(attrs={"class": "form-control"}))
 
     class Meta:
-        model = User
+        model = CustomUser
         fields = ['first_name', 'last_name', 'username', 'password1', 'password2', 'groups']
 
 
 class UserForm(forms.ModelForm):
     class Meta:
-        model = User
+        model = CustomUser
         fields = ['first_name', 'last_name', 'username', 'groups']
 
 
@@ -39,16 +39,16 @@ class ReciboSelectContratacionForm(forms.ModelForm):
             'contratacion': forms.Select(attrs={'class': 'form-control'})
         }
 
-class InformacionForm(forms.ModelForm):
+class SucursalForm(forms.ModelForm):
     class Meta:
-        model = Informacion
+        model = Sucursal
         fields = '__all__'
 
 class FormNuevoReporte(forms.ModelForm):
         
     class Meta:
         model = ReporteFallo
-        fields = ['contratacion', 'descripcion', 'tecnico_asignado']
+        fields = ['contratacion', 'descripcion', 'tecnico']
         widgets = {
             'contratacion': forms.Select(attrs={'class': 'form-control'}),
             'descripcion': forms.TextInput(attrs={'class': 'form-control'})

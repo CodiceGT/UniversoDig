@@ -27,29 +27,29 @@
                 <div class="card border-0 mb-3" style="max-width:100%;">
                     <div class="row g-0">
                         <div class="col-md-4">
-                            <img src=" {% if informacion.logo %}{{ informacion.logo.url }}{% else %} {% static 'img/logo-terminado.png' %} {% endif %}" class="img-fluid rounded-start" alt="...">
+                            <img src=" {% if sucursal.logo %}{{ sucursal.logo.url }}{% else %} {% static 'img/logo-terminado.png' %} {% endif %}" class="img-fluid rounded-start" alt="...">
                         </div>
                         <div class="col-md-8">
                             <div class="card-body">
-                                <form action="{% url 'home:nuevainformacion' %}" method="post">
+                                <form action="{% url 'home:nuevasucursal' %}" method="post">
                                     {% csrf_token %}
                                     <div class="input-group mb-3">
                                         <span class="input-group-text bg-primary text-light"
                                               id="basic-addon1">Empresa</span>
-                                        <input type="text" value="{{ informacion.nombre }}" class="form-control"
+                                        <input type="text" value="{{ sucursal.nombre }}" class="form-control"
                                                placeholder="" aria-label="nombre" aria-describedby="basic-addon1"
                                                name="nombre" required="">
                                     </div>
                                     <div class="input-group mb-3">
                                         <span class="input-group-text bg-primary text-light" id="basic-addon2">Dirección:</span>
-                                        <input type="text" value="{{ informacion.direccion }}" class="form-control"
+                                        <input type="text" value="{{ sucursal.direccion }}" class="form-control"
                                                placeholder="" aria-label="direccion" aria-describedby="basic-addon2"
                                                name="direccion" required="">
                                     </div>
                                     <div class="input-group mb-3">
                                         <span class="input-group-text bg-primary text-light"
                                               id="basic-addon3">Teléfono</span>
-                                        <input type="text" value="{{ informacion.telefono }}" class="form-control"
+                                        <input type="text" value="{{ sucursal.telefono }}" class="form-control"
                                                placeholder="" aria-label="telefono" aria-describedby="basic-addon3"
                                                name="telefono" required="">
                                     </div>

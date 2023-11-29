@@ -31,7 +31,7 @@
                             </div>
                             <div class="input-group mb-3">
                                 <span class="input-group-text"><i class="bi bi-person-circle"> Técnico</i></span>
-                                <select class="form-control" name="tecnico_asignado" id="tecnico_asignado">
+                                <select class="form-control" name="tecnico" id="tecnico">
                                     <option value="">---------</option>
                                     {% for usuario in usuarios %}
                                         <option value="{{ usuario.id }}"> {{ usuario.first_name }} {{ usuario.last_name }}</option>
@@ -120,7 +120,7 @@
                     <div class="dropdown">
                         <a class="btn dropdown-toggle" href="#" role="button"
                            data-toggle="dropdown" aria-expanded="false">
-                            {{ reporte.tecnico_asignado.first_name }} {{ reporte.tecnico_asignado.last_name }}
+                            {{ reporte.tecnico.first_name }} {{ reporte.tecnico.last_name }}
                         </a>
 
                         {% for group in request.user.groups.all %}
