@@ -74,7 +74,7 @@
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="bi bi-globe" style="font-size: 30px;"></i> <!-- Icono de Bootstrap para la casa -->
                 </div>
-                <div class="sidebar-brand-text mx-3">Universo <sup>Digital</sup></div>
+                <div class="sidebar-brand-text mx-3"> </div>
             </a>
         
             <!-- Divider -->
@@ -163,7 +163,7 @@
             <hr class="sidebar-divider">
         
             <!-- Nav Item - Configuracion Sistema -->
-            {% with route_list='/informacion/,/usuarios/'|make_list %}
+            {% with route_list='/sucursal/,/usuarios/'|make_list %}
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
@@ -173,7 +173,7 @@
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Opciones de configuración</h6>
-                        <a class="collapse-item {% if request.path == '/informacion/' %}active{% endif %}" href="{% url 'home:informacion' %}">Sucursal</a>
+                        <a class="collapse-item {% if request.path == '/sucursal/' %}active{% endif %}" href="{% url 'home:sucursal' %}">Sucursal</a>
                         <a class="collapse-item {% if request.path == '/usuarios/' %}active{% endif %}" href="{% url 'home:usuarios' %}"> <i class="bi bi-person"></i> Usuarios</a>
                     </div>
                 </div>
